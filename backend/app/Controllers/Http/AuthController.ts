@@ -1,7 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import user from 'App/Models/user';
-import user from 'App/Models/user'
+
 
 
 
@@ -48,5 +48,23 @@ export default class AuthController {
     await utilizator
                  .delete()
         return `Utilizatorul ${utilizator.numeintreg} a fost sters cu succes!`
+   }
+
+   public async login({auth,request}:HttpContextContract){
+       const {nume,password} = request.all()
+
+       try {
+           await auth.attempt(nume,password)
+           const loggeduser = await user.findBy('nume',nume)
+           return {loggeduser}
+       } catch (error) {
+           return 'Utilizatorul nu a putut fi autentificat!'
+       }
+   }
+
+   public async logout({ auth }:HttpContextContract){
+   
+        await auth.use('web').logout()
+        return "Logged out!"
    }
 }

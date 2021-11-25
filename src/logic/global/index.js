@@ -1,0 +1,35 @@
+import {reactive} from 'vue'
+
+const state = reactive({
+    user:{
+        autentificat:false,
+        nume:'',
+        nume_intreg:'',
+
+        rol:null,
+        
+        idutilizator:0,
+
+    }
+})
+
+const actions = {
+     autentificare(user){
+         console.log('!Autentificare: ',user)
+
+         state.user.autentificat=true;
+        
+         state.user.nume=user.nume;
+         state.user.nume_intreg=user.numeintreg;
+         state.user.rol=user.rol;
+   
+     },
+     deconectare(){
+        state.user.autentificat=false
+     }
+}
+
+export default {
+    state,
+    actions
+}

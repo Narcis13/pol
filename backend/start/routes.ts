@@ -20,9 +20,31 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/toatespecialitatile', 'SpecialitatisController.index')
+Route.get('/solicitareprogramare', 'ProgramarisController.formular')
+
+Route.get('/toatespecialitatile', 'SpecialitatisController.index')/*.middleware('auth')*/
+Route.post('/specialitati','SpecialitatisController.store')
+Route.patch('/specialitati/:id','SpecialitatisController.updatespecialitate')
+Route.delete('/specialitati/:id','SpecialitatisController.stergspecialitate')
 
 Route.post('/registeruser','AuthController.register')
 Route.get('/allusers','AuthController.index')
 Route.patch('/users/:id','AuthController.updateuser')
 Route.delete('/users/:id','AuthController.deleteuser')
+Route.post('/login','AuthController.login')
+Route.post('/logout','AuthController.logout')
+
+Route.post('/servicii','ServiciusController.store')
+Route.get('/toateserviciile', 'ServiciusController.index')
+Route.patch('/servicii/:id','ServiciusController.updateserviciu')
+Route.delete('/servicii/:id','ServiciusController.deleteserviciu')
+
+Route.post('/medici','MedicsController.register')
+Route.get('/totimedicii', 'MedicsController.index')
+Route.patch('/medici/:id','MedicsController.updatemedic')
+Route.delete('/medici/:id','MedicsController.deletemedic')
+
+Route.post('/indis','IndisponibilitatesController.register')
+Route.get('/indis', 'IndisponibilitatesController.index')
+Route.patch('/indis/:id','IndisponibilitatesController.updatemedic')
+Route.delete('/indis/:id','IndisponibilitatesController.deletemedic')
