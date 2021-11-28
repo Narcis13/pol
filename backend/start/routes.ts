@@ -19,8 +19,14 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+Route.on('/').render('welcome')
+
+Route.get('posts/create', 'PostsController.create')
+Route.post('posts', 'PostsController.store')
+
 
 Route.get('/solicitareprogramare', 'ProgramarisController.formular')
+Route.post('/solicitareprogramare', 'ProgramarisController.solicitare')
 
 Route.get('/toatespecialitatile', 'SpecialitatisController.index')/*.middleware('auth')*/
 Route.post('/specialitati','SpecialitatisController.store')

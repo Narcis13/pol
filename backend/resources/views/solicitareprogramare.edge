@@ -1,2 +1,89 @@
-<p> Hello world. You are viewing the {{ request.url() }} page </p>
-<div>Lista specialitati</div>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solicitare programare Spitalul Militar Pitesti</title>
+    <script src="{{ asset('assets/app.js') }}"></script>
+    <link rel="stylesheet" href="./bulma.css">
+  </head>
+  <body>
+  <section class="section">
+
+    <div class="columns is-centered">
+        <div class="column ">
+            <div class="box  is-centered">
+
+                <form action="/solicitareprogramare" method="POST">
+                    {{ csrfField() }}
+                    <div class="field has-addon">
+                        <label class="label">Nume si prenume</label>
+                        <div class="control is-expanded">
+                            <input type="text" name="nume" class="input" placeholder="Numele dumneavoastra">
+                        </div>
+                    </div>
+
+                    <div class="field has-addon">
+                        <label class="label">Numar de telefon</label>
+                        <div class="control is-expanded">
+                            <input type="text" name="telefon" class="input" placeholder="Numar telefon">
+                        </div>
+                    </div>
+
+                    <div class="field has-addon">
+                        <label class="label">Adresa e-mail</label>
+                        <div class="control is-expanded">
+                            <input type="text" name="email" class="input" placeholder="Adresa dumneavoastra de e-mail">
+                        </div>
+                    </div>
+
+                    <div class="field has-addon">
+                        <label for="specialitati" class="label">Specialitatea pentru care doriti programare</label>
+                            <div class="select is-info">
+                                <select name="idspecialitate" id="specialitati">
+                                    @each(spec in specialitati)
+                                    <option value="{{spec.id}}"> {{ spec.denumire }} </option>
+                                @end
+                                </select>
+                            </div>
+                    </div>
+                    <div class="field">
+                        <label  class="label">Mesaj (optional)</label>
+                        <div class="control">
+                            <textarea name="mesaj" class="textarea" placeholder="Scurt mesaj (max. 255 caractere)"></textarea>
+                        </div>
+                    </div>
+                   
+
+                    <label class="checkbox">
+                        <input type="checkbox" name="acord">
+                        Sunt de acord cu prelucrarea datelor mele cu caracter personal si cu <a href="#">termenii si conditiile serviciului de programare online</a>
+                    </label>
+
+                    <div class="control mt-2">   <button type="submit" class="button is-primary">Trimite solicitarea!</button></div>
+
+
+
+                </form>
+ 
+                @if(flashMessages.has('errors.nume'))
+                    <p class="mt-2 help is-danger"> {{flashMessages.get('errors.nume')}} </p>
+                @endif
+
+                @if(flashMessages.has('errors.telefon'))
+                 <p class="mt-2 help is-danger"> {{flashMessages.get('errors.telefon')}} </p>
+                @endif
+            </div>
+            
+            @if(flashMessages.has('notificare'))
+                <div class="notification is-success is-light">{{flashMessages.get('notificare')}}</div>
+            @endif
+
+        </div>
+    </div>
+
+  </section>
+  </body>
+</html>
+

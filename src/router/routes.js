@@ -7,7 +7,13 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') }
     ]
   },
-
+  {
+    path: '/programari/:token',
+    component: () => import('layouts/ProgramariLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Programare.vue') }
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
