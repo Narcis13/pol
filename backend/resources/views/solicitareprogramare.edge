@@ -68,16 +68,29 @@
                 </form>
  
                 @if(flashMessages.has('errors.nume'))
-                    <p class="mt-2 help is-danger"> {{flashMessages.get('errors.nume')}} </p>
+                    <p class="mt-2 help is-danger has-text-weight-bold"> {{flashMessages.get('errors.nume')}} </p>
                 @endif
 
                 @if(flashMessages.has('errors.telefon'))
-                 <p class="mt-2 help is-danger"> {{flashMessages.get('errors.telefon')}} </p>
+                 <p class="mt-2 help is-danger has-text-weight-bold"> {{flashMessages.get('errors.telefon')}} </p>
                 @endif
+
+                @if(flashMessages.has('errors.email'))
+                <p class="mt-2 help is-danger has-text-weight-bold"> {{flashMessages.get('errors.email')}} </p>
+               @endif
+
+               @if(flashMessages.has('errors.mesaj'))
+               <p class="mt-2 help is-danger has-text-weight-bold"> {{flashMessages.get('errors.mesaj')}} </p>
+              @endif
+
             </div>
             
             @if(flashMessages.has('notificare'))
                 <div class="notification is-success is-light">{{flashMessages.get('notificare')}}</div>
+            @endif
+
+            @if(flashMessages.has('lipsaacord'))
+                <div class="notification is-danger ">{{flashMessages.get('lipsaacord')}}</div>
             @endif
 
         </div>

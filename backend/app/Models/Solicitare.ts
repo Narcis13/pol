@@ -36,8 +36,8 @@ export default class Solicitare extends BaseModel {
   public static async hashPassword (s: Solicitare) {
     //console.log(s)
     s.hash=await Hash.make(DateTime.now().toString()+s.email)
-    /*if (s.$dirty.password) {
-      user.password = await Hash.make(user.password)
-    }*/
+   
+     
+   
   }
 }

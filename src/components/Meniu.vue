@@ -12,13 +12,10 @@
             <q-card>
               <q-card-section>
                   <q-btn class="full-width q-ma-xs" color="indigo"  to="a" no-caps>
-                    Angajamente<br>Bugetare / Legale
+                    Cabinete
                   </q-btn>
                   <q-btn class="full-width q-ma-xs" color="indigo" to="l" no-caps>
-                     Lichidari<br>Receptii
-                  </q-btn>
-                  <q-btn class="full-width q-ma-xs" color="indigo" no-caps>
-                     Ordonantari<br>Plata
+                     Indisponibilitati<br>Medici
                   </q-btn>
               </q-card-section>
             </q-card>
@@ -31,10 +28,7 @@
               <q-card-section>
 
                   <q-btn class="full-width q-ma-xs" color="teal" no-caps>
-                    Prevederi<br>Bugetare
-                  </q-btn>
-                  <q-btn class="full-width q-ma-xs" color="teal" to="f" no-caps>
-                     Furnizori
+                    Administrare<br>Programari
                   </q-btn>
 
               </q-card-section>
@@ -47,7 +41,10 @@
             <q-card>
               <q-card-section>
                  <q-btn class="full-width q-ma-xs" color="purple" no-caps>
-                    Categorii<br>repere
+                    Nomenclatoare
+                  </q-btn>
+                 <q-btn class="full-width q-ma-xs" color="purple" no-caps>
+                   Administrare<br>Solicitari
                   </q-btn>
               </q-card-section>
             </q-card>

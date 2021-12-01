@@ -10,6 +10,9 @@ export default class user extends BaseModel {
   public email: string
 
   @column()
+  public nume: string
+
+  @column()
   public numeintreg: string
 
   @column()

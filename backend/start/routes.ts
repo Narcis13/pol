@@ -19,14 +19,22 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-Route.on('/').render('welcome')
 
-Route.get('posts/create', 'PostsController.create')
-Route.post('posts', 'PostsController.store')
+//Route.on('/').render('welcome')
 
+Route.post('/program', 'ProgramsController.register')
+Route.get('/program', 'ProgramsController.index')
+Route.patch('/program/:id','ProgramsController.updateprogram')
+Route.delete('/program/:id','ProgramsController.deleteprogram')
+
+Route.post('/cabinete', 'CabinetsController.register')
+Route.get('/cabinete', 'CabinetsController.index')
+Route.patch('/cabinete/:id','CabinetsController.updatecabinet')
+Route.delete('/cabinete/:id','CabinetsController.deletecabinet')
 
 Route.get('/solicitareprogramare', 'ProgramarisController.formular')
 Route.post('/solicitareprogramare', 'ProgramarisController.solicitare')
+Route.get('/solicitari/:token','ProgramarisController.osolicitare')
 
 Route.get('/toatespecialitatile', 'SpecialitatisController.index')/*.middleware('auth')*/
 Route.post('/specialitati','SpecialitatisController.store')
