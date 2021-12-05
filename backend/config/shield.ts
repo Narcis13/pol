@@ -96,6 +96,8 @@ export const csrf: ShieldConfig['csrf'] = {
   exceptRoutes: [
     '/specialitati',
     '/indis',
+    '/users/:id',
+    '/specialitati/:id',
     '/medici',
     '/servicii',
     '/cabinete',
@@ -129,7 +131,7 @@ export const csrf: ShieldConfig['csrf'] = {
   | Define an array of HTTP methods to be validated for a valid CSRF token.
   |
   */
-  methods: ['POST'],
+  methods: ['POST','PATCH','DELETE'],
 }
 
 /*

@@ -40,10 +40,10 @@
           <q-expansion-item group="somegroup" icon="shopping_cart" label="ADMINISTRARE" header-class="text-purple">
             <q-card>
               <q-card-section>
-                 <q-btn class="full-width q-ma-xs" color="purple" no-caps>
+                 <q-btn to="u852" class="full-width q-ma-xs" color="purple" no-caps>
                     Utilizatori
                   </q-btn>
-                  <q-btn class="full-width q-ma-xs" color="purple" no-caps>
+                  <q-btn to="sp987" class="full-width q-ma-xs" color="purple" no-caps>
                     Specialitati
                   </q-btn>
                   <q-btn class="full-width q-ma-xs" color="purple" no-caps>

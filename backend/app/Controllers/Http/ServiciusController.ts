@@ -9,7 +9,7 @@ export default class ServiciusController {
         const validare_serviciu = schema.create(
             {
                 denumire:schema.string({trim:true},[rules.unique({table:'servicius',column:'denumire'})]),
-                durata:schema.number([rules.range(0,240)])
+                durata:schema.number([rules.range(5,240)])
 
             }
         )
