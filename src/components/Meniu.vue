@@ -46,7 +46,7 @@
                   <q-btn to="sp987" class="full-width q-ma-xs" color="purple" no-caps>
                     Specialitati
                   </q-btn>
-                  <q-btn class="full-width q-ma-xs" color="purple" no-caps>
+                  <q-btn to="ser369" class="full-width q-ma-xs" color="purple" no-caps>
                     Servicii
                   </q-btn>
                   <q-btn class="full-width q-ma-xs" color="purple" no-caps>
