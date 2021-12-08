@@ -1,25 +1,210 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
-    <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
+<div id="q-app" style="min-height: 100vh;">
+  <div class="q-pa-md">
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
-      </div>
 
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
+
+    <div class="row">
+      <div class="col-12 col-md">
+       <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
+      <div class="col-12 col-md">
+       <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
+      <div class="col-12 col-md">
+       <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
+      <div class="col-12 col-md">
+        <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
+      <div class="col-12 col-md">
+      <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
+      <div class="col-12 col-md">
+       <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
+      <div class="col-12 col-md">
+       <q-timeline layout="dense" side="right" color="secondary">
+      <q-timeline-entry heading>Luni</q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 22, 1986"
+        side="left"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+      <q-timeline-entry
+        title="Event Title"
+        subtitle="February 21, 1986"
+        side="right"
+        icon="delete"
+      >
+        <div>
+          Lorem ipsum dolor 
+        </div>
+      </q-timeline-entry>
+
+     
+    </q-timeline>
+      </div>
     </div>
+
   </div>
+</div>
 </template>
 
 <script>

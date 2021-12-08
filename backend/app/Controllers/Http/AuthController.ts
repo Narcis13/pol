@@ -25,7 +25,7 @@ export default class AuthController {
     
         return utilizator;
       } catch (error) {
-        response.send({errors:error.messages)
+        response.send({errors:error.messages})
       }
 
 

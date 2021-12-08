@@ -18,7 +18,7 @@
                         <div class="row items-center no-wrap">
                         <div class="col">
                             <div class="text-h6">{{actiune}}</div>
-                            <div class="text-subtitle2">serviciu</div>
+                            <div class="text-subtitle2">medic</div>
                         </div>
 
                         <div class="col-auto">
@@ -29,7 +29,7 @@
 
                     <q-tab-panels v-model="tab" animated>
                     <q-tab-panel name="lista">
-                            <q-slide-item v-for="serv in state.servicii" :key="serv.id" @left="onLeft(serv.id)" @right="onRight(serv.id)" left-color="purple" right-color="red">
+                            <q-slide-item v-for="medic in state.medici" :key="medic.id" @left="onLeft(medic.id)" @right="onRight(medic.id)" left-color="purple" right-color="red">
                                 <template v-slot:left>
                                 <div class="row items-center">
                                     <q-icon left name="create" /> Actualizeaza
@@ -43,8 +43,8 @@
 
                                 <q-item>
                                       <q-item-section>
-                                            <q-item-label>{{serv.denumire}} </q-item-label>
-                                            <q-item-label>Durata: {{serv.durata}} </q-item-label>
+                                            <q-item-label>{{medic.nume}} </q-item-label>
+                                           
                                            
                                       </q-item-section>     
                                 </q-item>
@@ -53,16 +53,16 @@
 
                     <q-tab-panel name="editare">
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Denumire serviciu *" />
-                            <q-slider style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'" snap :max="240" color="green"/>
+                            <q-input v-model="nume" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume medic *" />
+                            
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
 
                     <q-tab-panel name="adaugare">
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Denumire serviciu *" />
-                            <q-slider style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'"  snap :max="240" color="green"/>
+                            <q-input v-model="nume" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume medic *" />
+                            
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
@@ -78,19 +78,19 @@ import { useQuasar } from 'quasar'
 
 const state = reactive(
   {
-    servicii : []  ,
-    serviciuselectat:{}
+    medici : []  ,
+    medicselectat:{}
   }
   )
 
 export default defineComponent({
-    name:'Servicii',
+    name:'Medici',
     setup() {
         const $q = useQuasar()
         const global=inject('global');
         let tab=ref('lista')
-        let denumire=ref('')
-        let durata=ref(5);
+        let nume=ref('')
+     //  let durata=ref(5);
         
 
 //computed zone
@@ -98,17 +98,22 @@ export default defineComponent({
             return tab.value=='editare'? 'Actualizare' : tab.value=='lista'? '':'Adaugare' 
         })
 
-        function toateserviciile(){
-                axios.get(process.env.host+`toateserviciile`).then(
+        function totimedicii(){
+                axios.get(process.env.host+`totimedicii`).then(
 
                 res => {
                    
-                    state.servicii=[];
-                    res.data.map(s=>{
-                        state.servicii.push({
-                        denumire:s.denumire,
-                        durata:s.durata,
-                        id:s.id
+                    state.medici=[];
+                    res.data.map(m=>{
+                        state.medici.push({
+                        nume:m.nume,
+                        grad:m.grad,
+                        codparafa:m.codparafa,
+                        idspecialitate:m.idspecialitate,
+                        competente:m.competente,
+                        urlpoza:m.urlpoza,
+                        mail:m.mail,
+                        id:m.id
                         
                         })
                     })
@@ -120,45 +125,45 @@ export default defineComponent({
                 
         }
 
-       toateserviciile();
+       totimedicii();
 
        function reset(){
-              denumire.value=''
-              durata.value=5
+              nume.value=''
+       
             
        }
 
         function sterg(id){
 
-                state.servicii.map(s=>{
-                    if(s.id==id) state.serviciuselectat=s
+                state.medici.map(m=>{
+                    if(m.id==id) state.medicselectat=m
                 })
 
                       $q.dialog({
                             title: 'Confirmati',
-                            message: 'Sunteti sigur ca doriti stergerea inregistrarii?',
+                            message: 'Sunteti sigur ca doriti stergerea acestui medic?',
                             cancel: true,
                             persistent: true
                         }).onOk(() => {
                              console.log('>>>> Sterg ',id,arguments)
-                             axios.delete(process.env.host+`servicii/${id}`,).then(
+                             axios.delete(process.env.host+`medici/${id}`,).then(
 
                                 res => {
                                             $q.notify({
-                                                message:'Serviciu sters cu succes!',
+                                                message:'Medic sters cu succes!',
                                                 timeout:2000,
                                                 position:'top',
                                                 color:'positive'
                                                 }) 
-                                                toateserviciile(); 
+                                                totimedicii(); 
                                       
                             }
                                 ).catch(err =>{})
                         }).onOk(() => {
                             // console.log('>>>> second OK catcher')
                         }).onCancel(() => {
-                            state.servicii = state.servicii.filter(function(el) { return el.id !== id }); 
-                            toateserviciile();
+                            state.medici = state.medici.filter(function(el) { return el.id !== id }); 
+                            totimedicii();
                             // console.log('>>>> Cancel')
                         }).onDismiss(() => {
                             // console.log('I am triggered on both OK and Cancel')
@@ -168,29 +173,29 @@ export default defineComponent({
         function editeaza(p){
                 console.log('editez...',p)
              //   let userselectat={}
-                state.specialitati.map(s=>{
-                    if(s.id==p) state.serviciuselectat=s
+                state.medici.map(m=>{
+                    if(m.id==p) state.medicselectat=m
                 })
-              denumire.value=state.serviciuselectat.denumire
-              durata.value=state.serviciuselectat.durata
+              nume.value=state.medicselectat.nume
+             // durata.value=state.serviciuselectat.durata
         }
 
        function salveaza(){
            if(tab.value=='editare'){
-               let serv_modificat = {
-                        denumire:denumire.value,
-                        durata:durata.value
+               let med_modificat = {
+                        nume:nume.value,
+                      /* durata:durata.value*/
                   
                }
             //   console.log('patch',user_modificat,state.userselectat.id)
-            axios.patch(process.env.host+`servicii/${state.serviciuselectat.id}`,serv_modificat).then(res =>{
+            axios.patch(process.env.host+`medici/${state.medicselectat.id}`,med_modificat).then(res =>{
                                 
-                                   console.log('Am editat serv ',res.data)
-                                toateserviciile();
+                                   console.log('Am editat med ',res.data)
+                                totimedicii();
                                 reset();
                                 tab.value='lista';
                                 $q.notify({
-                                        message:'Serviciu actualizat cu succes!',
+                                        message:'Medic actualizat cu succes!',
                                         timeout:2000,
                                         position:'top',
                                         color:'positive'
@@ -207,21 +212,21 @@ export default defineComponent({
                                             })
 
            } else {
-                    let serv_nou={
-                        denumire:denumire.value,
-                        durata:durata.value
+                    let medic_nou={
+                        nume:nume.value,
+                      //  durata:durata.value
                    
                     } 
-                    console.log('salvez serv',serv_nou)
+                    console.log('salvez serv',medic_nou)
 
-                    axios.post(process.env.host+'servicii',serv_nou).then(res =>{
+                    axios.post(process.env.host+'medici',medic_nou).then(res =>{
                                 
                                 //   console.log('Am salvat utilizator nou',res.data)
-                                toateserviciile();
+                                totimedicii();
                                 reset();
                                 tab.value='lista';
                                 $q.notify({
-                                        message:'Serviciu adaugat cu succes!',
+                                        message:'Medic adaugat cu succes!',
                                         timeout:2000,
                                         position:'top',
                                         color:'positive'
@@ -244,8 +249,8 @@ export default defineComponent({
             tab,
             global,
              state,
-             denumire,
-             durata,
+             nume,
+            
              salveaza,
              actiune,
             onLeft (p) {
