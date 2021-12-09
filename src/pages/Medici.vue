@@ -42,19 +42,30 @@
                                 </template>
 
                                 <q-item>
-                                      <q-item-section>
-                                            <q-item-label>{{medic.nume}} </q-item-label>
-                                           
-                                           
-                                      </q-item-section>     
+                                    <q-item-section>
+                                    <q-item-label>{{medic.nume}}</q-item-label>
+                                    <q-item-label caption>{{medic.grad}}</q-item-label>
+                                     <q-item-label caption>{{medic.specialitate}}</q-item-label>
+                                    </q-item-section>
+
+                                    <q-item-section side top>
+                                    <q-item-label caption>{{medic.codparafa}}</q-item-label>
+                                    </q-item-section>
                                 </q-item>
+
+
                             </q-slide-item>
                     </q-tab-panel>
 
                     <q-tab-panel name="editare">
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
                             <q-input v-model="nume" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume medic *" />
-                            
+                            <q-input v-model="grad" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Grad profesional *" />
+                            <q-input v-model="codparafa" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Cod parafa *" />
+                             <q-select v-model="specialitate" :rules="[val => !!val || 'Cimp obligatoriu']" :options="specialitati" label="Specialitate *" />
+                            <q-input v-model="competente" label="Competente" />
+                            <q-input v-model="urlpoza"  label="URL poza" />
+                            <q-input v-model="mail"  label="Adresa e-mail" />  
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
@@ -62,7 +73,12 @@
                     <q-tab-panel name="adaugare">
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
                             <q-input v-model="nume" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume medic *" />
-                            
+                            <q-input v-model="grad" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Grad profesional *" />
+                            <q-input v-model="codparafa" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Cod parafa *" />
+                            <q-select v-model="specialitate" :rules="[val => !!val || 'Cimp obligatoriu']" :options="specialitati" label="Specialitate *" />
+                            <q-input v-model="competente" label="Competente" />
+                            <q-input v-model="urlpoza"  label="URL poza" />
+                            <q-input v-model="mail"  label="Adresa e-mail" />
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
@@ -90,6 +106,13 @@ export default defineComponent({
         const global=inject('global');
         let tab=ref('lista')
         let nume=ref('')
+        let grad=ref('')
+        let competente=ref('')
+        let urlpoza = ref('')
+        let mail = ref('')
+        let codparafa = ref('')
+        let specialitate=ref(null)
+        let specialitati=[]
      //  let durata=ref(5);
         
 
@@ -98,13 +121,31 @@ export default defineComponent({
             return tab.value=='editare'? 'Actualizare' : tab.value=='lista'? '':'Adaugare' 
         })
 
+         axios.get(process.env.host+`toatespecialitatile`).then(
+
+                res => {
+           
+                    res.data.map(s=>{
+                        specialitati.push({
+                        label:s.denumire,
+                        value:s.id
+                        
+                        })
+                    })
+                
+                })
+            
+            
+                .catch(err =>{})
+
+
         function totimedicii(){
                 axios.get(process.env.host+`totimedicii`).then(
 
                 res => {
                    
                     state.medici=[];
-                    res.data.map(m=>{
+                    res.data.medici.map(m=>{
                         state.medici.push({
                         nume:m.nume,
                         grad:m.grad,
@@ -113,7 +154,8 @@ export default defineComponent({
                         competente:m.competente,
                         urlpoza:m.urlpoza,
                         mail:m.mail,
-                        id:m.id
+                        id:m.id,
+                        specialitate:m.denumire
                         
                         })
                     })
@@ -129,6 +171,12 @@ export default defineComponent({
 
        function reset(){
               nume.value=''
+              grad.value=''
+              competente.value=''
+              urlpoza.value=''
+              mail.value=''
+              codparafa.value=''
+              specialitate.value = {label:'',value:0};
        
             
        }
@@ -177,6 +225,15 @@ export default defineComponent({
                     if(m.id==p) state.medicselectat=m
                 })
               nume.value=state.medicselectat.nume
+               grad.value=state.medicselectat.grad
+                codparafa.value=state.medicselectat.codparafa
+                 competente.value=state.medicselectat.competente
+                  urlpoza.value=state.medicselectat.urlpoza
+                   mail.value=state.medicselectat.mail
+                   specialitati.map(s=>{
+                       if(s.id==state.medicselectat.idspecialitate ) specialitate.value={value:state.medicselectat.idspecialitate,label:s.denumire}
+                   })
+                   //specialitate.value={value:state.medicselectat.id,label:}
              // durata.value=state.serviciuselectat.durata
         }
 
@@ -184,6 +241,12 @@ export default defineComponent({
            if(tab.value=='editare'){
                let med_modificat = {
                         nume:nume.value,
+                        grad:grad.value,
+                        codparafa:codparafa.value,
+                        idspecialitate:specialitate.value.value,
+                        urlpoza:urlpoza.value,
+                        mail:mail.value,
+                        competente:competente.value
                       /* durata:durata.value*/
                   
                }
@@ -203,21 +266,27 @@ export default defineComponent({
 
                                             }).catch(err=>{
                                                 console.log(err)
-                                                    $q.notify({
-                                                        message:'EROARE!',
-                                                        timeout:2000,
+                                                     $q.notify({
+                                                        message:'EROARE! Cod: '+res.data.errors.errors[0].message,
+                                                        timeout:3000,
                                                         position:'top',
                                                         color:'negative'
-                                                        })                  
+                                                        }) 
                                             })
 
            } else {
                     let medic_nou={
                         nume:nume.value,
+                        grad:grad.value,
+                        codparafa:codparafa.value,
+                        idspecialitate:specialitate.value.value,
+                        urlpoza:urlpoza.value,
+                        mail:mail.value,
+                        competente:competente.value
                       //  durata:durata.value
                    
                     } 
-                    console.log('salvez serv',medic_nou)
+                    console.log('salvez medic',medic_nou)
 
                     axios.post(process.env.host+'medici',medic_nou).then(res =>{
                                 
@@ -250,7 +319,13 @@ export default defineComponent({
             global,
              state,
              nume,
-            
+            grad,
+            codparafa,
+            competente,
+            urlpoza,
+            mail,
+            specialitate,
+            specialitati,
              salveaza,
              actiune,
             onLeft (p) {
