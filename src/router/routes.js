@@ -9,6 +9,7 @@ const routes = [
       { path: 'sp987', component: () => import('pages/Specialitati.vue') },
       { path: 'ser369', component: () => import('pages/Servicii.vue') },
       { path: 'med1313', component: () => import('pages/Medici.vue') },
+      { path: 'cab999', component: () => import('pages/Cabinete.vue') },
     ]
   },
   {

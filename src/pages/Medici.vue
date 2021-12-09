@@ -219,11 +219,13 @@ export default defineComponent({
         }
 
         function editeaza(p){
-                console.log('editez...',p)
+                
              //   let userselectat={}
                 state.medici.map(m=>{
                     if(m.id==p) state.medicselectat=m
                 })
+
+         
               nume.value=state.medicselectat.nume
                grad.value=state.medicselectat.grad
                 codparafa.value=state.medicselectat.codparafa
@@ -231,8 +233,9 @@ export default defineComponent({
                   urlpoza.value=state.medicselectat.urlpoza
                    mail.value=state.medicselectat.mail
                    specialitati.map(s=>{
-                       if(s.id==state.medicselectat.idspecialitate ) specialitate.value={value:state.medicselectat.idspecialitate,label:s.denumire}
+                       if(s.value==state.medicselectat.idspecialitate ) specialitate.value={value:state.medicselectat.idspecialitate,label:s.label}
                    })
+                          console.log('editez...',p,specialitati,state.medicselectat,specialitate.value)
                    //specialitate.value={value:state.medicselectat.id,label:}
              // durata.value=state.serviciuselectat.durata
         }
