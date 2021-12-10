@@ -14,7 +14,7 @@
                   <q-btn class="full-width q-ma-xs" color="indigo"  to="a" no-caps>
                     Cabinete
                   </q-btn>
-                  <q-btn class="full-width q-ma-xs" color="indigo" to="l" no-caps>
+                  <q-btn to="indi13" class="full-width q-ma-xs" color="indigo"  no-caps>
                      Indisponibilitati<br>Medici
                   </q-btn>
               </q-card-section>

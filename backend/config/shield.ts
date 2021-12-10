@@ -103,6 +103,7 @@ export const csrf: ShieldConfig['csrf'] = {
     '/medici',
     '/servicii',
     '/cabinete',
+    '/cabinete/:id',
     '/registeruser',
     '/login',
     '/logout',
