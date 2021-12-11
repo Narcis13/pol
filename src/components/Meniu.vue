@@ -11,8 +11,8 @@
           >
             <q-card>
               <q-card-section>
-                  <q-btn class="full-width q-ma-xs" color="indigo"  to="a" no-caps>
-                    Cabinete
+                  <q-btn to="orarcab777" class="full-width q-ma-xs" color="indigo"  no-caps>
+                    Orar <br> Cabinete
                   </q-btn>
                   <q-btn to="indi13" class="full-width q-ma-xs" color="indigo"  no-caps>
                      Indisponibilitati<br>Medici

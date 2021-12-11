@@ -11,6 +11,7 @@ const routes = [
       { path: 'med1313', component: () => import('pages/Medici.vue') },
       { path: 'cab999', component: () => import('pages/Cabinete.vue') },
       { path: 'indi13', component: () => import('pages/Indisponibilitati.vue') },
+      { path: 'orarcab777', component: () => import('pages/OrarCabinete.vue') },
     ]
   },
   {
