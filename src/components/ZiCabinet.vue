@@ -1,7 +1,7 @@
 <template>
 <div class="column">
     <q-timeline layout="dense" side="right" color="secondary">
-      <q-timeline-entry ><div class="text-h5">{{denumirezi}}</div></q-timeline-entry>
+      <q-timeline-entry ><div class="text-h6">{{denumirezi}}</div></q-timeline-entry>
 
       <!--<q-timeline-entry
         title="Consultatie chirurgie generala"
@@ -24,7 +24,9 @@
       >
         <q-slide-item >
         <template v-slot:right>
-          <q-icon name="alarm" />
+                                 <div class="row items-center">
+                                   Sterge <q-icon right name="delete_forever" />
+                                </div>
         </template>
 
         <q-item>
@@ -99,7 +101,8 @@
 </template>
 <script>
 import { defineComponent, ref ,reactive} from 'vue'
-
+import axios from 'axios'
+import { useQuasar } from 'quasar'
 const state=reactive({
   intervale:[]
 })
@@ -109,6 +112,7 @@ export default defineComponent({
     props:['zi','liste'],
     setup(props, { emit }){
        console.log('Props...', props.liste)
+       const $q = useQuasar()
        let adaug_interval=ref(false)
        let orastart=ref('10:00')
        let orastop=ref('10:00')
@@ -139,20 +143,16 @@ export default defineComponent({
 
        }
 
+       function reset(){
+         medic.value=null;
+         serviciu.value=null;
+         orastart.value='08:00'
+         orastop.value='09:00'
+       }
+
        function adaugainterval(){
    
-         intervalele.value.push({
-           idmedic:medic.value.value,
-           numemedic:medic.value.label,
-           spec_medic:medic.value.specialitate,
-           idserviciumedical:serviciu.value.value,
-           numeserviciu:serviciu.value.label,
-           durataserviciu:serviciu.value.durata,
-           orastart:orastart.value,
-           orastop:orastop.value,
-           idcabinet:props.liste.cabinet.id,
-           ziuadinsaptamina:props.zi.zidinsaptamina
-         })
+    
             // console.log(orastart.value.toString().replace(':','')+'00')
              let info = {
                idcabinet:props.liste.cabinet.id,
@@ -163,8 +163,49 @@ export default defineComponent({
                stare:"test",
               ziuadinsaptamina:props.zi.zidinsaptamina
              }
-               console.log('Adauga interval',info)
-               adaug_interval.value=false;
+
+             var date1 = new Date(2015, 1,7,  orastart.value.split(":")[0],orastart.value.split(":")[1]);
+
+             var date2 = new Date(2015, 1,7,  orastop.value.split(":")[0],orastop.value.split(":")[1]);
+             var minute=(date2-date1)/60000
+               console.log('Adauga interval',minute,info)
+               
+
+              axios.post(process.env.host+'program',info).then(res =>{
+                                
+                                //   console.log('Am salvat utilizator nou',res.data)
+                           
+                              
+                               adaug_interval.value=false;
+                              intervalele.value.push({
+                                          idmedic:medic.value.value,
+                                          numemedic:medic.value.label,
+                                          spec_medic:medic.value.specialitate,
+                                          idserviciumedical:serviciu.value.value,
+                                          numeserviciu:serviciu.value.label,
+                                          durataserviciu:serviciu.value.durata,
+                                          orastart:orastart.value,
+                                          orastop:orastop.value,
+                                          idcabinet:props.liste.cabinet.id,
+                                          ziuadinsaptamina:props.zi.zidinsaptamina
+                                        })
+                                          reset();
+                                $q.notify({
+                                        message:'Interval adaugat cu succes!',
+                                        timeout:2000,
+                                        position:'top',
+                                        color:'positive'
+                                        }) 
+
+                                            }).catch(err=>{
+                                                console.log(err)
+                                                    $q.notify({
+                                                        message:'EROARE!',
+                                                        timeout:2000,
+                                                        position:'top',
+                                                        color:'negative'
+                                                        })                  
+                                            })                          
        }
 
         return {
