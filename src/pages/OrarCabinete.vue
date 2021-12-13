@@ -42,7 +42,7 @@
 
                                         <div class="row">
                                             <div :key="zi.zidinsaptamina" v-for="zi in zile" class="q-pa-md col-12 col-md">
-                                                    <zi-cabinet />
+                                                    <zi-cabinet :zi="zi" :liste="state.liste"/>
                                             </div>
                                         </div>        
                             </div>
@@ -62,9 +62,11 @@ import { date } from 'quasar'
 const state = reactive(
   {
     cabinete : []  ,
-    cabinetselectat:{}
+    cabinetselectat:{},
+    liste:{}
   }
   )
+
 
 const zile=[
     {
@@ -128,6 +130,50 @@ export default defineComponent({
             
                 .catch(err =>{})
 
+                axios.get(process.env.host+`totimedicii`).then(
+
+                res => {
+                   
+                    state.liste.medici=[];
+                    res.data.medici.map(m=>{
+                        state.liste.medici.push({
+                        nume:m.nume,
+                        grad:m.grad,
+                        codparafa:m.codparafa,
+                        idspecialitate:m.idspecialitate,
+                        competente:m.competente,
+                        urlpoza:m.urlpoza,
+                        mail:m.mail,
+                        id:m.id,
+                        specialitate:m.denumire
+                        
+                        })
+                    })
+                
+                })
+            
+            
+                .catch(err =>{})
+
+                axios.get(process.env.host+`toateserviciile`).then(
+
+                res => {
+                   
+                    state.liste.servicii=[];
+                    res.data.map(s=>{
+                        state.liste.servicii.push({
+                        denumire:s.denumire,
+                        durata:s.durata,
+                        id:s.id
+                        
+                        })
+                    })
+                
+                })
+            
+            
+                .catch(err =>{})
+
         function configurez(id){
             console.log('Configurez cabinet...',id)
             state.cabinete.map(cab=>{
@@ -135,6 +181,7 @@ export default defineComponent({
                     state.cabinetselectat=cab
                 }
             })
+            state.liste.cabinet=state.cabinetselectat
             tab.value='editare'
         }
 
@@ -144,6 +191,7 @@ export default defineComponent({
             state,
             configurez,
             zile
+            
         }
     },
 })
