@@ -14,8 +14,11 @@
       </q-timeline-entry>
 -->
       <q-timeline-entry
-        title="Consultatie chirurgie generala"
-        subtitle="08.00 - 10.30"
+        :key="interval.orastart+interval.orastop"
+        v-for="interval in intervalele"
+   
+        :title="interval.numeserviciu"
+        :subtitle="interval.orastart +'-'+ interval.orastop"
         side="right"
       
       >
@@ -26,14 +29,12 @@
 
         <q-item>
                         <q-item-section>
-                                    <q-item-label>Dr. Radu Laurentiu Cornel</q-item-label>
-                                    <q-item-label caption>Chirurgie generala</q-item-label>
-
+                                    <q-item-label>{{interval.numemedic}}</q-item-label>
+                                    <q-item-label caption>{{interval.spec_medic}}</q-item-label>
+                                    <q-item-label caption>( {{interval.durataserviciu}} min. )</q-item-label>
                         </q-item-section>
 
-                         <q-item-section side top>
-                                    <q-item-label caption>( 4 )</q-item-label>
-                         </q-item-section>
+               
         </q-item>
       </q-slide-item>
       </q-timeline-entry>
@@ -59,7 +60,7 @@
                               <template v-slot:append>
                                 <q-icon name="access_time" class="cursor-pointer">
                                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-time v-model="orastart">
+                                    <q-time v-model="orastart" >
                                       <div class="row items-center justify-end">
                                         <q-btn v-close-popup label="Close" color="primary" flat />
                                       </div>
@@ -115,7 +116,7 @@ export default defineComponent({
        let serviciu=ref(null)
       let medici=[]
       let servicii=[]
-
+       let intervalele = ref([])
       props.liste.medici.map(item=>{
           medici.push({
             value:item.id,
@@ -140,22 +141,34 @@ export default defineComponent({
 
        function adaugainterval(){
    
-         state.intervale.push({
+         intervalele.value.push({
            idmedic:medic.value.value,
            numemedic:medic.value.label,
            spec_medic:medic.value.specialitate,
            idserviciumedical:serviciu.value.value,
            numeserviciu:serviciu.value.label,
+           durataserviciu:serviciu.value.durata,
            orastart:orastart.value,
            orastop:orastop.value,
            idcabinet:props.liste.cabinet.id,
            ziuadinsaptamina:props.zi.zidinsaptamina
          })
-
-               console.log('Adauga interval',{medic,serviciu,orastart,orastop},state.intervale[0])
+            // console.log(orastart.value.toString().replace(':','')+'00')
+             let info = {
+               idcabinet:props.liste.cabinet.id,
+               idmedic:medic.value.value,
+               idserviciumedical:serviciu.value.value,
+               orastart:orastart.value.toString().replace(':','')+'00',
+               orastop:orastop.value.toString().replace(':','')+'00',
+               stare:"test",
+              ziuadinsaptamina:props.zi.zidinsaptamina
+             }
+               console.log('Adauga interval',info)
+               adaug_interval.value=false;
        }
 
         return {
+          state,
           denumirezi:props.zi.denumire,
           zidinsaptamina:props.zi.zidinsaptamina,
           show_adauga_interval,
@@ -166,7 +179,8 @@ export default defineComponent({
           orastop,
           medici,
           servicii,
-          adaugainterval
+          adaugainterval,
+          intervalele
         }
     }
 })
