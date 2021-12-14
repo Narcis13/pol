@@ -6,12 +6,12 @@
 
                     </q-banner>
                 </div>
-                <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column" style="min-width:90vw">
+                <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column" style="max-width:90vw">
                     <q-tab-panels v-model="tab" animated>
 
                         <q-tab-panel name="lista">
                             <div class="row items-start">
-                                <q-card v-for="cab in state.cabinete" inline style="width: 320px" class="bg-secondary text-white q-ma-sm" :key="cab.id">
+                                <q-card v-for="cab in state.cabinete" inline style="width: 300px" class="bg-secondary text-white q-ma-sm" :key="cab.id">
                                     <q-card-section>
                                         <div class="text-h5">{{cab.denumire}}</div>
                                         <div class="text-subtitle2">Operator: {{cab.operator}}</div>
@@ -42,7 +42,7 @@
 
                                         <div class="row">
                                             <div :key="zi.zidinsaptamina" v-for="zi in zile" class="q-pa-md col-12 col-md">
-                                                    <zi-cabinet :zi="zi" :liste="state.liste"/>
+                                                    <zi-cabinet @interval-sters="intervalsters" :zi="zi" :liste="state.liste"/>
                                             </div>
                                         </div>        
                             </div>
@@ -113,16 +113,17 @@ export default defineComponent({
                    
                     state.cabinete=[];
                     res.data.cabinete.map(c=>{
-                        state.cabinete.push({
-                        denumire:c.denumire,
-                        dotare:c.dotare,
-                        servicii:c.servicii,
-                        idoperator:c.idoperator,
-                        orar:c.orar,
-                        id:c.id,
-                        operator:c.nume
-                        
-                        })
+                        if(global.state.user.rol=='admin'||global.state.user.idutilizator==c.idoperator)
+                                state.cabinete.push({
+                                denumire:c.denumire,
+                                dotare:c.dotare,
+                                servicii:c.servicii,
+                                idoperator:c.idoperator,
+                                orar:c.orar,
+                                id:c.id,
+                                operator:c.nume
+                                
+                                })
                     })
                 
                 })
@@ -206,7 +207,11 @@ export default defineComponent({
             global,
             state,
             configurez,
-            zile
+            zile,
+            intervalsters(p){
+                console.log('INterval sters (PARENT)',p)
+                state.liste.program = state.liste.program.filter((item) => item.id !== p.id);
+            }
             
         }
     },

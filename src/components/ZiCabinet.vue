@@ -1,5 +1,5 @@
 <template>
-<div style="min-width:240px;" class="column">
+<div style="min-width:160px;" class="column">
     <q-timeline layout="dense" side="right" color="secondary">
       <q-timeline-entry ><div class="text-h6">{{denumirezi}}</div></q-timeline-entry>
 
@@ -162,7 +162,8 @@ export default defineComponent({
           medici.push({
             value:item.id,
             label:item.nume,
-            specialitate:item.specialitate
+            specialitate:item.specialitate,
+            idspecialitate:item.idspecialitate
           })
       })
 
@@ -194,6 +195,7 @@ export default defineComponent({
              let info = {
                idcabinet:props.liste.cabinet.id,
                idmedic:medic.value.value,
+               idspecialitate:medic.value.idspecialitate,
                idserviciumedical:serviciu.value.value,
                orastart:orastart.value.toString().replace(':','')+'00',
                orastop:orastop.value.toString().replace(':','')+'00',
@@ -268,6 +270,7 @@ export default defineComponent({
 
                                 res => {
                                    intervalele.value = intervalele.value.filter((item) => item.id !== id);
+                                   emit('interval-sters',{id})
                                             $q.notify({
                                                 message:'Interval sters cu succes!',
                                                 timeout:2000,

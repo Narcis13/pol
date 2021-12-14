@@ -37,7 +37,7 @@
 
           <q-separator />
 
-          <q-expansion-item group="somegroup" icon="shopping_cart" label="ADMINISTRARE" header-class="text-purple">
+          <q-expansion-item v-show="global.state.user.rol=='admin'" group="somegroup" icon="shopping_cart" label="ADMINISTRARE" header-class="text-purple">
             <q-card>
               <q-card-section>
                  <q-btn to="u852" class="full-width q-ma-xs" color="purple" no-caps>
@@ -68,10 +68,17 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref ,inject} from 'vue'
 
 export default defineComponent({
-    name:'Meniu'
+    name:'Meniu',
+    setup(){
+      const global=inject('global');
+
+      return {
+        global
+      }
+    }
 })
 </script>
 

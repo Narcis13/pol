@@ -1,8 +1,8 @@
 <template>
   <q-page class="flex flex-center">
     <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
+      alt="Programare online Spitalul Militar"
+      src="~assets/cucu.png"
       style="width: 200px; height: 200px"
     >
   </q-page>

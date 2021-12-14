@@ -13,6 +13,7 @@ export default class ProgramsController {
                 stare:schema.string.optional(),
                 idcabinet:schema.number(),
                 idserviciumedical:schema.number(),
+                idspecialitate:schema.number(),
                 idmedic:schema.number(),
                 ziuadinsaptamina:schema.number([rules.range(0,240)])
             }

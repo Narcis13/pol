@@ -18,6 +18,9 @@ export default class Program extends BaseModel {
   public idserviciumedical:number
 
   @column()
+  public idspecialitate:number
+  
+  @column()
   public idmedic:number
 
   @column()

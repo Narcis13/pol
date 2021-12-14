@@ -22,6 +22,7 @@ const actions = {
          state.user.nume=user.nume;
          state.user.nume_intreg=user.numeintreg;
          state.user.rol=user.rol;
+         state.user.idutilizator=user.id;
    
      },
      deconectare(){
