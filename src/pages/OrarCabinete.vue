@@ -6,7 +6,7 @@
 
                     </q-banner>
                 </div>
-                <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
+                <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column" style="min-width:90vw">
                     <q-tab-panels v-model="tab" animated>
 
                         <q-tab-panel name="lista">
@@ -173,6 +173,22 @@ export default defineComponent({
             
             
                 .catch(err =>{})
+
+            
+                axios.get(process.env.host+`program`).then(
+
+                res => {
+                   
+                        console.log('Orar cabinete ',res.data)
+                        state.liste.program=[]
+                        res.data.program.map(p=>{
+                            state.liste.program.push(p)
+                        })
+                
+                })
+            
+            
+                .catch(err =>{})    
 
         function configurez(id){
             console.log('Configurez cabinet...',id)

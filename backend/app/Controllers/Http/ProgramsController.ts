@@ -1,5 +1,6 @@
  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
  import {rules , schema} from '@ioc:Adonis/Core/Validator'
+import Database from '@ioc:Adonis/Lucid/Database';
 import Program from 'App/Models/Program';
 
 export default class ProgramsController {
@@ -28,7 +29,19 @@ export default class ProgramsController {
 
        public async index(){
 
-        return Program.all();
+       // return Program.all();
+
+       const program= await Database
+       .from('programs')
+       .join('medics', 'programs.idmedic', '=', 'medics.id')
+       .join('cabinets', 'programs.idcabinet', '=', 'cabinets.id')
+       .join('servicius', 'programs.idserviciumedical', '=', 'servicius.id')
+       .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
+       .select('programs.*')
+       .select({numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
+       .orderBy('created_at', 'asc')
+//   return Medic.all();
+       return {program}
        }
     
        public async updateprogram({params,request}:HttpContextContract){

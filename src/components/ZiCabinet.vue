@@ -1,5 +1,5 @@
 <template>
-<div class="column">
+<div style="min-width:240px;" class="column">
     <q-timeline layout="dense" side="right" color="secondary">
       <q-timeline-entry ><div class="text-h6">{{denumirezi}}</div></q-timeline-entry>
 
@@ -22,7 +22,7 @@
         side="right"
       
       >
-        <q-slide-item >
+        <q-slide-item @right="onLeft(interval.id)">
         <template v-slot:right>
                                  <div class="row items-center">
                                    Sterge <q-icon right name="delete_forever" />
@@ -89,9 +89,9 @@
                 </q-card-section>
 
               <q-card-actions align="right" class="bg-white text-teal">
-                          <q-btn  flat label="Abandon" v-close-popup />
+                          <q-btn @click="reset()" flat label="Abandon" v-close-popup />
                           <q-space />
-                          <q-btn @click="adaugainterval" flat label="Adauga"  />
+                          <q-btn :disable="!interval_valid" @click="adaugainterval" flat label="Adauga"  />
                </q-card-actions>
             </q-card>  
      </q-dialog> 
@@ -100,7 +100,7 @@
 
 </template>
 <script>
-import { defineComponent, ref ,reactive} from 'vue'
+import { defineComponent, ref ,reactive,computed} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
 const state=reactive({
@@ -111,16 +111,53 @@ export default defineComponent({
     name:'ZiCabinet',
     props:['zi','liste'],
     setup(props, { emit }){
-       console.log('Props...', props.liste)
+     
        const $q = useQuasar()
        let adaug_interval=ref(false)
        let orastart=ref('10:00')
        let orastop=ref('10:00')
        let medic=ref(null)
-       let serviciu=ref(null)
+       let serviciu=ref({durata:1,value:0,label:''})
       let medici=[]
       let servicii=[]
        let intervalele = ref([])
+
+       let programulzilei=[];
+
+       //computed
+         let interval_valid=computed(()=>{
+             var date1 = new Date(2015, 1,7,  orastart.value.split(":")[0],orastart.value.split(":")[1]);
+
+             var date2 = new Date(2015, 1,7,  orastop.value.split(":")[0],orastop.value.split(":")[1]);
+             var minute=(date2-date1)/60000
+             var durataserviciu = serviciu.value.durata;
+             var rest = minute % durataserviciu
+
+             return minute>0&&rest==0&&minute>=durataserviciu
+         })
+
+       props.liste.program.map(p=>{
+         //console.log(p)
+         if(p.idcabinet==props.liste.cabinet.id&&p.ziuadinsaptamina==props.zi.zidinsaptamina) programulzilei.push(p)
+       }) 
+
+     //  console.log('Programul zilei',programulzilei,props.liste)
+       programulzilei.map(prog=>{
+         intervalele.value.push({
+                                          id:prog.id,
+                                          idmedic:prog.idmedic,
+                                          numemedic:prog.numemedic,
+                                          spec_medic:prog.specialitate,
+                                          idserviciumedical:prog.idserviciumedical,
+                                          numeserviciu:prog.serviciu,
+                                          durataserviciu:prog.durata,
+                                          orastart:prog.orastart,
+                                          orastop:prog.orastop,
+                                          idcabinet:prog.idcabinet,
+                                          ziuadinsaptamina:prog.ziuadinsaptamina
+         })
+       })
+
       props.liste.medici.map(item=>{
           medici.push({
             value:item.id,
@@ -145,8 +182,8 @@ export default defineComponent({
 
        function reset(){
          medic.value=null;
-         serviciu.value=null;
-         orastart.value='08:00'
+         serviciu.value={durata:1,value:0,label:''};
+         orastart.value='09:00'
          orastop.value='09:00'
        }
 
@@ -168,7 +205,7 @@ export default defineComponent({
 
              var date2 = new Date(2015, 1,7,  orastop.value.split(":")[0],orastop.value.split(":")[1]);
              var minute=(date2-date1)/60000
-               console.log('Adauga interval',minute,info)
+              // console.log('Adauga interval',minute,info)
                
 
               axios.post(process.env.host+'program',info).then(res =>{
@@ -221,7 +258,28 @@ export default defineComponent({
           medici,
           servicii,
           adaugainterval,
-          intervalele
+          intervalele,
+          reset,
+          interval_valid,
+          onLeft(id){
+            console.log('Sterg interval cu id',id)
+
+                              axios.delete(process.env.host+`program/${id}`,).then(
+
+                                res => {
+                                   intervalele.value = intervalele.value.filter((item) => item.id !== id);
+                                            $q.notify({
+                                                message:'Interval sters cu succes!',
+                                                timeout:2000,
+                                                position:'top',
+                                                color:'positive'
+                                                }) 
+                                 
+                                      
+                            }
+                                ).catch(err =>{})
+           
+          }
         }
     }
 })
