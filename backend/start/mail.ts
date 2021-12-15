@@ -9,7 +9,7 @@
 */
 import Mail from '@ioc:Adonis/Addons/Mail'
 
-Mail.monitorQueue((error, result) => {
+Mail.monitorQueue((error) => {
   if (error) {
     console.log('Imposibil de trimis...')
     console.log(error.mail)
