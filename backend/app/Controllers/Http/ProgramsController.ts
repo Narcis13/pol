@@ -44,6 +44,18 @@ export default class ProgramsController {
 //   return Medic.all();
        return {program}
        }
+
+       public async cabinetespecialitate({params}:HttpContextContract){
+        const cabinete= await Database
+        .from('programs')
+        .join('cabinets', 'programs.idcabinet', '=', 'cabinets.id')
+
+        .select({idcabinet:'programs.idcabinet',cabinet:'cabinets.denumire'})
+        .where('programs.idspecialitate',params.id)
+        .groupBy('programs.idcabinet')
+ //   return Medic.all();
+        return {cabinete}
+       }
     
        public async updateprogram({params,request}:HttpContextContract){
     
