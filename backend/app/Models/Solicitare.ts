@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column ,beforeSave} from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
+import { base64 } from '@ioc:Adonis/Core/Helpers'
 export default class Solicitare extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -34,10 +35,11 @@ export default class Solicitare extends BaseModel {
 
   @beforeSave()
   public static async hashPassword (s: Solicitare) {
-    //console.log(s)
-    s.hash=await Hash.make(DateTime.now().toString()+s.email)
-   
-     
+    //aici e o problema ca daca folosesc bcrypt nu pot folosi stringul generat ka token....(mai trebuie o prelucrare suplimenatare )
+   let  shash=await Hash.make(DateTime.now().toString()+s.email)
+   s.hash=base64.encode(shash)
+
+     //console.log(s.hash.split('=').slice(-1)[0])  
    
   }
 }

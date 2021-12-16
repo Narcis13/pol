@@ -77,7 +77,7 @@ export default defineComponent({
     const password = ref("")
     const global=inject('global');
     const $q = useQuasar()
-    
+      console.log('MainLayout!')
     return {
      
       leftDrawerOpen,

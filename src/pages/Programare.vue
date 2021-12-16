@@ -52,7 +52,8 @@
                                             <q-btn @click="tab='lista'" dense flat icon="arrow_back" v-close-popup>
                                                 <q-tooltip>Inapoi la toate cabinetele</q-tooltip>
                                             </q-btn>
-                                            
+                                            <q-space />
+                                            <div class="text-h4">Toate cabinetele</div>
 
                                         </q-bar>
 
@@ -63,6 +64,17 @@
                         </q-tab-panel>
                     </q-tab-panels>
                 </div>    
+
+            <q-page-sticky  position="bottom-right" :offset="[24, 24]">
+                    <q-btn v-show="tab=='editare'" fab   icon="east" color="accent" >
+                    <q-tooltip anchor="top start" self="center right" class="bg-accent">Zilele urmatoare</q-tooltip>
+                    </q-btn>
+            </q-page-sticky>
+            <q-page-sticky  position="bottom-left" :offset="[24, 24]">
+                    <q-btn v-show="tab=='editare'"  fab icon="west" color="accent"  >
+                    <q-tooltip anchor="top right" self="center left" class="bg-accent">Zilele anterioare</q-tooltip>
+                    </q-btn>
+            </q-page-sticky>    
 </q-page>
 </template>
 
@@ -122,6 +134,7 @@ export default defineComponent({
             function maprogramez(idcab){
             
                   console.log('Ma programez ....',idcab)
+                  tab.value='editare'
             }
            
     return {

@@ -34,7 +34,7 @@ export default defineComponent({
   },
 
   setup () {
-
+      console.log('ProgramariLayout!')
   }
 })
 </script>
