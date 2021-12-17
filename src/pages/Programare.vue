@@ -7,23 +7,26 @@
           </template>
          </q-banner>
 
-      <q-item v-if="solicitarevalida" class="q-mt-md">
-      <q-item-section side>
-        <q-avatar rounded size="64px">
-          <img src="~assets/doctor.jpeg" />
-      
-        </q-avatar>
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>{{state.solicitare.nume}}</q-item-label>
-        <q-item-label caption>{{state.solicitare.email}}</q-item-label>
-      </q-item-section>
-      <q-item-section side>
-       {{state.solicitare.denumire}}
-      </q-item-section>
-    </q-item>
+
 
     <div v-if="solicitarevalida" class="q-mt-sm flex flex-center column" style="max-width:90vw">
+
+            <q-item v-if="solicitarevalida" class="q-mt-md">
+                <q-item-section side>
+                  <q-avatar rounded size="64px">
+                    <img src="~assets/doctor.jpeg" />
+                
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{state.solicitare.nume}}</q-item-label>
+                  <q-item-label caption>{{state.solicitare.email}}</q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                {{state.solicitare.denumire}}
+                </q-item-section>
+          </q-item>
+
                     <q-tab-panels v-model="tab" animated>
 
                         <q-tab-panel name="lista">
@@ -58,7 +61,10 @@
                                         </q-bar>
 
                                         <div class="row">
-                                            <!-- AICI E BUCURIA MARE -->
+                                         
+                                            <div :key="zi.formatata" v-for="zi in zileperpagina" class="q-pa-md col-12 col-md">
+                                                   <zi-program v-if="zi.pagina==paginacurenta" :zi="zi"/>
+                                            </div>
                                         </div>        
                             </div>
                         </q-tab-panel>
@@ -66,12 +72,12 @@
                 </div>    
 
             <q-page-sticky  position="bottom-right" :offset="[24, 24]">
-                    <q-btn v-show="tab=='editare'" fab   icon="east" color="accent" >
+                    <q-btn v-show="paginacurenta!==5&&tab=='editare'" @click="paginaUrmatoare"  fab   icon="east" color="accent" >
                     <q-tooltip anchor="top start" self="center right" class="bg-accent">Zilele urmatoare</q-tooltip>
                     </q-btn>
             </q-page-sticky>
             <q-page-sticky  position="bottom-left" :offset="[24, 24]">
-                    <q-btn v-show="tab=='editare'"  fab icon="west" color="accent"  >
+                    <q-btn v-show="paginacurenta!==1&&tab=='editare'" @click="paginaAnterioara"   fab icon="west" color="accent"  >
                     <q-tooltip anchor="top right" self="center left" class="bg-accent">Zilele anterioare</q-tooltip>
                     </q-btn>
             </q-page-sticky>    
@@ -79,6 +85,7 @@
 </template>
 
 <script>
+import ZiProgram from 'components/ZiProgram.vue'
 import { defineComponent ,reactive,onMounted,ref} from 'vue';
 import { useRoute } from "vue-router";
 import axios from 'axios'
@@ -89,9 +96,15 @@ const state = reactive({
 })
 export default defineComponent({
   name: 'Programare',
+  components:{
+    ZiProgram
+  },
   setup(){
     let solicitarevalida=ref(true)
     let tab=ref('lista')
+    let zile=ref([])
+    let zileperpagina=ref([])
+    let paginacurenta=ref(1)
     const route =useRoute()
     console.log('Ruta este...',route.params.token)
   
@@ -109,6 +122,11 @@ export default defineComponent({
 
                                         res => {
                                         console.log('Cabinete pe specialitate',idc,res.data);
+                                        zile.value=res.data.zile
+                                        zileperpagina.value=[]
+                                        zile.value.map(z=>{
+                                          if (z.pagina==paginacurenta.value) zileperpagina.value.push(z)
+                                        })
                                         state.cabinete=[];
                                           res.data.cabinete.map(c=>{
                                             state.cabinete.push(c)
@@ -133,7 +151,8 @@ export default defineComponent({
 
             function maprogramez(idcab){
             
-                  console.log('Ma programez ....',idcab)
+                  console.log('Ma programez ....',idcab,zile)
+                  //aici interoghez programul specific cabinetului idcab si actualizez state cu asta....
                   tab.value='editare'
             }
            
@@ -141,7 +160,36 @@ export default defineComponent({
        state,
        solicitarevalida,
        tab,
-       maprogramez
+       zile,
+       zileperpagina,
+       paginacurenta,
+       maprogramez,
+       paginaUrmatoare(){
+           if(paginacurenta.value<6) paginacurenta.value ++   
+       
+          
+           zileperpagina.value=[]
+                      zile.value.map(z=>{
+                       if (z.pagina==paginacurenta.value) zileperpagina.value.push(z)
+                         })
+                       
+         
+
+
+       },
+       paginaAnterioara(){
+           if(paginacurenta.value>1) paginacurenta.value --      
+           
+           
+           zileperpagina.value=[]
+                      zile.value.map(z=>{
+                       if (z.pagina==paginacurenta.value) zileperpagina.value.push(z)
+                         })
+                   
+           
+
+
+       }
     }
   }
 })

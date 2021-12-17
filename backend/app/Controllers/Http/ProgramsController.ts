@@ -2,6 +2,7 @@
  import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Program from 'App/Models/Program';
+import { DateTime } from 'luxon'
 
 export default class ProgramsController {
     public async register({request}:HttpContextContract){
@@ -45,7 +46,7 @@ export default class ProgramsController {
        return {program}
        }
 
-       public async cabinetespecialitate({params}:HttpContextContract){
+     public async cabinetespecialitate({params}:HttpContextContract){
         const cabinete= await Database
         .from('programs')
         .join('cabinets', 'programs.idcabinet', '=', 'cabinets.id')
@@ -53,8 +54,31 @@ export default class ProgramsController {
         .select({idcabinet:'programs.idcabinet',cabinet:'cabinets.denumire'})
         .where('programs.idspecialitate',params.id)
         .groupBy('programs.idcabinet')
- //   return Medic.all();
-        return {cabinete}
+
+        let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO')//.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
+        let zile : any[]=[]
+        let pagina=1;
+        zile.push({
+            'textlocalizat':primazi.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY).toUpperCase(),
+            iso:primazi.toISO(),
+            formatata:primazi.toFormat('yyyy-MM-dd'),
+            indexzi:primazi.weekday,
+            pagina
+        }) 
+
+        for(var i=1;i<35;i++){
+           if(i%7==0) pagina++ 
+           let zi= primazi.plus({days:i})
+           zile.push({
+            'textlocalizat':zi.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY).toUpperCase(),
+            iso:zi.toISO(),
+            formatata:zi.toFormat('yyyy-MM-dd'),
+            indexzi:zi.weekday,
+            pagina
+        }) 
+        }
+ 
+        return {cabinete,zile}
        }
     
        public async updateprogram({params,request}:HttpContextContract){
