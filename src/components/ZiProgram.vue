@@ -34,7 +34,7 @@ function addMinutes(time, minsToAdd) {
 
 export default defineComponent({
     name:'ZiProgram',
-    props:['zi','liste'],
+    props:['zi','liste','solicitare'],
     setup(props, { emit }) {
        // console.log('Proprietati zi program',props.zi,props.liste)
         let intervale = ref([])
@@ -52,6 +52,7 @@ export default defineComponent({
                    intervale.value.push({
                        orastart:t0,
                        orastop:t1,
+                       idsolicitare:props.solicitare.id,
                        idmedic:p.idmedic,
                        numemedic:p.numemedic,
                        idcabinet:p.idcabinet,

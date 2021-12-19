@@ -63,7 +63,7 @@
                                         <div class="row">
                                          
                                             <div :key="zi.formatata" v-for="zi in zileperpagina" class="q-pa-md col-12 col-md">
-                                                   <zi-program v-if="zi.pagina==paginacurenta" :zi="zi" :liste="state.liste"/>
+                                                   <zi-program v-if="zi.pagina==paginacurenta" :zi="zi" :liste="state.liste" :solicitare="state.solicitare"/>
                                             </div>
                                         </div>        
                             </div>
