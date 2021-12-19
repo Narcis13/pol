@@ -28,6 +28,24 @@ export default class ProgramsController {
     
     
        }
+       
+       public async programcabinet({params}:HttpContextContract){
+
+        // return Program.all();
+ 
+        const program_cabinet= await Database
+        .from('programs')
+        .join('medics', 'programs.idmedic', '=', 'medics.id')
+        .join('cabinets', 'programs.idcabinet', '=', 'cabinets.id')
+        .join('servicius', 'programs.idserviciumedical', '=', 'servicius.id')
+        .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
+        .select('programs.*')
+        .select({grad:'medics.grad',numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
+        .where('cabinets.id',params.id)
+        .orderBy('created_at', 'asc')
+ //   return Medic.all();
+        return {program_cabinet}
+        }
 
        public async index(){
 
@@ -41,6 +59,7 @@ export default class ProgramsController {
        .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
        .select('programs.*')
        .select({numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
+ 
        .orderBy('created_at', 'asc')
 //   return Medic.all();
        return {program}

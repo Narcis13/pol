@@ -9,9 +9,9 @@
 
 
 
-    <div v-if="solicitarevalida" class="q-mt-sm flex flex-center column" style="max-width:90vw">
+    <div v-if="solicitarevalida" class="q-mt-xs flex flex-center column" style="max-width:90vw">
 
-            <q-item v-if="solicitarevalida" class="q-mt-md">
+            <q-item v-if="solicitarevalida" class="q-mt-xs">
                 <q-item-section side>
                   <q-avatar rounded size="64px">
                     <img src="~assets/doctor.jpeg" />
@@ -31,7 +31,7 @@
 
                         <q-tab-panel name="lista">
                             <div class="row items-start">
-                                <q-card v-for="cab in state.cabinete" inline style="width: 300px" class="bg-secondary text-white q-ma-sm" :key="cab.idcabinet">
+                                <q-card v-for="cab in state.cabinete" inline style="width: 300px" class="bg-secondary text-white q-ma-xs" :key="cab.idcabinet">
                                     <q-card-section>
                                         <div class="text-h5">{{cab.cabinet}}</div>
                                        
@@ -63,7 +63,7 @@
                                         <div class="row">
                                          
                                             <div :key="zi.formatata" v-for="zi in zileperpagina" class="q-pa-md col-12 col-md">
-                                                   <zi-program v-if="zi.pagina==paginacurenta" :zi="zi"/>
+                                                   <zi-program v-if="zi.pagina==paginacurenta" :zi="zi" :liste="state.liste"/>
                                             </div>
                                         </div>        
                             </div>
@@ -92,7 +92,8 @@ import axios from 'axios'
 
 const state = reactive({
   solicitare:{},
-  cabinete:[]
+  cabinete:[],
+  liste:{}
 })
 export default defineComponent({
   name: 'Programare',
@@ -153,7 +154,23 @@ export default defineComponent({
             
                   console.log('Ma programez ....',idcab,zile)
                   //aici interoghez programul specific cabinetului idcab si actualizez state cu asta....
-                  tab.value='editare'
+                  axios.get(process.env.host+`programcabinet/${idcab}`).then(
+
+                   res => {
+                   
+                        console.log('Orar cabinet ',res.data)
+                        state.liste.program=[]
+                        res.data.program_cabinet.map(p=>{
+                            state.liste.program.push(p)
+                        })
+                
+                         tab.value='editare'
+
+                   })
+
+                 .catch(err =>{})  
+
+               
             }
            
     return {

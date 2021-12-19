@@ -25,6 +25,7 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.post('/program', 'ProgramsController.register')
 Route.get('/program', 'ProgramsController.index')
 Route.get('/program/:id', 'ProgramsController.cabinetespecialitate')
+Route.get('/programcabinet/:id', 'ProgramsController.programcabinet')
 Route.patch('/program/:id','ProgramsController.updateprogram')
 Route.delete('/program/:id','ProgramsController.deleteprogram')
 
