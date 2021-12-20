@@ -101,7 +101,7 @@ export default defineComponent({
     ZiProgram
   },
   setup(){
-    let solicitarevalida=ref(true)
+    let solicitarevalida=ref(false)
     let tab=ref('lista')
     let zile=ref([])
     let zileperpagina=ref([])
@@ -115,7 +115,7 @@ export default defineComponent({
                   res => {
                   console.log('Raspuns la o solicitare',res.data.solicitare_q[0]);
                   idc=res.data.solicitare_q[0].idspecialitate;
-                  if(res.data.solicitare){
+                  if(res.data.solicitare_q[0]!=='undefined'){
                    state.solicitare=res.data.solicitare_q[0]
                    solicitarevalida.value=true
 
@@ -153,6 +153,7 @@ export default defineComponent({
             function maprogramez(idcab){
             
                   console.log('Ma programez ....',idcab,zile)
+                  state.liste.idc=idcab
                   //aici interoghez programul specific cabinetului idcab si actualizez state cu asta....
                   axios.get(process.env.host+`programcabinet/${idcab}`).then(
 

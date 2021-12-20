@@ -5,6 +5,7 @@ import Specialitate from 'App/Models/Specialitate'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Programarise from 'App/Models/Programarise';
+import { DateTime } from 'luxon'
 
 export default class ProgramarisController {
 
@@ -20,6 +21,25 @@ export default class ProgramarisController {
     
     
        }
+
+    public async programarecabinet({params}:HttpContextContract){
+      //  let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO').toFormat('yyyy-MM-dd').toString();
+        const programari= await Database
+        .from('programarises')
+        .select('programarises.*')
+        .where({'programarises.stare':'activ','programarises.idcabinet':params.id})
+        .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
+        .orderBy('created_at', 'asc')
+ //   return Medic.all();
+        programari.map(p=>{
+            p.data=DateTime.fromJSDate(new Date(p.data)).toFormat('yyyy-MM-dd')
+           // console.log(p.data)
+        })
+        return {programari}
+      // console.log('Programare cabinet',params.id,request.body())
+    
+        
+    }   
 
     public async formular({view}:HttpContextContract){
         const specialitati = await Specialitate.all();

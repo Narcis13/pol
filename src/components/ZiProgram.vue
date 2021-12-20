@@ -12,7 +12,8 @@
                    {{interval.numemedic}}
                 </div>
                 <div class="q-mt-xs">{{interval.grad}}</div>
-                <q-btn class="q-mt-xs" dense outline rounded color="green" label="Rezerv !" @click="salvez_programare(interval.index)"/>
+                 <q-chip v-if="interval.stare!=='liber'" color="red" text-color="white" icon="unpublished" :label="interval.stare" />
+                <q-btn v-if="interval.stare=='liber'" icon="event" class="q-mt-xs" dense outline rounded color="green" label="Rezervare !" @click="salvez_programare(interval.index)"/>
              </q-timeline-entry>
 
 
@@ -38,40 +39,64 @@ export default defineComponent({
     name:'ZiProgram',
     props:['zi','liste','solicitare'],
     setup(props, { emit }) {
-       // console.log('Proprietati zi program',props.zi,props.liste)
+      //  console.log('Proprietati zi program',props.liste.idc)
         let intervale = ref([])
         const $q = useQuasar()
-        props.liste.program.map(p=>{
-            if(p.ziuadinsaptamina==props.zi.indexzi){
-                var date1 = new Date(2015, 1,7,  p.orastart.split(":")[0],p.orastart.split(":")[1]);
 
-                var date2 = new Date(2015, 1,7,  p.orastop.split(":")[0],p.orastop.split(":")[1]);
-                var minute=(date2-date1)/60000
-                let nrsegmente=minute/p.durata
-                let t0=p.orastart.split(":")[0]+':'+p.orastart.split(":")[1]
-                for(var i=1;i<=nrsegmente;i++){
-                   let t1= addMinutes(t0,p.durata)
-                   intervale.value.push({
-                       orastart:t0,
-                       orastop:t1,
-                       idsolicitare:props.solicitare.id,
-                       idmedic:p.idmedic,
-                       numemedic:p.numemedic,
-                       idcabinet:p.idcabinet,
-                       idserviciumedical:p.idserviciumedical,
-                       idspecialitate:p.idspecialitate,
-                       idprogram:p.id,
-                       stare:'liber',
-                       grad:p.grad,
-                       index:i-1,
-                       indexzi:props.zi.indexzi,
-                       data:props.zi.formatata
-                   })
-                   t0=t1;
-                }
-                console.log('Am program',intervale.value)
-            }
-        })
+        //programari per cabinet
+
+        let programari=[]
+        axios.get(process.env.host+`programarecabinet/${props.liste.idc}`).then(
+
+                                        res => {
+                                        console.log('Programari pe cabinet',res.data.programari);
+                                        programari=res.data.programari
+
+                                                props.liste.program.map(p=>{
+                                                        if(p.ziuadinsaptamina==props.zi.indexzi){
+                                                            var date1 = new Date(2015, 1,7,  p.orastart.split(":")[0],p.orastart.split(":")[1]);
+
+                                                            var date2 = new Date(2015, 1,7,  p.orastop.split(":")[0],p.orastop.split(":")[1]);
+                                                            var minute=(date2-date1)/60000
+                                                            let nrsegmente=minute/p.durata
+                                                            let t0=p.orastart.split(":")[0]+':'+p.orastart.split(":")[1]
+                                                            for(var i=1;i<=nrsegmente;i++){
+                                                            let t1= addMinutes(t0,p.durata)
+                                                            let stare='liber'
+                                                            //aici ma intreb daca intervalul este ocupat sau indisponibil
+                                                            programari.map(prog=>{
+                                                                if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&prog.indexslot==i-1){
+                                                                    stare='OCUPAT'
+                                                                }
+                                                            })
+                                                            
+                                                            intervale.value.push({
+                                                                orastart:t0,
+                                                                orastop:t1,
+                                                                idsolicitare:props.solicitare.id,
+                                                                idmedic:p.idmedic,
+                                                                numemedic:p.numemedic,
+                                                                idcabinet:p.idcabinet,
+                                                                idserviciumedical:p.idserviciumedical,
+                                                                idspecialitate:p.idspecialitate,
+                                                                idprogram:p.id,
+                                                                stare,
+                                                                grad:p.grad,
+                                                                index:i-1,
+                                                                indexzi:props.zi.indexzi,
+                                                                data:props.zi.formatata
+                                                            })
+                                                            t0=t1;
+                                                            }
+                                                            console.log('Am program',intervale.value)
+                                                        }
+                                             })
+
+                                        }
+                                        ).catch(err =>{})
+
+
+
 
       function salvez_programare(index){
          
@@ -98,8 +123,8 @@ export default defineComponent({
           
               axios.post(process.env.host+'programare',info).then(res =>{
                                 
-                                console.log('Programare noua',res.data)
-                   
+                                console.log('Programare noua',this,res.data)
+                   this.$router.push('./finalizata/succes')
                                 $q.notify({
                                         message:'Programare efectuata cu succes!',
                                         timeout:2000,
