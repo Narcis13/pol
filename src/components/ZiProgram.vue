@@ -12,7 +12,7 @@
                    {{interval.numemedic}}
                 </div>
                 <div class="q-mt-xs">{{interval.grad}}</div>
-                <q-btn class="q-mt-xs" dense outline rounded color="green" label="Rezerv !" />
+                <q-btn class="q-mt-xs" dense outline rounded color="green" label="Rezerv !" @click="salvez_programare(interval.index)"/>
              </q-timeline-entry>
 
 
@@ -21,6 +21,8 @@
 </template>
 <script>
 import { defineComponent,ref } from 'vue'
+import axios from 'axios'
+import { useQuasar } from 'quasar'
 
 function addMinutes(time, minsToAdd) {
   function D(J){ return (J<10? '0':'') + J};
@@ -38,7 +40,7 @@ export default defineComponent({
     setup(props, { emit }) {
        // console.log('Proprietati zi program',props.zi,props.liste)
         let intervale = ref([])
-
+        const $q = useQuasar()
         props.liste.program.map(p=>{
             if(p.ziuadinsaptamina==props.zi.indexzi){
                 var date1 = new Date(2015, 1,7,  p.orastart.split(":")[0],p.orastart.split(":")[1]);
@@ -71,9 +73,57 @@ export default defineComponent({
             }
         })
 
+      function salvez_programare(index){
+         
+          let interval=intervale.value[index];
+
+          let info={
+                data: interval.data,
+               
+                idcabinet: interval.idcabinet,
+                idmedic: interval.idmedic,
+                idprogram: interval.idprogram,
+                idserviciumedical: interval.idserviciumedical,
+                idsolicitare: interval.idsolicitare,
+               
+                indexslot: interval.index,
+                indexzi: interval.indexzi,
+
+                orastart: interval.orastart,
+                orastop: interval.orastop,
+                stare: "activ"
+          }
+ //console.log('Rezerv index',info)
+         
+          
+              axios.post(process.env.host+'programare',info).then(res =>{
+                                
+                                console.log('Programare noua',res.data)
+                   
+                                $q.notify({
+                                        message:'Programare efectuata cu succes!',
+                                        timeout:2000,
+                                        position:'top',
+                                        color:'positive'
+                                        }) 
+
+                                            }).catch(err=>{
+                                                console.log(err)
+                                                    $q.notify({
+                                                        message:'EROARE!',
+                                                        timeout:2000,
+                                                        position:'top',
+                                                        color:'negative'
+                                                        })                  
+                                            })    
+         
+
+      }
+
       return {
           denumirezi:props.zi.textlocalizat,
-          intervale
+          intervale,
+          salvez_programare
       }  
     },
 })

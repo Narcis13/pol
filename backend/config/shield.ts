@@ -108,6 +108,7 @@ export const csrf: ShieldConfig['csrf'] = {
     '/login',
     '/logout',
     '/program',
+    '/programare',
     '/program/:id',
     '/programcabinet/:id'
   ],

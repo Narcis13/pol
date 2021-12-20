@@ -22,6 +22,8 @@ import Route from '@ioc:Adonis/Core/Route'
 
 //Route.on('/').render('welcome')
 
+Route.post('/programare', 'ProgramarisController.register')
+
 Route.post('/program', 'ProgramsController.register')
 Route.get('/program', 'ProgramsController.index')
 Route.get('/program/:id', 'ProgramsController.cabinetespecialitate')

@@ -4,8 +4,22 @@ import Solicitare from 'App/Models/Solicitare';
 import Specialitate from 'App/Models/Specialitate'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
+import Programarise from 'App/Models/Programarise';
 
 export default class ProgramarisController {
+
+    public async register({request}:HttpContextContract){
+
+       
+    
+        
+    
+        const programare = await Programarise.create(request.body());
+    
+        return programare;
+    
+    
+       }
 
     public async formular({view}:HttpContextContract){
         const specialitati = await Specialitate.all();
