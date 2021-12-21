@@ -22,6 +22,17 @@ export default class ProgramarisController {
     
        }
 
+       public async anulare({params}:HttpContextContract){
+      
+        const programare = await Programarise.findBy('token',params.token) 
+        if (programare){
+            await programare
+            .delete()
+                 return "Programare anulata cu succes!";
+        }
+
+    }
+
     public async programarecabinet({params}:HttpContextContract){
       //  let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO').toFormat('yyyy-MM-dd').toString();
         const programari= await Database

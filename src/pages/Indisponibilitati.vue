@@ -182,7 +182,7 @@ export default defineComponent({
                         nume:i.nume,
                         tipindisponibilitate:i.tipindisponibilitate,
                         datastart:date.formatDate(i.datastart, 'DD/MM/YYYY'),
-                        datastop:date.formatDate(i.datastart, 'DD/MM/YYYY')
+                        datastop:date.formatDate(i.datastop, 'DD/MM/YYYY')
                       
                         
                         })

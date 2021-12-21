@@ -24,6 +24,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.post('/programare', 'ProgramarisController.register')
 Route.get('/programarecabinet/:id', 'ProgramarisController.programarecabinet')
+Route.delete('/programare/:token', 'ProgramarisController.anulare')
 
 Route.post('/program', 'ProgramsController.register')
 Route.get('/program', 'ProgramsController.index')
@@ -65,5 +66,6 @@ Route.delete('/medici/:id','MedicsController.deletemedic')
 
 Route.post('/indis','IndisponibilitatesController.register')
 Route.get('/indis', 'IndisponibilitatesController.index')
+Route.get('/indis/:id', 'IndisponibilitatesController.indisperspecialitate')
 Route.patch('/indis/:id','IndisponibilitatesController.updatemedic')
 Route.delete('/indis/:id','IndisponibilitatesController.deletemedic')

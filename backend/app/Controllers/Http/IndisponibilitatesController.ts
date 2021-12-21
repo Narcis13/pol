@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Indisponibilitate from 'App/Models/Indisponibilitate'
+import { DateTime } from 'luxon';
 
 export default class IndisponibilitatesController {
 
@@ -48,6 +49,20 @@ export default class IndisponibilitatesController {
             return {indis}
        }
     
+       public async indisperspecialitate({params}:HttpContextContract){
+//console.log(DateTime.now().plus({days:1}).toSQLDate())
+        const indis= await Database
+        .from('indisponibilitates')
+        .join('medics', 'indisponibilitates.idmedic', '=', 'medics.id')
+        .select('indisponibilitates.*')
+        .where('medics.idspecialitate',params.id)
+        .andWhere('indisponibilitates.datastop','>=',DateTime.now().plus({days:1}).toSQLDate())
+        .orderBy('created_at', 'desc')
+
+        return {indis}
+
+       }
+
        public async updatemedic({params,request}:HttpContextContract){
     
         const indi = await Indisponibilitate.findOrFail(params.id)

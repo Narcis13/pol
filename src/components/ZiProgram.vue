@@ -12,7 +12,7 @@
                    {{interval.numemedic}}
                 </div>
                 <div class="q-mt-xs">{{interval.grad}}</div>
-                 <q-chip v-if="interval.stare!=='liber'" color="red" text-color="white" icon="unpublished" :label="interval.stare" />
+                 <q-chip v-if="interval.stare!=='liber'" color="red" text-color="white"  :label="interval.stare" />
                 <q-btn v-if="interval.stare=='liber'" icon="event" class="q-mt-xs" dense outline rounded color="green" label="Rezervare !" @click="salvez_programare(interval.index)"/>
              </q-timeline-entry>
 
@@ -39,7 +39,7 @@ export default defineComponent({
     name:'ZiProgram',
     props:['zi','liste','solicitare'],
     setup(props, { emit }) {
-      //  console.log('Proprietati zi program',props.liste.idc)
+       console.log('Proprietati zi program',props.zi)
         let intervale = ref([])
         const $q = useQuasar()
 
@@ -67,6 +67,15 @@ export default defineComponent({
                                                             programari.map(prog=>{
                                                                 if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&prog.indexslot==i-1){
                                                                     stare='OCUPAT'
+                                                                }
+                                                                
+                                                            })
+
+                                                            props.liste.indis.map(i=>{
+                                                                let dataprogram=new Date(props.zi.iso)
+                                                                let inintervalindisponibilitate=dataprogram>=i.datastart&&dataprogram<=i.datastop
+                                                                if(i.idmedic==p.idmedic&&inintervalindisponibilitate){
+                                                                    stare='INDISPONIBIL'
                                                                 }
                                                             })
                                                             

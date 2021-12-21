@@ -108,8 +108,14 @@ export default defineComponent({
     let paginacurenta=ref(1)
     const route =useRoute()
     console.log('Ruta este...',route.params.token)
-  
+
+    onMounted(() => {
+        console.log('Component Programari is mounted!')
+                
+      })
+
              let idc=0;
+
               axios.get(process.env.host+`solicitari/${route.params.token}`).then(
 
                   res => {
@@ -118,6 +124,21 @@ export default defineComponent({
                   if(res.data.solicitare_q[0]!=='undefined'){
                    state.solicitare=res.data.solicitare_q[0]
                    solicitarevalida.value=true
+                   state.liste.indis=[]
+                                axios.get(process.env.host+`indis/${idc}`).then(
+                               
+                                res => {
+                                  console.log('Indisponibilitatile specialitatii',res.data)
+                                    res.data.indis.map(i=>{
+                                      state.liste.indis.push({
+                                        idmedic:i.idmedic,
+                                        tipindi:i.tipindisponibilitate,
+                                        datastart:new Date(i.datastart),
+                                        datastop:new Date(i.datastop)
+                                      })
+                                    })
+                                })       
+                                .catch(err =>{})
 
                                  axios.get(process.env.host+`program/${idc}`).then(
 
