@@ -1,11 +1,32 @@
 <template>
 <q-page padding>
     <div class="doc-note">
-        <p>Programarea dumneavoastra a fost inregistrata cu succes! In scurt timp veti primi un e-mail de confirmare. </p>
+        <p>Programarea dumneavoastra {{mesaj}} a fost inregistrata cu succes! In scurt timp veti primi un e-mail de confirmare. </p>
         <p>Va multumim si va asteptam!</p>
     </div>
 </q-page>
 </template>
+<script>
+import { defineComponent,ref } from 'vue'
+import { useRoute } from "vue-router";
+
+export default defineComponent({
+    name:'Succes',
+    setup() {
+         const route =useRoute()
+        console.log('Ruta este...',route.params.token)
+        let token=route.params.token;
+
+        let mesaj=ref(atob(token))
+
+
+
+        return {
+            mesaj
+        }
+    },
+})
+</script>
 <style lang="scss">
 .doc-note {
     background-color: #daf8e1;

@@ -28,6 +28,7 @@
 <script>
 import { defineComponent,ref } from 'vue'
 import { useRoute } from "vue-router";
+import axios from 'axios'
 export default defineComponent({
     name:'Anulare',
     setup() {
@@ -38,7 +39,14 @@ export default defineComponent({
 
         function anulare(){
             console.log('anulare',token)
-            mesaj.value='anulare'
+                  axios.delete(process.env.host+`programare/${token}`,).then(
+
+                                res => {
+                                           mesaj.value='anulare'  
+                                      
+                                }
+                                ).catch(err =>{})
+           
         }
 
         return {

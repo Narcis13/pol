@@ -27,7 +27,7 @@
             <q-card>
               <q-card-section>
 
-                  <q-btn class="full-width q-ma-xs" color="teal" no-caps>
+                  <q-btn to="adminpro" class="full-width q-ma-xs" color="teal" no-caps>
                     Administrare<br>Programari
                   </q-btn>
 

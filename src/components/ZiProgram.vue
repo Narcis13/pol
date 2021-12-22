@@ -1,6 +1,7 @@
 <template>
     <div style="min-width:180px;" class="q-pa-sm column">
        <div class="text-subtitle2">{{denumirezi}}</div> 
+       <div class="bg-blue-grey-7 text-white text-h6 fit row wrap justify-center items-center content-start q-pa-md q-mt-md" v-if="intervale.length==0" style="width:180px;height:180px;">INCHIS</div>
          <q-timeline layout="dense" side="right" color="secondary">
              <q-timeline-entry
                 :key="interval.index"
@@ -132,8 +133,9 @@ export default defineComponent({
           
               axios.post(process.env.host+'programare',info).then(res =>{
                                 
-                                console.log('Programare noua',this,res.data)
-                   this.$router.push('./finalizata/succes')
+                                console.log('Programare noua',res.data)
+                                let token= btoa('pentru data '+res.data.data+' la ora '+res.data.orastart+' ')
+                   this.$router.push(`./${token}/succes`)
                                 $q.notify({
                                         message:'Programare efectuata cu succes!',
                                         timeout:2000,

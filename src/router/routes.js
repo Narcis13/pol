@@ -12,6 +12,7 @@ const routes = [
       { path: 'cab999', component: () => import('pages/Cabinete.vue') },
       { path: 'indi13', component: () => import('pages/Indisponibilitati.vue') },
       { path: 'orarcab777', component: () => import('pages/OrarCabinete.vue') },
+      { path: 'adminpro', component: () => import('pages/Administrare.vue') }
     ]
   },
   {

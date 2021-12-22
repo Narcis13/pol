@@ -41,6 +41,7 @@ Route.delete('/cabinete/:id','CabinetsController.deletecabinet')
 Route.get('/solicitareprogramare', 'ProgramarisController.formular')
 Route.post('/solicitareprogramare', 'ProgramarisController.solicitare')
 Route.get('/solicitari/:token','ProgramarisController.osolicitare')
+Route.get('/raportprogramari', 'ProgramarisController.raportprogramari')
 
 Route.get('/toatespecialitatile', 'SpecialitatisController.index')/*.middleware('auth')*/
 Route.post('/specialitati','SpecialitatisController.store')

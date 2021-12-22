@@ -6,19 +6,32 @@ import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Programarise from 'App/Models/Programarise';
 import { DateTime } from 'luxon'
+import Medic from 'App/Models/Medic';
 
 export default class ProgramarisController {
 
     public async register({request}:HttpContextContract){
 
        
-    
         
-    
+        let idsolicitare=request.body().idsolicitare;
+        const solicitare = await Solicitare.findOrFail(idsolicitare) 
+      //  console.log(solicitare.email)
+        let email=solicitare.email
+        let nume = solicitare.nume
+        await solicitare.merge({confirmat:true}).save()
         const programare = await Programarise.create(request.body());
-    
+        const medic = await Medic.findOrFail(request.body().idmedic) 
+        await Mail.sendLater((message) => {
+            message
+              .from('programari@smupitesti.org')
+              .to(email)
+              .subject('Confirmare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
+              .htmlView('emails/confirmare', { medic:medic.nume,grad:medic.grad,nume,token:programare.token,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+          })
+
         return programare;
-    
+       
     
        }
 
@@ -56,6 +69,12 @@ export default class ProgramarisController {
         const specialitati = await Specialitate.all();
     //console.log(specialitati)
         return view.render('solicitareprogramare',{specialitati})
+    }
+
+    public async raportprogramari({view,request}:HttpContextContract){
+      
+
+        return view.render('raportprogramari',{data:request.qs().d})
     }
 
     public async osolicitare({params}:HttpContextContract){

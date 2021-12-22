@@ -121,7 +121,7 @@ export default defineComponent({
                   res => {
                   console.log('Raspuns la o solicitare',res.data.solicitare_q[0]);
                   idc=res.data.solicitare_q[0].idspecialitate;
-                  if(res.data.solicitare_q[0]!=='undefined'){
+                  if(res.data.solicitare_q[0]!=='undefined'&&res.data.solicitare_q[0].confirmat==null){
                    state.solicitare=res.data.solicitare_q[0]
                    solicitarevalida.value=true
                    state.liste.indis=[]
