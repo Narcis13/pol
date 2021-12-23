@@ -10,11 +10,12 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-
-        <div>
-         Programari online servicii medicale
-        </div>
-    
+        <q-toolbar-title>
+            <div>
+            Programari online servicii medicale
+            </div>
+        </q-toolbar-title>
+        <div>v. 0.9</div>
     
       </q-toolbar>
     </q-header>

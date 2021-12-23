@@ -30,7 +30,7 @@ export default defineComponent({
     setup() {
         
         console.log('Administrare programari')
-
+       
         let dataraport = ref('2000/01/01')
 
         function raport(){
