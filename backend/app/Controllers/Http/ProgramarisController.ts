@@ -73,8 +73,8 @@ export default class ProgramarisController {
 
     public async raportprogramari({view,request}:HttpContextContract){
       
-
-        return view.render('raportprogramari',{data:request.qs().d})
+        console.log(request.qs().userid)
+        return view.render('raportprogramari',{data:request.qs().d,userid:request.qs().userid})
     }
 
     public async osolicitare({params}:HttpContextContract){

@@ -22,20 +22,21 @@
 </q-page>    
 </template>
 <script>
-import { defineComponent,ref } from 'vue'
+import { defineComponent,ref,inject } from 'vue'
 import { date } from 'quasar'
 
 export default defineComponent({
     name:'Administrare',
     setup() {
-        
-        console.log('Administrare programari')
+         const global=inject('global');
        
-        let dataraport = ref('2000/01/01')
+       let userid= global.state.user.rol=='admin'? 0:global.state.user.idutilizator
+        console.log('Administrare programari',userid)
+        let dataraport = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
 
         function raport(){
             let d=date.formatDate(dataraport.value,'YYYY-MM-DD')
-             window.open(process.env.host+'raportprogramari?d='+d,'_blank');
+             window.open(process.env.host+'raportprogramari?d='+d+'&userid='+userid,'_blank');
         }
 
         return {
