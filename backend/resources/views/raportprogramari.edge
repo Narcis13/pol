@@ -13,8 +13,37 @@
 
     <div class="columns is-centered">
         <div class="column ">
-       
-            Raport programari online in data: {{data}} {{userid}}
+       <div class="content ml-2">
+           <h5> Raport programari online in data: {{data}} </h5>
+       </div>
+
+            <table class="table is-narrow">
+             <thead>
+                <tr>
+                
+                  <th>Cabinet</th>
+                   <th>Medic</th>
+                  <th>Nume</th>
+                  <th>Telefon</th>
+                  <th>Ora</th>
+
+                </tr>
+            </thead>
+
+              <tbody>
+                @each(p in programari)
+                  <tr>
+
+                    <td>{{ p.cabinet }}</td>
+                     <td>{{ p.medic }}</td>
+                    <td>{{ p.nume }}</td>
+                    <td>{{ p.telefon }}</td>
+                    <td>{{ p.orastart }}</td>
+                    
+                  </tr>
+                @end
+               </tbody> 
+            </table>
         </div>
     </div>
 

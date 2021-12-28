@@ -72,9 +72,20 @@ export default class ProgramarisController {
     }
 
     public async raportprogramari({view,request}:HttpContextContract){
-      
-        console.log(request.qs().userid)
-        return view.render('raportprogramari',{data:request.qs().d,userid:request.qs().userid})
+        const programari= await Database
+        .from('programarises')
+        .join('cabinets', 'programarises.idcabinet', '=', 'cabinets.id')
+        .join('solicitares', 'programarises.idsolicitare', '=', 'solicitares.id')
+        .join('medics', 'programarises.idmedic', '=', 'medics.id')
+        .select('programarises.*')
+        .select({medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire'})
+        .where('programarises.data','=',request.qs().d)
+        .orderBy('cabinets.denumire', 'asc')
+        .orderBy('programarises.orastart', 'asc')
+
+        //console.log(programari)
+
+        return view.render('raportprogramari',{data:request.qs().d,userid:request.qs().userid,programari})
     }
 
     public async osolicitare({params}:HttpContextContract){
