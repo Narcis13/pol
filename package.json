@@ -13,11 +13,11 @@
     "@quasar/extras": "^1.12.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "quasar": "^2.3.4",
+    "quasar": "^2.4.3",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
-    "@quasar/app": "^3.2.5"
+    "@quasar/app": "^3.2.6"
   },
   "browserslist": [
     "last 10 Chrome versions",

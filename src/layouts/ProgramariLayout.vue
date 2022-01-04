@@ -9,7 +9,7 @@
             Programari online servicii medicale
             </div>
         </q-toolbar-title>
-        <div>v. 0.9.1</div>
+        <div>v. 0.9.2</div>
     
     
       </q-toolbar>

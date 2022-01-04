@@ -12,7 +12,7 @@ export default class ProgramarisController {
 
     public async register({request}:HttpContextContract){
 
-       
+       // tb sa  mai verific sa nu fie patratica ocupata
         
         let idsolicitare=request.body().idsolicitare;
         const solicitare = await Solicitare.findOrFail(idsolicitare) 
@@ -80,6 +80,7 @@ export default class ProgramarisController {
         .select('programarises.*')
         .select({medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire'})
         .where('programarises.data','=',request.qs().d)
+        .andWhere('cabinets.idoperator',request.qs().userid==0?'>':'=',request.qs().userid)
         .orderBy('cabinets.denumire', 'asc')
         .orderBy('programarises.orastart', 'asc')
 
@@ -101,7 +102,7 @@ export default class ProgramarisController {
              return {solicitare,solicitare_q};
     }
 
-    public async solicitare({request,response,session}:HttpContextContract){
+    public async solicitare({request,response,session,view}:HttpContextContract){
         //console.log('solicitare',request.body())
         const validare_solicitare = schema.create(
             {
@@ -140,9 +141,11 @@ export default class ProgramarisController {
           .subject('Programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
           .htmlView('emails/programator', { nume: request.input('nume'),hash })
       })
+       // response.redirect().toRoute('ProgramarisController.successolicitare')
+       return view.render('welcome')
+       // session.flash('notificare','Va multumim si va invitam sa va consultati casuta de e-mail(inclusiv in Spam) in care veti primi linkul catre sectiunea aferenta solicitarii dumneavoastra!')
 
-        session.flash('notificare','Va multumim si va invitam sa va consultati casuta de e-mail in care veti primi linkul catre sectiunea aferenta solicitarii dumneavoastra!')
-       }
+    }
        else
        {
         session.flash('lipsaacord','Trebuie sa fiti de acord cu termenii si conditiile si sa va dati acordul pentru prelucrarea datelor cu caracter personal pentru a continua')
@@ -158,5 +161,11 @@ export default class ProgramarisController {
       
       
 
+    }
+
+    public async successolicitare({view}:HttpContextContract){
+       
+    //console.log(specialitati)
+        return view.render('welcome')
     }
 }
