@@ -62,6 +62,7 @@ Route.delete('/servicii/:id','ServiciusController.deleteserviciu')
 
 Route.post('/medici','MedicsController.register')
 Route.get('/totimedicii', 'MedicsController.index')
+Route.get('/mediciperoperator/:id', 'MedicsController.medicioperator')
 Route.patch('/medici/:id','MedicsController.updatemedic')
 Route.delete('/medici/:id','MedicsController.deletemedic')
 

@@ -125,6 +125,7 @@ export default defineComponent({
     setup() {
         const $q = useQuasar()
         const global=inject('global');
+         let userid= global.state.user.rol=='admin'? 0:global.state.user.idutilizator
         let tab=ref('lista')
         let selected= ref([])
         let medic=ref(null)
@@ -151,7 +152,7 @@ export default defineComponent({
 
         let perioada= ref({ from: date.formatDate(today, 'YYYY/MM/DD'), to: date.formatDate(tomorrow, 'YYYY/MM/DD') })
 
-        axios.get(process.env.host+`totimedicii`).then(
+        axios.get(process.env.host+`mediciperoperator/${userid}`).then(
 
                 res => {
            

@@ -52,7 +52,7 @@ export default defineComponent({
                                         res => {
                                         console.log('Program pe cabinet',props.liste.program);
                                         programari=res.data.programari
-
+                                           let idx=0;
                                                 props.liste.program.map(p=>{
                                                         if(p.ziuadinsaptamina==props.zi.indexzi){
                                                             //aici e buba.... nu aflu corect numarul de segmente
@@ -68,7 +68,7 @@ export default defineComponent({
                                                             let stare='liber'
                                                             //aici ma intreb daca intervalul este ocupat sau indisponibil
                                                             programari.map(prog=>{
-                                                                if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&prog.indexslot==i-1){
+                                                                if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&prog.indexslot==idx){
                                                                     stare='OCUPAT'
                                                                 }
                                                                 
@@ -94,13 +94,14 @@ export default defineComponent({
                                                                 idprogram:p.id,
                                                                 stare,
                                                                 grad:p.grad,
-                                                                index:i-1,
+                                                                index:idx,
                                                                 indexzi:props.zi.indexzi,
                                                                 data:props.zi.formatata
                                                             })
                                                             t0=t1;
                                                             }
                                                             console.log('Am program',intervale.value)
+                                                            idx++
                                                         }
                                              })
 
@@ -136,14 +137,27 @@ export default defineComponent({
               axios.post(process.env.host+'programare',info).then(res =>{
                                 
                                 console.log('Programare noua',res.data)
+                if(res.data.data){
                                 let token= btoa('pentru data '+res.data.data+' la ora '+res.data.orastart+' ')
-                   this.$router.push(`./${token}/succes`)
+                                this.$router.push(`./${token}/succes`)
                                 $q.notify({
                                         message:'Programare efectuata cu succes!',
                                         timeout:2000,
                                         position:'top',
                                         color:'positive'
                                         }) 
+                }
+                else
+                {
+                                                    $q.notify({
+                                                        message:'EROARE! Slotul a fost rezervat de alt pacient cu citeva secunde in urma! ',
+                                                        timeout:5000,
+                                                        position:'top',
+                                                        color:'negative'
+                                                        })
+                                                        window.location.reload();
+                }
+
 
                                             }).catch(err=>{
                                                 console.log(err)

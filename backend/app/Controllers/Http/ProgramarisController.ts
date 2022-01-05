@@ -13,7 +13,13 @@ export default class ProgramarisController {
     public async register({request}:HttpContextContract){
 
        // tb sa  mai verific sa nu fie patratica ocupata
-        
+       const programari= await Database
+       .from('programarises')
+       .select('programarises.*')
+       .where({'programarises.stare':'activ','programarises.idprogram':request.body().idprogram})
+       .andWhere('programarises.data','=',request.body().data)
+       .orderBy('created_at', 'asc')
+      if (programari.length==0){
         let idsolicitare=request.body().idsolicitare;
         const solicitare = await Solicitare.findOrFail(idsolicitare) 
       //  console.log(solicitare.email)
@@ -32,6 +38,10 @@ export default class ProgramarisController {
 
         return programare;
        
+      }
+      else
+      return {data:false}
+        
     
        }
 
