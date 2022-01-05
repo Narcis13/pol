@@ -50,11 +50,12 @@ export default defineComponent({
         axios.get(process.env.host+`programarecabinet/${props.liste.idc}`).then(
 
                                         res => {
-                                        console.log('Programari pe cabinet',res.data.programari);
+                                        console.log('Program pe cabinet',props.liste.program);
                                         programari=res.data.programari
 
                                                 props.liste.program.map(p=>{
                                                         if(p.ziuadinsaptamina==props.zi.indexzi){
+                                                            //aici e buba.... nu aflu corect numarul de segmente
                                                             var date1 = new Date(2015, 1,7,  p.orastart.split(":")[0],p.orastart.split(":")[1]);
 
                                                             var date2 = new Date(2015, 1,7,  p.orastop.split(":")[0],p.orastop.split(":")[1]);
@@ -62,6 +63,7 @@ export default defineComponent({
                                                             let nrsegmente=minute/p.durata
                                                             let t0=p.orastart.split(":")[0]+':'+p.orastart.split(":")[1]
                                                             for(var i=1;i<=nrsegmente;i++){
+                                                              //  console.log('Ciclu Segmente '+nrsegmente+' i '+i)
                                                             let t1= addMinutes(t0,p.durata)
                                                             let stare='liber'
                                                             //aici ma intreb daca intervalul este ocupat sau indisponibil
@@ -72,10 +74,10 @@ export default defineComponent({
                                                                 
                                                             })
 
-                                                            props.liste.indis.map(i=>{
+                                                            props.liste.indis.map(ind=>{
                                                                 let dataprogram=new Date(props.zi.iso)
-                                                                let inintervalindisponibilitate=dataprogram>=i.datastart&&dataprogram<=i.datastop
-                                                                if(i.idmedic==p.idmedic&&inintervalindisponibilitate){
+                                                                let inintervalindisponibilitate=dataprogram>=ind.datastart&&dataprogram<=ind.datastop
+                                                                if(ind.idmedic==p.idmedic&&inintervalindisponibilitate){
                                                                     stare='INDISPONIBIL'
                                                                 }
                                                             })
@@ -128,7 +130,7 @@ export default defineComponent({
                 orastop: interval.orastop,
                 stare: "activ"
           }
- //console.log('Rezerv index',info)
+ console.log('Rezerv index',info,index)
          
           
               axios.post(process.env.host+'programare',info).then(res =>{

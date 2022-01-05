@@ -1,7 +1,8 @@
 <template>
 <q-page padding>
     <div class="doc-note">
-        <p>Programarea dumneavoastra {{mesaj}} a fost inregistrata cu succes! In scurt timp veti primi un e-mail de confirmare. </p>
+        <p>Programarea dumneavoastra {{mesaj}} a fost inregistrata cu succes! In scurt timp veti primi un e-mail de confirmare.  </p>
+        <p>Va informam ca trebuie sa aveti in momentul prezentarii cardul de asigurat si biletul de trimitere</p>
         <p>Va multumim si va asteptam!</p>
     </div>
 </q-page>
