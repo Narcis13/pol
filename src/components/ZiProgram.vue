@@ -98,10 +98,11 @@ export default defineComponent({
                                                                 indexzi:props.zi.indexzi,
                                                                 data:props.zi.formatata
                                                             })
+                                                              idx++
                                                             t0=t1;
                                                             }
                                                             console.log('Am program',intervale.value)
-                                                            idx++
+                                                          
                                                         }
                                              })
 
