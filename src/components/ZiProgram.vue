@@ -156,7 +156,7 @@ export default defineComponent({
                                                         position:'top',
                                                         color:'negative'
                                                         })
-                                                        window.location.reload();
+                                                      //  window.location.reload();
                 }
 
 

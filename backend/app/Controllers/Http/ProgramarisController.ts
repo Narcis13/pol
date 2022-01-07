@@ -16,7 +16,7 @@ export default class ProgramarisController {
        const programari= await Database
        .from('programarises')
        .select('programarises.*')
-       .where({'programarises.stare':'activ','programarises.idprogram':request.body().idprogram})
+       .where({'programarises.stare':'activ','programarises.idprogram':request.body().idprogram,'programarises.indexslot':request.body().indexslot})
        .andWhere('programarises.data','=',request.body().data)
        .orderBy('created_at', 'asc')
       if (programari.length==0){
