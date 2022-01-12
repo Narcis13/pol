@@ -49,6 +49,22 @@ export default class IndisponibilitatesController {
             return {indis}
        }
     
+      public async indisperoperator({params}:HttpContextContract){
+        const indis= await Database
+          .from('indisponibilitates')
+          .join('medics', 'indisponibilitates.idmedic', '=', 'medics.id')
+          .join('programs', 'programs.idmedic', '=', 'indisponibilitates.idmedic')
+          .join('cabinets','cabinets.id','=','programs.idcabinet')
+          .select('indisponibilitates.*')
+          .select('medics.nume')
+          .where('cabinets.idoperator',params.id==0?'>':'=',params.id)
+          .groupByRaw('cabinets.idoperator,indisponibilitates.id,medics.nume')
+  //   return Medic.all();
+        return {indis}
+
+
+       } 
+
        public async indisperspecialitate({params}:HttpContextContract){
 //console.log(DateTime.now().plus({days:1}).toSQLDate())
         const indis= await Database

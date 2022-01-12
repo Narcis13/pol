@@ -5,7 +5,7 @@
 
 
 ===== DEPLOYMENT ======
- - 0.9.5 - vizualizarea programarilor si anularea lor + faza cu indisponibilitatile
+ - 0.9.5 - vizualizarea programarilor si anularea lor 
  - 0.9.6 - vizualizare, sortare, cautare solicitari
  - 0.9.7 - configurabilitate, parametrii generali....
  - 0.9.8 - finisaje aspect (modul tableta)
@@ -13,4 +13,7 @@
  - 1.0.0 - versiune finala buna de impachetat!!!!! Doamne ajuta!
 
 
- 
+ ==== BUGURI ======
+
+ - nu prea merge editarea serviciilor
+ - la adaugarea indisponibilitatilor chiar daca nu salveaza cu interval incorect iti da mesaj verde .....

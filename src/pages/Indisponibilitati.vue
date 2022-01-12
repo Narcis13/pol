@@ -172,7 +172,7 @@ export default defineComponent({
 
 
         function indisponibilitatile(){
-            axios.get(process.env.host+`indis`).then(
+            axios.get(process.env.host+`indisoperator/${userid}`).then(
 
                 res => {
                    
