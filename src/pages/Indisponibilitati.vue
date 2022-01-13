@@ -50,7 +50,7 @@
                             
                             <q-select v-model="medic" :rules="[val => !!val || 'Cimp obligatoriu']" :options="medici" label="Medic *" />
                             <q-input  v-model="tip"  label="Tip indisponibilitate" />
-                                        <q-input label="De la data" filled v-model="deladata" mask="date" :rules="['date']">
+                                        <q-input label="De la data"  v-model="deladata" mask="date" :rules="['date']">
                                         <template v-slot:append>
                                             <q-icon name="event" class="cursor-pointer">
                                             <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -64,20 +64,26 @@
                                         </template>
                                         </q-input>
 
-                             <q-input label="La data" filled v-model="ladata" mask="date" :rules="['date']">
+                             <q-input label="La data"  v-model="ladata" mask="date" :rules="['date']">
                                         <template v-slot:append>
                                             <q-icon name="event" class="cursor-pointer">
                                             <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                                                 <q-date v-model="ladata">
                                                 <div class="row items-center justify-end">
-                                                    <q-btn v-close-popup label="Inchide" color="primary" flat />
+                                                    <q-btn v-close-popup @click="interval_selectat" label="Inchide" color="primary" flat />
                                                 </div>
                                                 </q-date>
                                             </q-popup-proxy>
                                             </q-icon>
                                         </template>
                                         </q-input>
+                            <q-banner inline-actions rounded class="bg-orange text-white q-mt-sm q-mb-sm">
+                            Exista persoane programate in acest interval!
 
+                            <template v-slot:action>
+                                <q-btn flat label="Dismiss" />
+                            </template>
+                            </q-banner>
                             <div class="q-mt-md flex flex-center">
                                 <q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" />
                                 <q-btn class="q-ml-md" outline rounded color="secondary" label="Renunta" @click="tab='lista'" />
@@ -258,6 +264,9 @@ export default defineComponent({
 
         }
 
+    function interval_selectat(){
+            console.log(ladata.value)
+    }
 
         return {
             tab,
@@ -274,7 +283,8 @@ export default defineComponent({
              deladata,
              ladata,
              dateValide,
-             sterge
+             sterge,
+             interval_selectat
         }
     },
 })

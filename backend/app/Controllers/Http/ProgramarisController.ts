@@ -75,6 +75,25 @@ export default class ProgramarisController {
         
     }   
 
+    public async programaremedic({params}:HttpContextContract){
+        //  let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO').toFormat('yyyy-MM-dd').toString();
+          const programari= await Database
+          .from('programarises')
+          .select('programarises.*')
+          .where({'programarises.stare':'activ','programarises.idmedic':params.id})
+          .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
+          .orderBy('created_at', 'asc')
+   //   return Medic.all();
+          programari.map(p=>{
+              p.data=DateTime.fromJSDate(new Date(p.data)).toFormat('yyyy-MM-dd')
+             // console.log(p.data)
+          })
+          return {programari}
+        // console.log('Programare cabinet',params.id,request.body())
+      
+          
+      } 
+
     public async formular({view}:HttpContextContract){
         const specialitati = await Specialitate.all();
     //console.log(specialitati)
