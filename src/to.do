@@ -5,7 +5,7 @@
 
 
 ===== DEPLOYMENT ======
- - 0.9.5 - vizualizarea programarilor si anularea lor 
+ - 0.9.5 - vizualizarea programarilor si anularea lor + functionalitate sarbatori legale
  - 0.9.6 - vizualizare, sortare, cautare solicitari
  - 0.9.7 - configurabilitate, parametrii generali....
  - 0.9.8 - finisaje aspect (modul tableta)
@@ -17,3 +17,14 @@
 
  - nu prea merge editarea serviciilor
  - la adaugarea indisponibilitatilor chiar daca nu salveaza cu interval incorect iti da mesaj verde .....
+
+
+ ==== SQL =====
+
+ CREATE TABLE `pols`.`sarbatori` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `detalii` VARCHAR(45) NULL DEFAULT 'Sarbatoare legala',
+  `zi` INT NOT NULL,
+  `luna` INT NOT NULL,
+  PRIMARY KEY (`id`));
+

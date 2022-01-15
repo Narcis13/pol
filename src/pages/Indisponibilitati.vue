@@ -70,22 +70,24 @@
                                             <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                                                 <q-date v-model="ladata">
                                                 <div class="row items-center justify-end">
-                                                    <q-btn v-close-popup @click="interval_selectat" label="Inchide" color="primary" flat />
+                                                    <q-btn :disable="!eMedicSelectat" v-close-popup @click="interval_selectat" label="Inchide" color="primary" flat />
                                                 </div>
                                                 </q-date>
                                             </q-popup-proxy>
                                             </q-icon>
                                         </template>
                                         </q-input>
-                            <q-banner inline-actions rounded class="bg-orange text-white q-mt-sm q-mb-sm">
-                            Exista persoane programate in acest interval!
+                            <q-banner v-if="state.programari.length>0" inline-actions rounded class="bg-orange text-white q-mt-sm q-mb-sm">
+                                 Exista persoane programate in acest interval!
 
                             <template v-slot:action>
-                                <q-btn flat label="Dismiss" />
+                                <q-btn flat label="Vezi..." >
+                                    <q-badge color="red" floating>{{state.programari.length}}</q-badge>
+                                </q-btn>
                             </template>
                             </q-banner>
                             <div class="q-mt-md flex flex-center">
-                                <q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" />
+                                <q-btn :disable="!eMedicSelectat" outline rounded color="primary" label="Salveaza" @click="salveaza" />
                                 <q-btn class="q-ml-md" outline rounded color="secondary" label="Renunta" @click="tab='lista'" />
                             </div>
                         </div>
@@ -103,7 +105,8 @@ import { date } from 'quasar'
 const state = reactive(
   {
     indisponibilitati : []  ,
-    oindisponibilitate:{}
+    oindisponibilitate:{},
+    programari:[]
   }
   )
 
@@ -263,9 +266,32 @@ export default defineComponent({
 
 
         }
+    //computed
+    let eMedicSelectat = computed(()=>{
+       return medic.value!==null
+     })
 
     function interval_selectat(){
-            console.log(ladata.value)
+        let datastart=date.formatDate(deladata.value, 'YYYY-MM-DD')
+        let datastop=date.formatDate(ladata.value, 'YYYY-MM-DD')
+        let idmedic=medic.value.value
+        let query=`?idmedic=${idmedic}&datastart=${datastart}&datastop=${datastop}`
+        
+        axios.get(process.env.host+`programaremedic/${query}`).then(
+
+                res => {
+
+                   console.log('Raspuns programare medic',res.data)
+                   state.programari=[]
+                   res.data.programari.map(p=>{
+                       state.programari.push(p)
+                   })
+                
+                })
+            
+            
+                .catch(err =>{})
+
     }
 
         return {
@@ -284,6 +310,7 @@ export default defineComponent({
              ladata,
              dateValide,
              sterge,
+             eMedicSelectat,
              interval_selectat
         }
     },

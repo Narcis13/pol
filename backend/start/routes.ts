@@ -24,10 +24,12 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.post('/programare', 'ProgramarisController.register')
 Route.get('/programarecabinet/:id', 'ProgramarisController.programarecabinet')
+Route.get('/programaremedic', 'ProgramarisController.programaremedic')
 Route.delete('/programare/:token', 'ProgramarisController.anulare')
 
 Route.post('/program', 'ProgramsController.register')
 Route.get('/program', 'ProgramsController.index')
+Route.get('/sarbatori', 'ProgramsController.sarbatori')
 Route.get('/program/:id', 'ProgramsController.cabinetespecialitate')
 Route.get('/programcabinet/:id', 'ProgramsController.programcabinet')
 Route.patch('/program/:id','ProgramsController.updateprogram')
@@ -42,6 +44,7 @@ Route.get('/solicitareprogramare', 'ProgramarisController.formular')
 Route.post('/solicitareprogramare', 'ProgramarisController.solicitare')
 Route.get('/solicitari/:token','ProgramarisController.osolicitare')
 Route.get('/raportprogramari', 'ProgramarisController.raportprogramari')
+Route.get('/programaricabinet/:id', 'ProgramarisController.programaricabinet')
 
 Route.get('/toatespecialitatile', 'SpecialitatisController.index')/*.middleware('auth')*/
 Route.post('/specialitati','SpecialitatisController.store')

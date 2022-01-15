@@ -75,22 +75,23 @@ export default class ProgramarisController {
         
     }   
 
-    public async programaremedic({params}:HttpContextContract){
-        //  let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO').toFormat('yyyy-MM-dd').toString();
-          const programari= await Database
+    public async programaremedic({request}:HttpContextContract){
+       // console.log(request.qs())
+      const programari= await Database
           .from('programarises')
           .select('programarises.*')
-          .where({'programarises.stare':'activ','programarises.idmedic':params.id})
-          .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
-          .orderBy('created_at', 'asc')
-   //   return Medic.all();
+          .where({'programarises.stare':'activ','programarises.idmedic':request.qs().idmedic})
+          .andWhere('programarises.data','>=',request.qs().datastart)
+          .andWhere('programarises.data','<=',request.qs().datastop)
+  
+  
           programari.map(p=>{
               p.data=DateTime.fromJSDate(new Date(p.data)).toFormat('yyyy-MM-dd')
-             // console.log(p.data)
+          
           })
           return {programari}
-        // console.log('Programare cabinet',params.id,request.body())
-      
+        
+     
           
       } 
 
@@ -98,6 +99,22 @@ export default class ProgramarisController {
         const specialitati = await Specialitate.all();
     //console.log(specialitati)
         return view.render('solicitareprogramare',{specialitati})
+    }
+
+    public async programaricabinet({params}:HttpContextContract){
+        const programari= await Database
+        .from('programarises')
+   
+        .join('solicitares', 'programarises.idsolicitare', '=', 'solicitares.id')
+        .join('medics', 'programarises.idmedic', '=', 'medics.id')
+        .select('programarises.*')
+        .select({medic:'medics.nume',nume:'solicitares.nume',telefon:'solicitares.telefon'})
+        .where('programarises.idcabinet','=',params.id)
+        .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
+        .orderBy('programarises.data', 'asc')
+        .orderBy('programarises.orastart', 'asc')
+
+        return {programari}
     }
 
     public async raportprogramari({view,request}:HttpContextContract){

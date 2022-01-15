@@ -110,7 +110,20 @@ export default defineComponent({
     console.log('Ruta este...',route.params.token)
 
     onMounted(() => {
-        console.log('Component Programari is mounted!')
+      // aici aflu sarbatorile legale...
+       console.log('Component Programari is mounted!',state.liste.sarbatori)
+           axios.get(process.env.host+`sarbatori`).then(
+                               
+                                res => {
+                                  console.log('Sarbatori',res.data)
+                                  state.liste.sarbatori=[]
+                                    res.data.sarbatori.map(s=>{
+                                      state.liste.sarbatori.push('d'+s.zi.toString()+'m'+s.luna.toString())
+                                    })
+                                    console.log('Component Programari is mounted!',state.liste.sarbatori)
+                                })       
+                                .catch(err =>{})
+        
                 
       })
 

@@ -47,6 +47,16 @@ export default class ProgramsController {
         return {program_cabinet}
         }
 
+       public async sarbatori(){
+        const sarbatori= await Database
+        .from('sarbatori')
+   
+        .select('sarbatori.*')
+       
+ //   return Medic.all();
+        return {sarbatori}
+       } 
+
        public async index(){
 
        // return Program.all();

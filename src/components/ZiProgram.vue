@@ -40,12 +40,20 @@ export default defineComponent({
     name:'ZiProgram',
     props:['zi','liste','solicitare'],
     setup(props, { emit }) {
-       console.log('Proprietati zi program',props.zi)
+        let d=new Date(props.zi.iso)
+        let zicodata='d'+d.getDate().toString()+'m'+(d.getMonth()+1).toString()
+        let sarbatoare=false;
+        props.liste.sarbatori.map(s=>{
+            if(s==zicodata) sarbatoare=true
+        })
+       console.log('Proprietati zi program',props.liste.sarbatori,props.zi,sarbatoare)
         let intervale = ref([])
         const $q = useQuasar()
 
         //programari per cabinet
+        if(!sarbatoare){
 
+     
         let programari=[]
         axios.get(process.env.host+`programarecabinet/${props.liste.idc}`).then(
 
@@ -108,7 +116,7 @@ export default defineComponent({
 
                                         }
                                         ).catch(err =>{})
-
+                }
 
 
 
