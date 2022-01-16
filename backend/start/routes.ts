@@ -23,6 +23,7 @@ import Route from '@ioc:Adonis/Core/Route'
 //Route.on('/').render('welcome')
 
 Route.post('/programare', 'ProgramarisController.register')
+Route.post('/anulareprogramare', 'ProgramarisController.anulareprogramare')
 Route.get('/programarecabinet/:id', 'ProgramarisController.programarecabinet')
 Route.get('/programaremedic', 'ProgramarisController.programaremedic')
 Route.delete('/programare/:token', 'ProgramarisController.anulare')

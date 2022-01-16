@@ -61,7 +61,7 @@
                                         <div class="row">
                                          
                                             <div :key="zi.formatata" v-for="zi in zileperpagina" class="q-pa-md col-12 col-md">
-                                                   <programari-zi-cabinet v-if="zi.pagina==paginacurenta" :zi="zi" :liste="state.liste" />
+                                                   <programari-zi-cabinet @programare-anulata="programareAnulata" v-if="zi.pagina==paginacurenta" :zi="zi" :liste="state.liste" />
                                             </div>
                                         </div>  
                             </div>
@@ -196,6 +196,15 @@ export default defineComponent({
                         
 
 
+                    },
+                    programareAnulata(payload){
+                            console.log('Am primit mesajul programare anulata',payload)
+                            for(var i = 0; i < state.liste.programari.length; i++) {
+                                if(state.liste.programari[i].id == payload.idprogramare) {
+                                    state.liste.programari.splice(i, 1);
+                                    break;
+                                }
+                            }
                     },
                     paginaAnterioara(){
                         if(paginacurenta.value>1) paginacurenta.value --      

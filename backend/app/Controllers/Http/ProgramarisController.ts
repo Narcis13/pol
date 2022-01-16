@@ -55,6 +55,11 @@ export default class ProgramarisController {
         }
 
     }
+    
+        public async anulareprogramare({request}:HttpContextContract){
+           // console.log(request.body())
+            return {mesaj:'Programare anulata cu succes!'}
+        }
 
     public async programarecabinet({params}:HttpContextContract){
       //  let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO').toFormat('yyyy-MM-dd').toString();
@@ -108,12 +113,15 @@ export default class ProgramarisController {
         .join('solicitares', 'programarises.idsolicitare', '=', 'solicitares.id')
         .join('medics', 'programarises.idmedic', '=', 'medics.id')
         .select('programarises.*')
-        .select({medic:'medics.nume',nume:'solicitares.nume',telefon:'solicitares.telefon'})
+        .select({medic:'medics.nume',nume:'solicitares.nume',telefon:'solicitares.telefon',email:'solicitares.email'})
         .where('programarises.idcabinet','=',params.id)
         .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
         .orderBy('programarises.data', 'asc')
         .orderBy('programarises.orastart', 'asc')
-
+        programari.map(p=>{
+            p.data=DateTime.fromJSDate(new Date(p.data)).toFormat('yyyy-MM-dd')
+        
+        })
         return {programari}
     }
 
