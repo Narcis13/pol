@@ -17,6 +17,7 @@
 
  - nu prea merge editarea serviciilor
  - la adaugarea indisponibilitatilor chiar daca nu salveaza cu interval incorect iti da mesaj verde .....
+ - la administrarea programarilor daca derulez la o anumita saptamina si apoi schimb cabinetul ramine default saptamina aceea de dinainte....
 
 
  ==== SQL =====

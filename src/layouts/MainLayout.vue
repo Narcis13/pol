@@ -15,7 +15,7 @@
             Programari online servicii medicale
             </div>
         </q-toolbar-title>
-        <div>v. 0.9.5</div>
+        <div>v. 0.9.6</div>
     
       </q-toolbar>
     </q-header>
