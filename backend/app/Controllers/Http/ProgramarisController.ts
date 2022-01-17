@@ -58,7 +58,22 @@ export default class ProgramarisController {
     
         public async anulareprogramare({request}:HttpContextContract){
            // console.log(request.body())
+           const programare = await Programarise.findOrFail(request.body().id)
+           if (programare){
+               programare.stare='anulata'
+               await programare.save()
+           }
+
+           await Mail.sendLater((message) => {
+            message
+              .from('programari@smupitesti.org')
+              .to(request.body().email)
+              .subject('Anulare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
+              .htmlView('emails/anulare', { mesaj: request.body().mesaj })
+          })
+
             return {mesaj:'Programare anulata cu succes!'}
+
         }
 
     public async programarecabinet({params}:HttpContextContract){
@@ -114,7 +129,7 @@ export default class ProgramarisController {
         .join('medics', 'programarises.idmedic', '=', 'medics.id')
         .select('programarises.*')
         .select({medic:'medics.nume',nume:'solicitares.nume',telefon:'solicitares.telefon',email:'solicitares.email'})
-        .where('programarises.idcabinet','=',params.id)
+        .where({'programarises.stare':'activ','programarises.idcabinet':params.id})
         .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
         .orderBy('programarises.data', 'asc')
         .orderBy('programarises.orastart', 'asc')
@@ -133,7 +148,7 @@ export default class ProgramarisController {
         .join('medics', 'programarises.idmedic', '=', 'medics.id')
         .select('programarises.*')
         .select({medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire'})
-        .where('programarises.data','=',request.qs().d)
+        .where({'programarises.stare':'activ','programarises.data':request.qs().d})
         .andWhere('cabinets.idoperator',request.qs().userid==0?'>':'=',request.qs().userid)
         .orderBy('cabinets.denumire', 'asc')
         .orderBy('programarises.orastart', 'asc')

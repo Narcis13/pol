@@ -5,7 +5,7 @@
 
 
 ===== DEPLOYMENT ======
- - 0.9.5 - vizualizarea programarilor si anularea lor + functionalitate sarbatori legale
+
  - 0.9.6 - vizualizare, sortare, cautare solicitari
  - 0.9.7 - configurabilitate, parametrii generali....
  - 0.9.8 - finisaje aspect (modul tableta)
