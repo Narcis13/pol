@@ -143,11 +143,13 @@ export default defineComponent({
                                 res => {
                                   console.log('Indisponibilitatile specialitatii',res.data)
                                     res.data.indis.map(i=>{
+                                      let ds = new Date(i.datastop)
+                                      ds.setDate(ds.getDate()+1)
                                       state.liste.indis.push({
                                         idmedic:i.idmedic,
                                         tipindi:i.tipindisponibilitate,
                                         datastart:new Date(i.datastart),
-                                        datastop:new Date(i.datastop)
+                                        datastop:ds//new Date(i.datastop)
                                       })
                                     })
                                 })       

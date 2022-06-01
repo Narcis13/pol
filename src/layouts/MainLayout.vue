@@ -96,14 +96,26 @@ export default defineComponent({
                         console.log('Raspuns la autentificare ',res)
                         username.value=''
                         password.value=''
-                       $q.notify({
-                              message:'Utilizator autentificat!',
-                              timeout:2000,
-                              position:'top',
-                              color:'positive'
-                            }) 
+                        if(res.data.loggeduser){
+                         $q.notify({
+                                  message:'Utilizator autentificat cu succes!',
+                                  timeout:2000,
+                                  position:'top',
+                                  color:'positive'
+                                }) 
 
-                        global.actions.autentificare(res.data.loggeduser)
+                            global.actions.autentificare(res.data.loggeduser)
+                        }
+                        else
+                        {
+                          $q.notify({
+                                  message:'Credentiale incorecte!',
+                                  timeout:2000,
+                                  position:'top',
+                                  color:'negative'
+                                }) 
+                        }
+
                       }
               ).catch(err=>{
                 username.value=''

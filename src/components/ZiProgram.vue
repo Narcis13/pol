@@ -84,6 +84,7 @@ export default defineComponent({
 
                                                             props.liste.indis.map(ind=>{
                                                                 let dataprogram=new Date(props.zi.iso)
+                                                                //console.log('Verific indisponibilitati',dataprogram,ind.datastart,ind.datastop);
                                                                 let inintervalindisponibilitate=dataprogram>=ind.datastart&&dataprogram<=ind.datastop
                                                                 if(ind.idmedic==p.idmedic&&inintervalindisponibilitate){
                                                                     stare='INDISPONIBIL'
