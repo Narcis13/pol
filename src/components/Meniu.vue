@@ -55,7 +55,7 @@
                   <q-btn to="cab999" class="full-width q-ma-xs" color="purple" no-caps>
                     Cabinete
                   </q-btn>
-                 <q-btn class="full-width q-ma-xs" color="purple" no-caps>
+                 <q-btn to="soli456" class="full-width q-ma-xs" color="purple" no-caps>
                    Administrare<br>Solicitari
                   </q-btn>
               </q-card-section>

@@ -10,6 +10,7 @@ const routes = [
       { path: 'ser369', component: () => import('pages/Servicii.vue') },
       { path: 'med1313', component: () => import('pages/Medici.vue') },
       { path: 'cab999', component: () => import('pages/Cabinete.vue') },
+      { path: 'soli456', component: () => import('pages/Solicitari.vue') },
       { path: 'indi13', component: () => import('pages/Indisponibilitati.vue') },
       { path: 'orarcab777', component: () => import('pages/OrarCabinete.vue') },
       { path: 'adminpro', component: () => import('pages/Administrare.vue') }

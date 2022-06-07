@@ -171,6 +171,18 @@ export default class ProgramarisController {
              return {solicitare,solicitare_q};
     }
 
+    public async solicitari(){
+       // console.log('Solicitari....')
+        const solicitari= await Database
+            .from('solicitares')
+           // .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
+            .select('solicitares.*')
+            //.select('specialitates.denumire')
+     //   return Medic.all();
+         //   console.log(solicitari)
+            return {solicitari}
+       }
+
     public async solicitare({request,response,session,view}:HttpContextContract){
         //console.log('solicitare',request.body())
         const validare_solicitare = schema.create(
