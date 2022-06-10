@@ -70,7 +70,9 @@ export default class ProgramsController {
        .select('programs.*')
        .select({numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
  
-       .orderBy('created_at', 'asc')
+       .orderBy('idcabinet', 'asc')
+       .orderBy('ziuadinsaptamina', 'asc')
+       .orderBy('orastart', 'asc')
 //   return Medic.all();
        return {program}
        }
