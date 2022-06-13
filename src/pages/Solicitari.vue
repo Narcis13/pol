@@ -5,6 +5,7 @@
       dense
       :rows="state.solicitari"
       :columns="columns"
+      :pagination="initialPagination"
       row-key="name"
     />
   </div>
@@ -161,6 +162,13 @@ export default {
             
                 .catch(err =>{})
     return {
+        initialPagination: {
+        sortBy: 'desc',
+        descending: false,
+        page: 1,
+        rowsPerPage: 20
+        // rowsNumber: xx if getting data from a server
+      },
       columns,
       state,
       rows
