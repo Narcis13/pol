@@ -32,9 +32,9 @@ const columns = [
     format: val => `${val}`,
     sortable: true
   },
-  { name: 'calories', align: 'center', label: 'Nume pacient', field: 'nume', sortable: true },
-  { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-  { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
+  { name: 'nume', align: 'left', label: 'Nume pacient', field: 'nume', sortable: true },
+  { name: 'telefon', align:'left',label: 'Telefon', field: 'telefon', sortable: true },
+  { name: 'email', align:'left',label: 'Email', field: 'email' },
   { name: 'protein', label: 'Protein (g)', field: 'protein' },
   { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
   { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
