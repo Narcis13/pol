@@ -175,11 +175,16 @@ export default class ProgramarisController {
        // console.log('Solicitari....')
         const solicitari= await Database
             .from('solicitares')
-           // .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
+            .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')
             .select('solicitares.*')
-            //.select('specialitates.denumire')
+            .select('specialitates.denumire')
      //   return Medic.all();
          //   console.log(solicitari)
+
+         solicitari.map(s=>{
+            s.created_at=DateTime.fromJSDate(new Date(s.created_at)).toFormat('dd.MM.yyyy')
+           // console.log(p.data)
+        })
             return {solicitari}
        }
 

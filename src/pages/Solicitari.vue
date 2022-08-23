@@ -1,13 +1,69 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      title="Treats"
+      title="Administrare solicitari"
       dense
       :rows="state.solicitari"
       :columns="columns"
       :pagination="initialPagination"
-      row-key="name"
-    />
+       :filter="filter"
+      selection="single"
+      v-model:selected="selected"
+      row-key="id"
+    >
+
+          <template v-slot:body-cell-confirmat="props">
+            <q-td :props="props">
+              <div  style="max-height: 24px;">
+                 <q-checkbox dense :model-value="props.value==1?true:false" />
+                
+              </div>
+
+            </q-td>
+      </template>
+
+      <template v-slot:top>
+        <div><h5>Administare solicitari</h5></div>
+            <q-btn-dropdown class="q-ml-sm" dense color="primary" label="Interval">
+                  <q-list>
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-item-label>Anul acesta</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup >
+                      <q-item-section>
+                        <q-item-label>Azi</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-item-label>Saptamina aceasta</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-item-label>Luna aceasta</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                  </q-list>
+        </q-btn-dropdown>
+
+        <q-btn dense class="q-ml-sm" color="primary"  label="Mesaj primit"  />
+        <q-space />
+        <q-input borderless dense debounce="300" color="primary" v-model="filter">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+
+
+    </q-table>
   </div>
 </template>
 
@@ -20,129 +76,27 @@ const state = reactive({
     solicitari:[],
     oSolicitare:{}
 })
-
-
+let selected = ref([])
+const filter = ref('')
 const columns = [
   {
-    name: 'name',
+    name: 'data',
     required: true,
-    label: 'Dessert (100g serving)',
+    label: 'Data',
     align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
+    field: 'created_at',
+
     sortable: true
   },
   { name: 'nume', align: 'left', label: 'Nume pacient', field: 'nume', sortable: true },
   { name: 'telefon', align:'left',label: 'Telefon', field: 'telefon', sortable: true },
   { name: 'email', align:'left',label: 'Email', field: 'email' },
-  { name: 'protein', label: 'Protein (g)', field: 'protein' },
-  { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-  { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-  { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+  { name: 'specialitate', align:'left',label: 'Specialitate', field: 'denumire', sortable: true },
+  { name: 'confirmat', label: 'Confirmata?', field: 'confirmat' ,align:'center'}
+  
 ]
 
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%'
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: '8%',
-    iron: '1%'
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: '6%',
-    iron: '7%'
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: '3%',
-    iron: '8%'
-  },
-  {
-    name: 'Gingerbread',
-    calories: 356,
-    fat: 16.0,
-    carbs: 49,
-    protein: 3.9,
-    sodium: 327,
-    calcium: '7%',
-    iron: '16%'
-  },
-  {
-    name: 'Jelly bean',
-    calories: 375,
-    fat: 0.0,
-    carbs: 94,
-    protein: 0.0,
-    sodium: 50,
-    calcium: '0%',
-    iron: '0%'
-  },
-  {
-    name: 'Lollipop',
-    calories: 392,
-    fat: 0.2,
-    carbs: 98,
-    protein: 0,
-    sodium: 38,
-    calcium: '0%',
-    iron: '2%'
-  },
-  {
-    name: 'Honeycomb',
-    calories: 408,
-    fat: 3.2,
-    carbs: 87,
-    protein: 6.5,
-    sodium: 562,
-    calcium: '0%',
-    iron: '45%'
-  },
-  {
-    name: 'Donut',
-    calories: 452,
-    fat: 25.0,
-    carbs: 51,
-    protein: 4.9,
-    sodium: 326,
-    calcium: '2%',
-    iron: '22%'
-  },
-  {
-    name: 'KitKat',
-    calories: 518,
-    fat: 26.0,
-    carbs: 65,
-    protein: 7,
-    sodium: 54,
-    calcium: '12%',
-    iron: '6%'
-  }
-]
+
 
 export default {
   setup () {
@@ -171,7 +125,8 @@ export default {
       },
       columns,
       state,
-      rows
+      selected,
+      filter
     }
   }
 }
