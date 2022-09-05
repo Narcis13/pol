@@ -53,7 +53,7 @@
                   </q-list>
         </q-btn-dropdown>
 
-        <q-btn dense class="q-ml-sm" color="primary"  label="Mesaj primit"  />
+        <q-btn dense :disable="selected.length==0" class="q-ml-sm" color="primary"  label="Mesaj primit"  @click="afiseazaMesaj"/>
         <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
           <template v-slot:append>
@@ -101,7 +101,7 @@ const columns = [
 export default {
   setup () {
 
-
+     const $q = useQuasar()
          axios.get(process.env.host+`solicitari`).then(
 
                 res => {
@@ -115,6 +115,16 @@ export default {
             
             
                 .catch(err =>{})
+
+           function afiseazaMesaj(){
+            console.log("Afiseaza mesaj",selected.value[0].mesaj);
+            $q.notify({
+                message: selected.value[0].mesaj,
+                icon: 'announcement',
+                position:'top',
+                timeout:8000
+              })
+           }     
     return {
         initialPagination: {
         sortBy: 'desc',
@@ -126,7 +136,8 @@ export default {
       columns,
       state,
       selected,
-      filter
+      filter,
+      afiseazaMesaj
     }
   }
 }

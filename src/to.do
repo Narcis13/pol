@@ -7,6 +7,12 @@
 ===== DEPLOYMENT ======
 
  - 0.9.6 - vizualizare, sortare, cautare solicitari
+ --- {
+    - la adaugare indisponibilitate sa apara o lista cu programarile... sa le pot anula de acolo
+    - sa pot lista programarile dintr-un interval in loc de o zi
+    - fiecare cabinet sa aiba mesaj de confirmare personalizat
+    - termeni si conditii pe bune! 
+ }
  - 0.9.7 - configurabilitate, parametrii generali....
  - 0.9.8 - finisaje aspect (modul tableta)
  - 0.9.9 - buguri si validari suplimentare
