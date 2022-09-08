@@ -23,32 +23,19 @@
       </template>
 
       <template v-slot:top>
-        <div><h5>Administare solicitari</h5></div>
-            <q-btn-dropdown class="q-ml-sm" dense color="primary" label="Interval">
+        <div><h5>Administrare solicitari</h5></div>
+            <q-btn-dropdown class="q-ml-sm" dense color="primary" :label="'Interval ('+intervalAles.text+')'">
                   <q-list>
-                    <q-item clickable v-close-popup>
+                    <q-item v-for="interval in intervale" :key="interval.cod" clickable v-close-popup @click="schimbaInterval(interval.cod)">
                       <q-item-section>
-                        <q-item-label>Anul acesta</q-item-label>
+                        <q-item-label>{{interval.text}}</q-item-label>
+                      </q-item-section>
+                      <q-item-section v-if="interval.cod==intervalAles.cod" avatar>
+                        <q-icon color="primary" name="done" />
                       </q-item-section>
                     </q-item>
 
-                    <q-item clickable v-close-popup >
-                      <q-item-section>
-                        <q-item-label>Azi</q-item-label>
-                      </q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup>
-                      <q-item-section>
-                        <q-item-label>Saptamina aceasta</q-item-label>
-                      </q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup>
-                      <q-item-section>
-                        <q-item-label>Luna aceasta</q-item-label>
-                      </q-item-section>
-                    </q-item>
+                   
 
                   </q-list>
         </q-btn-dropdown>
@@ -95,14 +82,37 @@ const columns = [
   { name: 'confirmat', label: 'Confirmata?', field: 'confirmat' ,align:'center'}
   
 ]
+  const intervale = [
+    {
+      cod:1,
+      text:'Anul acesta'
+  },{
+    cod:2,
+    text:'Azi'
+  },
+  {
+    cod:3,
+    text:'Saptamina aceasta'
+  },
+  {
+    cod:4,
+    text:'Luna aceasta'
+  }
+]
 
+function getMonday(d) {
+                      d = new Date(d);
+                      var day = d.getDay(),
+                          diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+                      return new Date(d.setDate(diff));
+                    }
 
 
 export default {
   setup () {
-
+     let intervalAles=ref(intervale[3])
      const $q = useQuasar()
-         axios.get(process.env.host+`solicitari`).then(
+         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`).then(
 
                 res => {
                       console.log('Toate solicitarile',res.data)
@@ -124,7 +134,35 @@ export default {
                 position:'top',
                 timeout:8000
               })
-           }     
+           }
+           
+           function schimbaInterval(c){
+
+
+
+              intervale.map(i=>{
+                if(i.cod==c) intervalAles.value=i
+              })
+              let dataminima=''
+
+              if (c==1){
+                dataminima=new Date(new Date().getFullYear(), 0, 1);
+              }
+              if (c==2){
+                dataminima=new Date();
+              }
+              if (c==3){
+                dataminima=getMonday(new Date()); // Mon Nov 08 2010
+              }
+              if (c==4){
+                var d = new Date();
+                dataminima=new Date(d.getFullYear(), d.getMonth(), 1);
+              }
+
+              console.log(dataminima)
+
+           }
+
     return {
         initialPagination: {
         sortBy: 'desc',
@@ -137,7 +175,10 @@ export default {
       state,
       selected,
       filter,
-      afiseazaMesaj
+      afiseazaMesaj,
+      intervale,
+      intervalAles,
+      schimbaInterval
     }
   }
 }

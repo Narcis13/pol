@@ -171,8 +171,33 @@ export default class ProgramarisController {
              return {solicitare,solicitare_q};
     }
 
-    public async solicitari(){
-       // console.log('Solicitari....')
+    public async solicitari({params}:HttpContextContract){
+
+        function getMonday(d) {
+            d = new Date(d);
+            var day = d.getDay(),
+                diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+            return new Date(d.setDate(diff));
+          }
+          let c=params.cod
+          let dataminima=new Date()
+
+              if (c==1){
+                dataminima=new Date(new Date().getFullYear(), 0, 1);
+              }
+              if (c==2){
+                dataminima=new Date();
+              }
+              if (c==3){
+                dataminima=getMonday(new Date()); // Mon Nov 08 2010
+              }
+              if (c==4){
+                var d = new Date();
+                dataminima=new Date(d.getFullYear(), d.getMonth(), 1);
+              }
+
+
+        console.log('Solicitari....',params.cod,dataminima)
         const solicitari= await Database
             .from('solicitares')
             .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')
