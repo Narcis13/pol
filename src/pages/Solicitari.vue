@@ -140,26 +140,28 @@ export default {
 
 
 
-              intervale.map(i=>{
+             intervale.map(i=>{
                 if(i.cod==c) intervalAles.value=i
               })
-              let dataminima=''
+             
 
-              if (c==1){
-                dataminima=new Date(new Date().getFullYear(), 0, 1);
-              }
-              if (c==2){
-                dataminima=new Date();
-              }
-              if (c==3){
-                dataminima=getMonday(new Date()); // Mon Nov 08 2010
-              }
-              if (c==4){
-                var d = new Date();
-                dataminima=new Date(d.getFullYear(), d.getMonth(), 1);
-              }
+              //console.log(dataminima)
 
-              console.log(dataminima)
+              axios.get(process.env.host+`solicitarile/${c}`).then(
+
+                res => {
+                      //console.log('Toate solicitarile',res.data)
+                      state.solicitari=[];
+                   res.data.solicitari.map(s=>{
+                        state.solicitari.push(s)
+                    })
+                
+                })
+            
+            
+                .catch(err =>{})
+
+
 
            }
 

@@ -197,12 +197,14 @@ export default class ProgramarisController {
               }
 
 
-        console.log('Solicitari....',params.cod,dataminima)
+        //console.log('Solicitari....',params.cod,dataminima)
         const solicitari= await Database
             .from('solicitares')
             .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')
             .select('solicitares.*')
             .select('specialitates.denumire')
+            .where('solicitares.created_at','>=',dataminima)
+            .orderBy('solicitares.id','desc')
      //   return Medic.all();
          //   console.log(solicitari)
 
