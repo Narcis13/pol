@@ -81,7 +81,7 @@
                                  Exista persoane programate in acest interval!
 
                             <template v-slot:action>
-                                <q-btn flat label="Vezi..." >
+                                <q-btn to="../adminpro" flat label="Vezi.." @click="state.programari=[]">
                                     <q-badge color="red" floating>{{state.programari.length}}</q-badge>
                                 </q-btn>
                             </template>
@@ -112,7 +112,7 @@ const state = reactive(
 
   const columns = [
 
-  { name: 'nume', align: 'center', label: 'Nume medic', field: 'nume', sortable: true },
+  { name: 'nume', align: 'left', label: 'Nume medic', field: 'nume', sortable: true },
   { name: 'tipindisponibilitate', align: 'left', label: 'Tip ind.', field: 'tipindisponibilitate', sortable: true },
   { name: 'datastart', align: 'center',label: 'De la data', field: 'datastart', sortable: true },
   { name: 'datastop', align: 'center',label: 'La data', field: 'datastop', sortable: true }
@@ -239,7 +239,7 @@ export default defineComponent({
                datastart:date.formatDate(deladata.value, 'YYYY-MM-DD'),
                datastop:date.formatDate(ladata.value, 'YYYY-MM-DD')
            }
-           console.log(indi)
+           
 
                             axios.post(process.env.host+'indis',indi).then(res =>{
                                 
@@ -247,21 +247,28 @@ export default defineComponent({
                                 indisponibilitatile();
                                 reset();
                                 tab.value='lista';
-                                $q.notify({
+                                console.log(res.data)
+                                if(res.data.errors){
+                                    $q.notify({
+                                                        message:'EROARE DATE INCORECTE! Cod: '+res.data.errors.errors[0].message,
+                                                        timeout:2000,
+                                                        position:'top',
+                                                        color:'negative'
+                                                        })  
+                                }
+                                else{
+                                    $q.notify({
                                         message:'Indisponibilitate salvata!',
                                         timeout:2000,
                                         position:'top',
                                         color:'positive'
                                         }) 
+                                }
+
 
                                             }).catch(err=>{
                                                 console.log(err)
-                                                    $q.notify({
-                                                        message:'EROARE! Cod: '+res.data.errors.errors[0].message,
-                                                        timeout:2000,
-                                                        position:'top',
-                                                        color:'negative'
-                                                        })                  
+                                                               
                                             })
 
 

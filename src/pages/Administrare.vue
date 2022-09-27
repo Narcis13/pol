@@ -15,14 +15,32 @@
                             <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
                                 <q-date v-model="dataraport">
                                 <div class="row items-center justify-end">
-                                    <q-btn v-close-popup label="Close" color="primary" flat />
+                                    <q-btn v-close-popup label="Inchide" color="primary" flat />
                                 </div>
                                 </q-date>
                             </q-popup-proxy>
                             </q-icon>
                         </template>
                      </q-input>
-                      <q-btn class="col q-ml-md" @click="raport"    color="primary" icon="mail" label="RAPORT" /> 
+                     <q-badge class="q-ml-md " color="purple">
+                        <q-icon name="keyboard_double_arrow_right" color="white" />
+                     </q-badge>
+                     <q-input class="col q-ml-md q-mt-md" dense outlined v-model="dataraportstop" mask="date" :rules="['date']">
+                        <template v-slot:append>
+                            <q-icon name="event" class="cursor-pointer">
+                            <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
+                                <q-date v-model="dataraportstop">
+                                <div class="row items-center justify-end">
+                                    <q-btn v-close-popup label="Inchide" color="primary" flat />
+                                </div>
+                                </q-date>
+                            </q-popup-proxy>
+                            </q-icon>
+                        </template>
+                     </q-input>
+
+
+                      <q-btn :disable="dataraportstop<dataraport" class="col q-ml-md" @click="raport"    color="primary" icon="mail" label="RAPORT" /> 
             </div>
 
             <q-tab-panels v-model="tab" animated>
@@ -107,10 +125,13 @@ export default defineComponent({
         let userid= global.state.user.rol=='admin'? 0:global.state.user.idutilizator
         console.log('Administrare programari',userid)
         let dataraport = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
+        let dataraportstop = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
 
         function raport(){
             let d=date.formatDate(dataraport.value,'YYYY-MM-DD')
-             window.open(process.env.host+'raportprogramari?d='+d+'&userid='+userid,'_blank');
+            let dbis=date.formatDate(dataraportstop.value,'YYYY-MM-DD')
+            console.log(dbis,dataraportstop.value>=dataraport.value)
+           if(dataraportstop.value>=dataraport.value)  window.open(process.env.host+'raportprogramari?d='+d+'&userid='+userid+'&stop='+dbis,'_blank');
         }
 
 
@@ -175,6 +196,7 @@ export default defineComponent({
 
         return {
             dataraport,
+            dataraportstop,
             global,
             tab,
             state,

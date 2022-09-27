@@ -147,15 +147,21 @@ export default class ProgramarisController {
         .join('solicitares', 'programarises.idsolicitare', '=', 'solicitares.id')
         .join('medics', 'programarises.idmedic', '=', 'medics.id')
         .select('programarises.*')
-        .select({medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire'})
-        .where({'programarises.stare':'activ','programarises.data':request.qs().d})
+        .select({d:'programarises.data',medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire'})
+        .where({'programarises.stare':'activ'})//,'programarises.data':request.qs().d})
+        .andWhere('programarises.data','>=',request.qs().d)
+        .andWhere('programarises.data','<=',request.qs().stop)
         .andWhere('cabinets.idoperator',request.qs().userid==0?'>':'=',request.qs().userid)
+        .orderBy('programarises.data', 'asc')
         .orderBy('cabinets.denumire', 'asc')
         .orderBy('programarises.orastart', 'asc')
 
         //console.log(programari)
-
-        return view.render('raportprogramari',{data:request.qs().d,userid:request.qs().userid,programari})
+        programari.map(p=>{
+            p.d=DateTime.fromJSDate(new Date(p.d)).toFormat('dd.MM.yyyy')
+        
+        })
+        return view.render('raportprogramari',{data:request.qs().d,userid:request.qs().userid,datastop:request.qs().stop,programari})
     }
 
     public async osolicitare({params}:HttpContextContract){
@@ -184,20 +190,24 @@ export default class ProgramarisController {
 
               if (c==1){
                 dataminima=new Date(new Date().getFullYear(), 0, 1);
+                dataminima.setHours(0,0,0,0)
               }
               if (c==2){
                 dataminima=new Date();
+                dataminima.setHours(0,0,0,0)
               }
               if (c==3){
                 dataminima=getMonday(new Date()); // Mon Nov 08 2010
+                dataminima.setHours(0,0,0,0)
               }
               if (c==4){
                 var d = new Date();
                 dataminima=new Date(d.getFullYear(), d.getMonth(), 1);
+                dataminima.setHours(0,0,0,0)
               }
 
 
-        //console.log('Solicitari....',params.cod,dataminima)
+        //console.log('Solicitari....',dataminima)
         const solicitari= await Database
             .from('solicitares')
             .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')

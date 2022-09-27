@@ -14,13 +14,13 @@
     <div class="columns is-centered">
         <div class="column ">
        <div class="content ml-2">
-           <h5> Raport programari online in data: {{data}} </h5>
+           <h5> Raport programari online in intervalul: {{data}} - {{datastop}}</h5>
        </div>
 
             <table class="table is-narrow">
              <thead>
                 <tr>
-                
+                  <th>Data</th>
                   <th>Cabinet</th>
                    <th>Medic</th>
                   <th>Nume</th>
@@ -33,7 +33,7 @@
               <tbody>
                 @each(p in programari)
                   <tr>
-
+                    <td>{{ p.d }}</td>
                     <td>{{ p.cabinet }}</td>
                      <td>{{ p.medic }}</td>
                     <td>{{ p.nume }}</td>

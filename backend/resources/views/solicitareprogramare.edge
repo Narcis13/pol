@@ -62,7 +62,7 @@
 
                     <label class="checkbox">
                         <input type="checkbox" name="acord">
-                        Sunt de acord cu prelucrarea datelor mele cu caracter personal si cu <a href="#">termenii si conditiile serviciului de programare online</a>
+                        Sunt de acord cu prelucrarea datelor mele cu caracter personal si cu <a class="js-modal-trigger" data-target="modal-js-example" href="#">termenii si conditiile serviciului de programare online</a>
                     </label>
 
                     <div class="control mt-2">   <button type="submit" class="button is-primary">Trimite solicitarea!</button></div>
@@ -101,6 +101,82 @@
     </div>
 
   </section>
+
+  <div id="modal-js-example" class="modal">
+    <div class="modal-background"></div>
+  
+    <div class="modal-content">
+      <div class="box">
+        <h5 class="text-left" style="font-family: 'Times New Roman';  font-weight: bold"> I. TERMENI PENTRU PROGRAMAREA ONLINE</h5>
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 1 - Acest portal este destinat programării la consultații, prin intermediul formularului de programare online, în cadrul Spitalului  Militar de Urgenţă  Dr. Ion Jianu Pitesti;</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 2 - Calendarul de selecție al datelor de programare este disponibil pentru 30 de zile de la data curentă pentru fiecare specialitate;</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 3 - Programarea este netransmisibilă, individuală și corespunzătoare unui singur pacient;</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 4 - Neprezentarea la data şi ora programată, neconformitatea datelor din formularul de programare şi lipsa documentelor necesare duc la anularea programării și la imposibilitatea de programare online;</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 5 - În cazul anulării programării, solicitantul va putea aplica pentru o nouă programare online;</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 6 - În cazul zilelor declarate nelucrătoare anunţate ulterior prin acte normative sau din cauza unor situații neprevăzute, solicitanţii vor fi anunțați prin e-mail sau vor fi contactați telefonic în vederea reprogramării.</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';  font-weight: bold"> II. INSTRUCȚIUNI DE PROGRAMARE ONLINE</h5>
+        <h5 class="text-left" style="font-family: 'Times New Roman';  font-weight: bold">1 - Pentru programarea online sunt necesare următoarele date:</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Numele, Prenumele, Telefonul, Adresa de E-mail (la care vor fi transmise datele programării), mesaj optional din partea solicitantului/ pacientului;</h5>           
+        <h5 class="text-left" style="font-family: 'Times New Roman';  font-weight: bold">2 - Procedura de rezervare și programare:</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Se selectează Specialitatea pentru care se dorește programarea, moment în care vor fi afișate intervalele disponibile ale tuturor medicilor din specialitatea selectată;</h5> 
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Opțional se selectează medicul;</h5> 
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Se selectează Data dorită de programare; Datele din calendar marcate cu verde reprezintă datele disponibile pentru specialitatea selectată/medicul selectat;</h6>
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Se selectează motivul pentru care solicitați programarea la consultație/serviciu;</h5> 
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Se acționează butonul "Rezervare" în urma căruia veți primi un e-mail ce va conține un link prin care se poate finaliza procesul de programare;</h5> 
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; - Se accesează link-ul primit și se așteaptă un alt e-mail de confirmare a programării efectuate;</h5>       
+        <h5 class="text-left" style="font-family: 'Times New Roman'; font-weight: bold">&nbsp; - După PRIMIREA E-mail-ului de confirmare, programarea dvs va deveni VALIDĂ și CONFIRMATĂ de către spital.</h5>
+      </div>
+    </div>
+  
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
+  </script>
   </body>
 </html>
 

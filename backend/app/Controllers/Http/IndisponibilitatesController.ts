@@ -44,7 +44,7 @@ export default class IndisponibilitatesController {
             .join('medics', 'indisponibilitates.idmedic', '=', 'medics.id')
             .select('indisponibilitates.*')
             .select('medics.nume')
-            .orderBy('created_at', 'desc')
+            .orderBy('indisponibilitates.created_at', 'desc')
      //   return Medic.all();
             return {indis}
        }
@@ -59,6 +59,7 @@ export default class IndisponibilitatesController {
           .select('medics.nume')
           .where('cabinets.idoperator',params.id==0?'>':'=',params.id)
           .groupByRaw('cabinets.idoperator,indisponibilitates.id,medics.nume')
+          .orderBy('indisponibilitates.created_at', 'desc') // daca se devodeste a fi naspa o sa comentez linia asta!!!!
   //   return Medic.all();
         return {indis}
 
