@@ -49,6 +49,15 @@ export default class IndisponibilitatesController {
             return {indis}
        }
     
+      public async inditeste(){
+          
+          const test_data= await Database
+          .from('bifa.utilizatori')
+          .select('bifa.utilizatori.*')
+
+          return {test_data}
+      } 
+
       public async indisperoperator({params}:HttpContextContract){
         const indis= await Database
           .from('indisponibilitates')
