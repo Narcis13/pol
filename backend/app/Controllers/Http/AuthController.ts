@@ -14,7 +14,8 @@ export default class AuthController {
             rol:schema.string({trim:true}),
             numeintreg:schema.string({trim:true}),
             password:schema.string({trim:true}),
-            email:schema.string.optional({trim:true},[rules.email()])
+            email:schema.string.optional({trim:true},[rules.email()]),
+            idclinica:schema.number()
         }
     )
 

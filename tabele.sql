@@ -1,6 +1,6 @@
 CREATE TABLE `clinici` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `denumire` varchar(45) NOT NULL,
+  `denumire` varchar(100) NOT NULL,
   `fisiersigla` varchar(45) DEFAULT NULL,
   `adresa` varchar(100) NOT NULL,
   `email` varchar(45) NOT NULL,

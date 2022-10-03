@@ -9,6 +9,7 @@ const state = reactive({
         rol:null,
         
         idutilizator:0,
+        idclinica:0
 
     }
 })
@@ -23,6 +24,7 @@ const actions = {
          state.user.nume_intreg=user.numeintreg;
          state.user.rol=user.rol;
          state.user.idutilizator=user.id;
+         state.user.idclinica=user.idclinica;
    
      },
      deconectare(){

@@ -40,6 +40,9 @@
           <q-expansion-item v-show="global.state.user.rol=='admin'" group="somegroup" icon="shopping_cart" label="ADMINISTRARE" header-class="text-purple">
             <q-card>
               <q-card-section>
+                 <q-btn to="clin777" class="full-width q-ma-xs" color="purple" no-caps>
+                    Clinica
+                  </q-btn>
                  <q-btn to="u852" class="full-width q-ma-xs" color="purple" no-caps>
                     Utilizatori
                   </q-btn>
