@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Solicitare from 'App/Models/Solicitare';
+import Clinica from 'App/Models/Clinica';
 import Specialitate from 'App/Models/Specialitate'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
@@ -115,10 +116,15 @@ export default class ProgramarisController {
           
       } 
 
-    public async formular({view}:HttpContextContract){
-        const specialitati = await Specialitate.all();
-    //console.log(specialitati)
-        return view.render('solicitareprogramare',{specialitati})
+    public async formular({params,view}:HttpContextContract){
+        const clinica = await Clinica.findBy('slug',params.slug);
+        if(clinica){
+           // console.log(params.slug,clinica.id,clinica.denumire);
+            const specialitati = await Specialitate.query().where('specialitates.idclinica',clinica.id);
+           
+            return view.render('solicitareprogramare',{specialitati,clinica})
+        }
+
     }
 
     public async programaricabinet({params}:HttpContextContract){
@@ -154,6 +160,7 @@ export default class ProgramarisController {
         .andWhere('cabinets.idoperator',request.qs().userid==0?'>':'=',request.qs().userid)
         .orderBy('programarises.data', 'asc')
         .orderBy('cabinets.denumire', 'asc')
+
         .orderBy('programarises.orastart', 'asc')
 
         //console.log(programari)

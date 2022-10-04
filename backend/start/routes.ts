@@ -41,7 +41,7 @@ Route.get('/cabinete', 'CabinetsController.index')
 Route.patch('/cabinete/:id','CabinetsController.updatecabinet')
 Route.delete('/cabinete/:id','CabinetsController.deletecabinet')
 
-Route.get('/solicitareprogramare', 'ProgramarisController.formular')
+Route.get('/solicitareprogramare/:slug', 'ProgramarisController.formular')
 Route.post('/solicitareprogramare', 'ProgramarisController.solicitare')
 Route.get('/solicitari/:token','ProgramarisController.osolicitare')
 Route.get('/solicitarile/:cod','ProgramarisController.solicitari')

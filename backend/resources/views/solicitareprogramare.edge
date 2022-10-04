@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Solicitare programare Spitalul Militar Pitesti</title>
     <script src="{{ asset('assets/app.js') }}"></script>
-    <link rel="stylesheet" href="./bulma.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
   <body>
   <section class="section">
@@ -14,7 +14,7 @@
     <div class="columns is-centered">
         <div class="column ">
             <div class="notification is-warning">
-               Platforma de programari online pacienti se afla in <strong>faza de testare.</strong>Ne cerem scuze pentru eventualele neplaceri si va asiguram ca in curind functionalitatea va fi deplina!
+               Platforma de programari online pacienti la {{clinica.denumire}} se afla in <strong>faza de testare.</strong> Ne cerem scuze pentru eventualele neplaceri si va asiguram ca in curind functionalitatea va fi deplina!
                
               </div>
             <div class="box  is-centered">
@@ -64,10 +64,10 @@
                         <input type="checkbox" name="acord">
                         Sunt de acord cu prelucrarea datelor mele cu caracter personal si cu <a class="js-modal-trigger" data-target="modal-js-example" href="#">termenii si conditiile serviciului de programare online</a>
                     </label>
-
+                    <input class="is-hidden"  type="text" name="idclinica" value="{{clinica.id}}">
                     <div class="control mt-2">   <button type="submit" class="button is-primary">Trimite solicitarea!</button></div>
 
-
+                 
 
                 </form>
  
