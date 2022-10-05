@@ -241,6 +241,7 @@ export default class ProgramarisController {
                 email:schema.string({trim:true},[rules.email()]),
                 idspecialitate:schema.number(),
                 mesaj:schema.string.optional({trim:true},[rules.maxLength(255)]),
+                idclinica:schema.number()
                 //acord:schema.string()
             }
         )

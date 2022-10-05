@@ -25,6 +25,9 @@ export default class Solicitare extends BaseModel {
   public idspecialitate: number
 
   @column()
+  public idclinica: number
+
+  @column()
   public confirmat: boolean
 
   @column.dateTime({ autoCreate: true })
