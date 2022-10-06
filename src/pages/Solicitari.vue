@@ -110,9 +110,13 @@ function getMonday(d) {
 
 export default {
   setup () {
+    //,{headers:{"Authorization" : `Bearer ${token}`}}
+    const global=inject('global');
+    //console.log('Date utilizator',global.state.user.idclinica,global.state.user.token)
+    let token = global.state.user.token;
      let intervalAles=ref(intervale[3])
      const $q = useQuasar()
-         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`).then(
+         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                 res => {
                       console.log('Toate solicitarile',res.data)
@@ -147,7 +151,7 @@ export default {
 
               //console.log(dataminima)
 
-              axios.get(process.env.host+`solicitarile/${c}`).then(
+              axios.get(process.env.host+`solicitarile/${c}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                 res => {
                       //console.log('Toate solicitarile',res.data)

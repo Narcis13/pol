@@ -59,7 +59,7 @@
                     Cabinete
                   </q-btn>
                  <q-btn to="soli456" class="full-width q-ma-xs" color="purple" no-caps>
-                   Administrare<br>Solicitari
+                    Solicitari
                   </q-btn>
               </q-card-section>
             </q-card>
