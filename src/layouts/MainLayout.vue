@@ -104,7 +104,7 @@ export default defineComponent({
                                   color:'positive'
                                 }) 
 
-                            global.actions.autentificare(res.data.loggeduser)
+                            global.actions.autentificare(res.data.loggeduser,res.data.token.token)
                         }
                         else
                         {

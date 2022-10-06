@@ -62,10 +62,17 @@ export default class AuthController {
        const {nume,password} = request.all()
 
        try {
-           await auth.attempt(nume,password)
+          // await auth.attempt(nume,password)
+         // console.log(nume,password)
+           const token = await auth.use('api').attempt(nume, password,{
+            expiresIn: '30 mins'
+          })
+           //return token
            const loggeduser = await user.findBy('nume',nume)
-           return {loggeduser}
+          // if (loggeduser) loggeduser.token=token;
+           return {loggeduser,token}
        } catch (error) {
+           console.log(error)
            return 'Utilizatorul nu a putut fi autentificat!'
        }
    }
