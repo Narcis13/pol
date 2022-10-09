@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import user from 'App/Models/user';
+import Clinica from 'App/Models/Clinica';
 
 
 
@@ -69,8 +70,9 @@ export default class AuthController {
           })
            //return token
            const loggeduser = await user.findBy('nume',nume)
+           const clinica = await Clinica.findOrFail(loggeduser?.idclinica);
           // if (loggeduser) loggeduser.token=token;
-           return {loggeduser,token}
+           return {loggeduser,token,clinica}
        } catch (error) {
            console.log(error)
            return 'Utilizatorul nu a putut fi autentificat!'

@@ -53,8 +53,8 @@ const driveConfig: DriveConfig = {
       | files.
       |
       */
-      root: Application.tmpPath('uploads'),
-
+      //root: Application.tmpPath('uploads'),
+      root: './public/',
       /*
       |--------------------------------------------------------------------------
       | Serve files - Local driver only

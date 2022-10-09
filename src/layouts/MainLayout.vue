@@ -73,7 +73,7 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false)
-
+   
     const username = ref("")
     const password = ref("")
     const global=inject('global');
@@ -104,7 +104,8 @@ export default defineComponent({
                                   color:'positive'
                                 }) 
 
-                            global.actions.autentificare(res.data.loggeduser,res.data.token.token)
+                            global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica)
+                           
                         }
                         else
                         {
@@ -129,7 +130,8 @@ export default defineComponent({
                             })
                 console.log('Eroare autentificare',err);
               });
-      }
+      },
+    
     }
   }
 })

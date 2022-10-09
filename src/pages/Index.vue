@@ -1,17 +1,33 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      alt="Programare online Spitalul Militar"
-      src="~assets/cucu.png"
-      style="width: 200px; height: 200px"
-    >
+    <div class="column flex flex-center">
+      <h5 v-show="global.state.user.autentificat">{{numeclinica}}</h5>
+      <img
+        v-show="global.state.user.autentificat"
+        alt="Programare online "
+        :src="urlsigla"
+        style="width: 200px; height: 200px"
+      >
+    </div>
+
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent,ref,inject } from 'vue';
 
 export default defineComponent({
-  name: 'PageIndex'
+  name: 'PageIndex',
+  setup(){
+    const global=inject('global');
+    console.log('INDEX',global.state.user.clinica.denumire)
+    const numeclinica=ref(global.state.user.clinica.denumire)
+    const urlsigla=ref(process.env.host+global.state.user.clinica.fisiersigla)
+    return {
+      global,
+      numeclinica,
+      urlsigla
+    }
+  }
 })
 </script>

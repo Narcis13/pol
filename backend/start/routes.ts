@@ -78,3 +78,5 @@ Route.get('/indisoperator/:id', 'IndisponibilitatesController.indisperoperator')
 Route.get('/indis/:id', 'IndisponibilitatesController.indisperspecialitate')
 Route.patch('/indis/:id','IndisponibilitatesController.updatemedic')
 Route.delete('/indis/:id','IndisponibilitatesController.deletemedic')
+
+Route.post('/uploadsigla','ClinicasController.uploadsigla')

@@ -10,13 +10,14 @@ const state = reactive({
         
         idutilizator:0,
         idclinica:0,
-        token:null
+        token:null,
+        clinica:{}
 
     }
 })
 
 const actions = {
-     autentificare(user,token){
+     autentificare(user,token,clinica){
          console.log('!Autentificare: ',user,token)
 
          state.user.autentificat=true;
@@ -27,6 +28,7 @@ const actions = {
          state.user.idutilizator=user.id;
          state.user.idclinica=user.idclinica;
          state.user.token=token;
+         state.user.clinica=clinica;
    
      },
      deconectare(){
