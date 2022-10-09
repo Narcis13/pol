@@ -5,7 +5,8 @@ export default class ClinicasController {
   public async index({}: HttpContextContract) {}
 
   public async uploadsigla({request,response}: HttpContextContract) {
-   // console.log('Incercare upload',request.allFiles())
+   // console.log('Incercare upload',request.body())
+    let {idclinica} = request.body();
     const sigla = request.file('sigla', {
       size: '1mb',
       extnames: ['jpg', 'png', 'jpeg','bmp'],
@@ -16,11 +17,11 @@ export default class ClinicasController {
        // console.log('Upload ok',fileName)
       await sigla.moveToDisk('./sigle/')
       const fileName = sigla.fileName;
-  
+      let c = await Clinica.findOrFail(idclinica)
      // !!!!!!! actualizare baza de date Get the name of the saved file; to store it in your database, for example.
-     /*await Clinica
+     await c
      .merge({fisiersigla:'/sigle/'+fileName})
-     .save()*/
+     .save()
 
       return response.send({
         message:'Succes',

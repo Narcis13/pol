@@ -18,6 +18,7 @@
                 
                     <q-uploader
                         :url="uploadURL"
+                        :form-fields="ff"
                         auto-upload
                         field-name="sigla"
                         color="teal"
@@ -74,9 +75,10 @@ const state = reactive({
 
 export default {
     setup(){
-
-        let caleSigla=ref(process.env.host+'/sigle/cucu.png')
+        const global=inject('global');
+        let caleSigla=ref(process.env.host+global.state.user.clinica.fisiersigla)
         let uploadURL = ref(process.env.host+'uploadsigla')
+       let ff=ref([{name: 'idclinica', value: global.state.user.idclinica}])
 
         function siglaUrcata(info){
           console.log('Sigla urcata',JSON.parse(info.xhr.response).numefisier)
@@ -88,7 +90,8 @@ export default {
             state,
             caleSigla,
             uploadURL,
-            siglaUrcata
+            siglaUrcata,
+            ff
         }
     }
 }
