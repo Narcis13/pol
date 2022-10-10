@@ -21,11 +21,13 @@
                         :form-fields="ff"
                         auto-upload
                         field-name="sigla"
+                        max-file-size="1024"
                         color="teal"
                         label="Schimba sigla"
                         flat
                         bordered
                         @uploaded="siglaUrcata"
+                        @rejected="onRejected"
                         style="max-width: 300px"
                  />
                
@@ -76,6 +78,7 @@ const state = reactive({
 export default {
     setup(){
         const global=inject('global');
+        const $q = useQuasar()
         let caleSigla=ref(process.env.host+global.state.user.clinica.fisiersigla)
         let uploadURL = ref(process.env.host+'uploadsigla')
        let ff=ref([{name: 'idclinica', value: global.state.user.idclinica}])
@@ -86,12 +89,21 @@ export default {
           caleSigla.value=process.env.host+'/sigle/'+numefisier;
         }
 
+        function onRejected (rejectedEntries) {
+      // Notify plugin needs to be installed
+      // https://quasar.dev/quasar-plugins/notify#Installation
+                $q.notify({
+                    type: 'negative',
+                    message: `Imagine invalida sau dimensiune fisier > 1Mb!`
+                })
+    }
         return {
             state,
             caleSigla,
             uploadURL,
             siglaUrcata,
-            ff
+            ff,
+            onRejected
         }
     }
 }

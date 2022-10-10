@@ -77,6 +77,7 @@ export default defineComponent({
     const username = ref("")
     const password = ref("")
     const global=inject('global');
+    const bus = inject('bus') 
     const $q = useQuasar()
       console.log('MainLayout!')
     return {
@@ -105,6 +106,7 @@ export default defineComponent({
                                 }) 
 
                             global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica)
+                            bus.emit('succes-autentificare',res.data.loggeduser,res.data.clinica)
                            
                         }
                         else

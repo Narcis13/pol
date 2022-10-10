@@ -8,6 +8,9 @@
 
 
  - 0.9.8 - configurabilitate, parametrii generali....,finisaje aspect (modul tableta)
+   {
+    -curatenie la sigle orfane....
+   }
  - 0.9.9 - buguri si validari suplimentare
  - 1.0.0 - versiune finala buna de impachetat!!!!! Doamne ajuta!
 
