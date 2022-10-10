@@ -21,7 +21,8 @@
                         :form-fields="ff"
                         auto-upload
                         field-name="sigla"
-                        max-file-size="1024"
+                        max-file-size="1048576"
+                        accept=".jpg,.png, image/*"
                         color="teal"
                         label="Schimba sigla"
                         flat

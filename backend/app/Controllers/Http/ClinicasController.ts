@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
 
 export default class ClinicasController {
@@ -18,6 +19,8 @@ export default class ClinicasController {
       await sigla.moveToDisk('./sigle/')
       const fileName = sigla.fileName;
       let c = await Clinica.findOrFail(idclinica)
+      let fisiersiglaVechi=c.fisiersigla;
+      await Drive.delete('.'+fisiersiglaVechi)
      // !!!!!!! actualizare baza de date Get the name of the saved file; to store it in your database, for example.
      await c
      .merge({fisiersigla:'/sigle/'+fileName})
