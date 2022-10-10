@@ -116,7 +116,7 @@ export default {
     let token = global.state.user.token;
      let intervalAles=ref(intervale[3])
      const $q = useQuasar()
-         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
+         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                       console.log('Toate solicitarile',res.data)

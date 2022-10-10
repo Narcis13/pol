@@ -184,7 +184,7 @@ export default class ProgramarisController {
              return {solicitare,solicitare_q};
     }
 
-    public async solicitari({params}:HttpContextContract){
+    public async solicitari({request,params}:HttpContextContract){
 
         function getMonday(d) {
             d = new Date(d);
@@ -213,7 +213,8 @@ export default class ProgramarisController {
                 dataminima.setHours(0,0,0,0)
               }
 
-
+             // console.log('Headere solicitari',request.headers().idclinica)
+              let idclinica=request.headers().idclinica;
         //console.log('Solicitari....',dataminima)
         const solicitari= await Database
             .from('solicitares')
@@ -221,6 +222,7 @@ export default class ProgramarisController {
             .select('solicitares.*')
             .select('specialitates.denumire')
             .where('solicitares.created_at','>=',dataminima)
+            .andWhere({'solicitares.idclinica':idclinica})
             .orderBy('solicitares.id','desc')
      //   return Medic.all();
          //   console.log(solicitari)
