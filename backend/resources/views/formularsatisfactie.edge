@@ -13,12 +13,480 @@
     <div class="columns is-centered">
         <div class="column ">
             <div class="notification is-info">
-            <p>În vederea aprecierii îngrijirilor medicale pe care le-ați primit în {{clinica.denumire}} și a creșterii calității acestora, vă rugăm să aveți amabilitatea de a răspunde întrebărilor din chestionarul de mai jos și de a-l remite unității noastre.
-Răspundeți la întrebări bifând varianta care descrie cel mai bine situația dumneavoastră.</p> 
-<p>Colectarea și prelucrarea datelor se face cu respectarea prevederilor GDPR (Regulamentul General privind Protecția Datelor) 679/2016 și în conformitate cu Ordinul 35/2018 al ANMCS.</p> 
-<strong>Acest chestionar este ANONIM.</strong>
+               <p>În vederea aprecierii îngrijirilor medicale pe care le-ați primit în <strong>{{clinica.denumire}}</strong> și a creșterii calității acestora, vă rugăm să aveți amabilitatea de a răspunde întrebărilor din chestionarul de mai jos și de a-l remite unității noastre.
+                Răspundeți la întrebări bifând varianta care descrie cel mai bine situația dumneavoastră.</p> 
+                <p>Colectarea și prelucrarea datelor se face cu respectarea prevederilor GDPR (Regulamentul General privind Protecția Datelor) 679/2016 și în conformitate cu Ordinul 35/2018 al ANMCS.</p> 
+                <strong>Acest chestionar este ANONIM.</strong>
                
             </div>
+            <div class="box is-centered">
+                <form action="">
+
+                  <div class="field has-addon">
+                    <label for="impresii" class="label">Când ați intrat prima dată în această unitate ce impresie v-ați făcut?</label>
+                        <div class="select is-info">
+                            <select name="impresie" id="impresii">
+                               
+                                <option value="curatenie"> Curățenie </option>
+                                <option value="lux"> Lux </option>
+                                <option value="dezordine"> Dezordine </option>
+                                <option value="aglomeratie"> Aglomerație </option>
+                                <option value="mizerie"> Mizerie </option>
+                                <option value="disciplina"> Disciplină </option>
+                                <option value="liniste"> Liniște </option>
+                             
+                         
+                            </select>
+                        </div>
+                </div>
+
+                <div class="field has-addon">
+                  <label class="label">În ce secție ați fost internat?</label>
+                  <div class="control is-expanded">
+                      <input type="text" name="sectie" class="input" placeholder="Sectie">
+                  </div>
+                </div>
+
+                <div class="field has-addon">
+                  <label class="label">Sunteți la prima internare?</label>
+                  <div class="control is-expanded">
+                    <label class="radio">
+                      <input type="radio" name="primainternare" checked>
+                      Prima internare
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="primainternare">
+                      Reinternare
+                    </label>
+                  </div>
+                </div>
+
+
+                <div class="field has-addon">
+                  <label class="label">În perioada cât ați stat în spital, v-au fost aduse la cunoștință drepturile dumneavoastră?</label>
+                  <div class="control is-expanded">
+                    <label class="radio">
+                      <input type="radio" name="cunostintadrepturi" checked>
+                      DA
+                    </label>
+                    <label class="radio">
+                    <input type="radio" name="cunostintadrepturi">
+                      NU
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field has-addon">
+                  <label class="label">Considerați că v-au fost respectate drepturile dvs ca pacient?</label>
+                  <div class="control is-expanded">
+                    <label class="radio">
+                      <input type="radio" name="respectaredrepturi" checked>
+                      DA
+                    </label>
+                    <label class="radio">
+                    <input type="radio" name="respectaredrepturi">
+                      NU
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label  class="label">Dacă ați răspuns cu NU la întrebarea precedentă, vă rugăm să motivați:</label>
+                  <div class="control">
+                      <textarea name="motivaredrepturi" class="textarea" placeholder="Scurt mesaj (max. 255 caractere)"></textarea>
+                  </div>
+              </div>
+
+              <div class="field has-addon">
+                <label class="label">La internare ați fost informat cu privire la regulile secției și responsabilitățile dvs ca pacient?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="informarereguli" checked>
+                    DA
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="informarereguli">
+                    NU
+                  </label>
+                </div>
+              </div>
+
+              <div class="field has-addon">
+                <label class="label">La internare, ați fost însoțit pe secție de:</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="insotitor" checked>
+                    Personal sanitar
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="insotitor">
+                     Aparținător
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="insotitor" >
+                    Ați mers singur
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="insotitor">
+                    Nu știu
+                  </label>
+                </div>
+              </div>
+
+              <label class="label mb-2">Vă rugăm să acordați calificative pentru următoarele servicii:</label>
+              
+              <div class="columns mt-2" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Calitatea condițiilor hoteliere (salon, dotare, mobilier, lenjerie, efecte spital, facilități, temperatură)
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="calitateconditii" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="calitateconditii">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="calitateconditii">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Curățenie
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="curatenie" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="curatenie">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="curatenie">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Atitudinea personalului de la CPU
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="atitudinecpu" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="atitudinecpu">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="atitudinecpu">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Atitudinea personalului la primire
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="atitudineprimire" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="atitudineprimire">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="atitudineprimire">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">                  
+                  Timpul acordat de medicul curant pentru consultația dvs.
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="timpacordat" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="timpacordat">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="timpacordat">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">                  
+                  Calitatea îngrijirilor medicale acordate de medicul curant
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="calitatemedic" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="calitatemedic">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="calitatemedic">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+              </div>
+                <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                  <div class="column">                  
+                    Calitatea îngrijirilor medicale acordate de asistente medicale
+                  </div>
+                  <div class="column">
+                    <div class="control">
+                      <label class="radio">
+                        <input type="radio" name="calitateasistente" checked>
+                        Foarte bine
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="calitateasistente">
+                        Bine
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="calitateasistente">
+                        Nesatisfăcător
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                  <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                    <div class="column">                  
+                      Calitatea îngrijirilor medicale acordate de infirmiere
+                    </div>
+                    <div class="column">
+                      <div class="control">
+                        <label class="radio">
+                          <input type="radio" name="calitateinfirmiere" checked>
+                          Foarte bine
+                        </label>
+                        <label class="radio">
+                          <input type="radio" name="calitateinfirmiere">
+                          Bine
+                        </label>
+                        <label class="radio">
+                          <input type="radio" name="calitateinfirmiere">
+                          Nesatisfăcător
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+              
+              <div class="columns" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Amabilitatea personalului medical
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="amabilitate" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="amabilitate">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="amabilitate">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Disponibilitatea personalului medical
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="disponibilitate" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="disponibilitate">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="disponibilitate">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Calitatea meselor servite
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="calitatemasa" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="calitatemasa">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="calitatemasa">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Modul de distribuire a hranei
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="distribuirehrana" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="distribuirehrana">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="distribuirehrana">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Îngrijirea post-operatorie
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="ingrijirepostoperatorie" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="ingrijirepostoperatorie">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="ingrijirepostoperatorie">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="field has-addon">
+                <label class="label">La serviciile medicale de pe alte secții, ați fost însoțit de:</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="insotitoraltesectii" checked>
+                    Personal sanitar
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="insotitoraltesectii">
+                     Aparținători
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="insotitoraltesectii" >
+                    Ați mers singur
+                  </label>
+
+                </div>
+              </div>
+              <div class="field has-addon">
+                <label class="label">În situația în care, pe durata spitalizării a fost necesar transportul dumneavoastră intern între diferite sectoare medicale, v-a fost asigurat, după caz, un suport medical adecvat (brancarde, tărgi)?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="transport" checked>
+                    DA
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="transport">
+                     NU
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="transport" >
+                    NU A FOST CAZUL
+                  </label>
+
+                </div>
+              </div>
+              <div class="field has-addon">
+                <label class="label">În momentul în care ați primit medicamentele, ați fost instruit asupra modului de administrare?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="administraremedicamente" checked>
+                    DA
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="administraremedicamente">
+                     NU
+                  </label>
+                </div>
+              </div>
+              <div class="field has-addon">
+                <label class="label">Administrarea medicamentelor s-a făcut sub supravegherea asistentei?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="supraveghereadministrare" checked>
+                    DA
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="supraveghereadministrare">
+                     NU
+                  </label>
+                </div>
+              </div>
+              </form>
+            
+            </div>
+
+
 
         </div>
     </div>
