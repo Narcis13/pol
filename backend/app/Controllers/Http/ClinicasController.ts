@@ -33,6 +33,16 @@ export default class ClinicasController {
     }
   }
 
+  public async formularsatisfactie({params,view}:HttpContextContract){
+    const clinica = await Clinica.findBy('slug',params.slug);
+    if(clinica){
+       // console.log(params.slug,clinica.id,clinica.denumire);
+       // const specialitati = await Specialitate.query().where('specialitates.idclinica',clinica.id);
+       
+        return view.render('formularsatisfactie',{clinica})
+    }
+
+}
   public async create({}: HttpContextContract) {}
 
   public async store({}: HttpContextContract) {}
