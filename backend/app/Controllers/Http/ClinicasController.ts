@@ -32,6 +32,12 @@ export default class ClinicasController {
       })
     }
   }
+  public async prelucraresatisfactie({request,response,session,view}:HttpContextContract){
+   console.log('Prelucrare satisfactie',request.body())
+
+
+   return view.render('multumirisatisfactie')
+  }
 
   public async formularsatisfactie({params,view}:HttpContextContract){
     const clinica = await Clinica.findBy('slug',params.slug);

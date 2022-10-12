@@ -20,8 +20,8 @@
                
             </div>
             <div class="box is-centered">
-                <form action="">
-
+                <form action="/prelucraresatisfactie" method="POST">
+                  {{ csrfField() }}
                   <div class="field has-addon">
                     <label for="impresii" class="label">Când ați intrat prima dată în această unitate ce impresie v-ați făcut?</label>
                         <div class="select is-info">
@@ -51,11 +51,11 @@
                   <label class="label">Sunteți la prima internare?</label>
                   <div class="control is-expanded">
                     <label class="radio">
-                      <input type="radio" name="primainternare" checked>
+                      <input type="radio" name="primainternare" value="Prima internare" checked>
                       Prima internare
                     </label>
                     <label class="radio">
-                      <input type="radio" name="primainternare">
+                      <input type="radio" name="primainternare" value="Reinternare">
                       Reinternare
                     </label>
                   </div>
@@ -66,11 +66,11 @@
                   <label class="label">În perioada cât ați stat în spital, v-au fost aduse la cunoștință drepturile dumneavoastră?</label>
                   <div class="control is-expanded">
                     <label class="radio">
-                      <input type="radio" name="cunostintadrepturi" checked>
+                      <input type="radio" name="cunostintadrepturi" value="DA" checked>
                       DA
                     </label>
                     <label class="radio">
-                    <input type="radio" name="cunostintadrepturi">
+                    <input type="radio" name="cunostintadrepturi" value="NU">
                       NU
                     </label>
                   </div>
@@ -80,11 +80,11 @@
                   <label class="label">Considerați că v-au fost respectate drepturile dvs ca pacient?</label>
                   <div class="control is-expanded">
                     <label class="radio">
-                      <input type="radio" name="respectaredrepturi" checked>
+                      <input type="radio" name="respectaredrepturi" value="DA" checked>
                       DA
                     </label>
                     <label class="radio">
-                    <input type="radio" name="respectaredrepturi">
+                    <input type="radio" name="respectaredrepturi" value="NU">
                       NU
                     </label>
                   </div>
@@ -101,11 +101,11 @@
                 <label class="label">La internare ați fost informat cu privire la regulile secției și responsabilitățile dvs ca pacient?</label>
                 <div class="control is-expanded">
                   <label class="radio">
-                    <input type="radio" name="informarereguli" checked>
+                    <input type="radio" name="informarereguli" value="DA" checked>
                     DA
                   </label>
                   <label class="radio">
-                  <input type="radio" name="informarereguli">
+                  <input type="radio" name="informarereguli" value="NU">
                     NU
                   </label>
                 </div>
@@ -115,19 +115,19 @@
                 <label class="label">La internare, ați fost însoțit pe secție de:</label>
                 <div class="control is-expanded">
                   <label class="radio">
-                    <input type="radio" name="insotitor" checked>
+                    <input type="radio" name="insotitor" value="Personal sanitar" checked>
                     Personal sanitar
                   </label>
                   <label class="radio">
-                  <input type="radio" name="insotitor">
+                  <input type="radio" name="insotitor"  value="Apartinator">
                      Aparținător
                   </label>
                   <label class="radio">
-                    <input type="radio" name="insotitor" >
+                    <input type="radio" name="insotitor" value="Ati mers singur">
                     Ați mers singur
                   </label>
                   <label class="radio">
-                  <input type="radio" name="insotitor">
+                  <input type="radio" name="insotitor" value="Nu stiu">
                     Nu știu
                   </label>
                 </div>
@@ -142,15 +142,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="calitateconditii" checked>
+                      <input type="radio" name="calitateconditii" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="calitateconditii">
+                      <input type="radio" name="calitateconditii" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="calitateconditii">
+                      <input type="radio" name="calitateconditii" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -164,15 +164,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="curatenie" checked>
+                      <input type="radio" name="curatenie" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="curatenie">
+                      <input type="radio" name="curatenie" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="curatenie">
+                      <input type="radio" name="curatenie" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -186,15 +186,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="atitudinecpu" checked>
+                      <input type="radio" name="atitudinecpu" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="atitudinecpu">
+                      <input type="radio" name="atitudinecpu" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="atitudinecpu">
+                      <input type="radio" name="atitudinecpu" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -208,15 +208,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="atitudineprimire" checked>
+                      <input type="radio" name="atitudineprimire" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="atitudineprimire">
+                      <input type="radio" name="atitudineprimire" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="atitudineprimire">
+                      <input type="radio" name="atitudineprimire" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -230,15 +230,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="timpacordat" checked>
+                      <input type="radio" name="timpacordat" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="timpacordat">
+                      <input type="radio" name="timpacordat" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="timpacordat">
+                      <input type="radio" name="timpacordat" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -252,15 +252,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="calitatemedic" checked>
+                      <input type="radio" name="calitatemedic" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="calitatemedic">
+                      <input type="radio" name="calitatemedic" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="calitatemedic">
+                      <input type="radio" name="calitatemedic" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -273,15 +273,15 @@
                   <div class="column">
                     <div class="control">
                       <label class="radio">
-                        <input type="radio" name="calitateasistente" checked>
+                        <input type="radio" name="calitateasistente" value="Foarte bine" checked>
                         Foarte bine
                       </label>
                       <label class="radio">
-                        <input type="radio" name="calitateasistente">
+                        <input type="radio" name="calitateasistente" value="Bine">
                         Bine
                       </label>
                       <label class="radio">
-                        <input type="radio" name="calitateasistente">
+                        <input type="radio" name="calitateasistente" value="Nesatisfacator">
                         Nesatisfăcător
                       </label>
                     </div>
@@ -294,15 +294,15 @@
                     <div class="column">
                       <div class="control">
                         <label class="radio">
-                          <input type="radio" name="calitateinfirmiere" checked>
+                          <input type="radio" name="calitateinfirmiere" value="Foarte bine" checked>
                           Foarte bine
                         </label>
                         <label class="radio">
-                          <input type="radio" name="calitateinfirmiere">
+                          <input type="radio" name="calitateinfirmiere" value="Bine">
                           Bine
                         </label>
                         <label class="radio">
-                          <input type="radio" name="calitateinfirmiere">
+                          <input type="radio" name="calitateinfirmiere" value="Nesatisfacator">
                           Nesatisfăcător
                         </label>
                       </div>
@@ -316,15 +316,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="amabilitate" checked>
+                      <input type="radio" name="amabilitate" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="amabilitate">
+                      <input type="radio" name="amabilitate" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="amabilitate">
+                      <input type="radio" name="amabilitate" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -338,15 +338,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="disponibilitate" checked>
+                      <input type="radio" name="disponibilitate" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="disponibilitate">
+                      <input type="radio" name="disponibilitate" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="disponibilitate">
+                      <input type="radio" name="disponibilitate" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -360,15 +360,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="calitatemasa" checked>
+                      <input type="radio" name="calitatemasa" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="calitatemasa">
+                      <input type="radio" name="calitatemasa" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="calitatemasa">
+                      <input type="radio" name="calitatemasa" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -382,15 +382,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="distribuirehrana" checked>
+                      <input type="radio" name="distribuirehrana" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="distribuirehrana">
+                      <input type="radio" name="distribuirehrana" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="distribuirehrana">
+                      <input type="radio" name="distribuirehrana" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -404,15 +404,15 @@
                 <div class="column">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="ingrijirepostoperatorie" checked>
+                      <input type="radio" name="ingrijirepostoperatorie" value="Foarte bine" checked>
                       Foarte bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="ingrijirepostoperatorie">
+                      <input type="radio" name="ingrijirepostoperatorie" value="Bine">
                       Bine
                     </label>
                     <label class="radio">
-                      <input type="radio" name="ingrijirepostoperatorie">
+                      <input type="radio" name="ingrijirepostoperatorie" value="Nesatisfacator">
                       Nesatisfăcător
                     </label>
                   </div>
@@ -424,15 +424,15 @@
                 <label class="label">La serviciile medicale de pe alte secții, ați fost însoțit de:</label>
                 <div class="control is-expanded">
                   <label class="radio">
-                    <input type="radio" name="insotitoraltesectii" checked>
+                    <input type="radio" name="insotitoraltesectii" value="Personal sanitar" checked>
                     Personal sanitar
                   </label>
                   <label class="radio">
-                  <input type="radio" name="insotitoraltesectii">
+                  <input type="radio" name="insotitoraltesectii" value="Apartinatori">
                      Aparținători
                   </label>
                   <label class="radio">
-                    <input type="radio" name="insotitoraltesectii" >
+                    <input type="radio" name="insotitoraltesectii" value="Ati mers singur" >
                     Ați mers singur
                   </label>
 
@@ -442,15 +442,15 @@
                 <label class="label">În situația în care, pe durata spitalizării a fost necesar transportul dumneavoastră intern între diferite sectoare medicale, v-a fost asigurat, după caz, un suport medical adecvat (brancarde, tărgi)?</label>
                 <div class="control is-expanded">
                   <label class="radio">
-                    <input type="radio" name="transport" checked>
+                    <input type="radio" name="transport" value="DA" checked>
                     DA
                   </label>
                   <label class="radio">
-                  <input type="radio" name="transport">
+                  <input type="radio" name="transport" value="NU">
                      NU
                   </label>
                   <label class="radio">
-                    <input type="radio" name="transport" >
+                    <input type="radio" name="transport" value="NU A FOST CAZUL">
                     NU A FOST CAZUL
                   </label>
 
@@ -460,11 +460,11 @@
                 <label class="label">În momentul în care ați primit medicamentele, ați fost instruit asupra modului de administrare?</label>
                 <div class="control is-expanded">
                   <label class="radio">
-                    <input type="radio" name="administraremedicamente" checked>
+                    <input type="radio" name="administraremedicamente" value="DA" checked>
                     DA
                   </label>
                   <label class="radio">
-                  <input type="radio" name="administraremedicamente">
+                  <input type="radio" name="administraremedicamente" value="NU">
                      NU
                   </label>
                 </div>
@@ -473,15 +473,184 @@
                 <label class="label">Administrarea medicamentelor s-a făcut sub supravegherea asistentei?</label>
                 <div class="control is-expanded">
                   <label class="radio">
-                    <input type="radio" name="supraveghereadministrare" checked>
+                    <input type="radio" name="supraveghereadministrare" value="DA" checked>
                     DA
                   </label>
                   <label class="radio">
-                  <input type="radio" name="supraveghereadministrare">
+                  <input type="radio" name="supraveghereadministrare" value="NU" >
                      NU
                   </label>
                 </div>
               </div>
+
+              <div class="field has-addon">
+                    <label for="provenientemedicatii" class="label">Care este proveniența medicației prescrisă de medicul curant, administrată pe timpul internării dumneavoastră în acest spital?</label>
+                        <div class="select is-info">
+                            <select name="provenientamedicatie" id="provenientemedicatii">
+                               
+                                <option value="medicatieasigurata"> Întreaga medicație a fost asigurată de spital </option>
+                                <option value="partialdeacasa"> O parte din medicație am adus-o de acasă </option>
+                                <option value="partialcumparata"> O parte din medicația prescrisă a fost necesar să o cumpăr pe timpul internării </option>
+                                <option value="integralcumparata"> Întreaga medicație mi-am cumpărat-o/am adus-o de acasă </option>
+
+                             
+                         
+                            </select>
+                        </div>
+                </div>
+              <label class="label mb-2">Care este părerea dumneavoastră despre ambientul spitalului?</label>
+              
+              <div class="columns mt-2" style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Aspectul salonului
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="aspectsalon" value="Foarte bine" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="aspectsalon" value="Bine">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="aspectsalon" value="Nesatisfacator">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                  Aspectul spațiilor comune (hol, toilete)
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="aspectspatii" value="Foarte bine" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="aspectspatii" value="Bine">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="aspectspatii" value="Nesatisfacator">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="columns " style="border-width:2px;border-style:solid;border-color:black;">
+                <div class="column">
+                 Aspectul curții interioare
+                </div>
+                <div class="column">
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="aspectcurte" value="Foarte bine" checked>
+                      Foarte bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="aspectcurte" value="Bine">
+                      Bine
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="aspectcurte" value="Nesatisfacator">
+                      Nesatisfăcător
+                    </label>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="field has-addon">
+                <label class="label">Cum apreciați calitatea informațiilor primite pe perioada internării?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="calitateinformatii" value="Foarte bine" checked>
+                    Foarte bine
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="calitateinformatii" value="Bine">
+                     Bine
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="calitateinformatii" value="Satisfacator">
+                    Satisfacator
+                  </label>
+
+                </div>
+              </div>
+              <div class="field has-addon">
+                <label class="label">Cum apreciați calitatea comunicării cu personalul care v-a acordat îngrijiri? (medici, asistente, infirmiere)</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="calitatecomunicare" value="Foarte bine" checked>
+                    Foarte bine
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="calitatecomunicare" value="Bine">
+                     Bine
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="calitatecomunicare" value="Satisfacator">
+                    Satisfacator
+                  </label>
+
+                </div>
+              </div>
+              <div class="field has-addon">
+                <label class="label">Dacă ar fi necesar să vă reinternați, ați opta pentru același spital?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="reinternare" value="In mod cert da" checked>
+                    In mod cert da 
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="reinternare" value="Probabil da">
+                     Probabil da
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="reinternare" value="Probabil nu">
+                    Probabil nu
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="reinternare" value="Categoric nu">
+                    Categoric nu
+                  </label>
+                </div>
+              </div>
+
+              <div class="field has-addon">
+                <label class="label">Dacă o altă persoană ar avea nevoie de un serviciu medical disponibil în acest spital, i-ați recomanda să ni se adreseze?</label>
+                <div class="control is-expanded">
+                  <label class="radio">
+                    <input type="radio" name="recomandare" value="DA" checked>
+                    DA
+                  </label>
+                  <label class="radio">
+                  <input type="radio" name="recomandare" value="NU">
+                    NU
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="recomandare" value="In nici un caz">
+                    în nici un caz
+                  </label>
+
+                </div>
+              </div>
+                <div class="field">
+                  <label  class="label">Observații și sugestii referitoare la aspectele pozitive și/sau negative ale îngrijirii medicale și condițiilor hoteliere din timpul spitalizării:</label>
+                  <div class="control">
+                      <textarea name="observatii" class="textarea" ></textarea>
+                  </div>
+              </div>
+               <input class="is-hidden"  type="text" name="idclinica" value="{{clinica.id}}">
+                    <div class="control mt-2 column is-centered">   <button type="submit" class="button is-primary is-centered">TRIMITE FORMULARUL</button></div>
               </form>
             
             </div>

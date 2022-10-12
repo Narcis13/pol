@@ -43,6 +43,7 @@ Route.delete('/cabinete/:id','CabinetsController.deletecabinet')
 
 Route.get('/solicitareprogramare/:slug', 'ProgramarisController.formular')
 Route.get('/formularsatisfactie/:slug', 'ClinicasController.formularsatisfactie')
+Route.post('/prelucraresatisfactie', 'ClinicasController.prelucraresatisfactie')
 Route.post('/solicitareprogramare', 'ProgramarisController.solicitare')
 Route.get('/solicitari/:token','ProgramarisController.osolicitare')
 Route.get('/solicitarile/:cod','ProgramarisController.solicitari').middleware('auth')
