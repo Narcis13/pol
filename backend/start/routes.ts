@@ -56,7 +56,7 @@ Route.patch('/specialitati/:id','SpecialitatisController.updatespecialitate')
 Route.delete('/specialitati/:id','SpecialitatisController.stergspecialitate')
 
 Route.post('/registeruser','AuthController.register')
-Route.get('/allusers','AuthController.index')
+Route.get('/allusers','AuthController.index').middleware('auth')
 Route.patch('/users/:id','AuthController.updateuser')
 Route.delete('/users/:id','AuthController.deleteuser')
 Route.post('/login','AuthController.login')

@@ -93,6 +93,7 @@ export default defineComponent({
     setup() {
         const $q = useQuasar()
         const global=inject('global');
+        let token = global.state.user.token;
         let tab=ref('lista')
         let nume_user=ref('')
         let numeintreg=ref('')
@@ -106,7 +107,7 @@ export default defineComponent({
         })
 
         function totiuserii(){
-                axios.get(process.env.host+`allusers`).then(
+                axios.get(process.env.host+`allusers`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                     console.log('Raspuns la toti userii',res.data);

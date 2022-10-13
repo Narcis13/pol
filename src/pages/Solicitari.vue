@@ -151,7 +151,7 @@ export default {
 
               //console.log(dataminima)
 
-              axios.get(process.env.host+`solicitarile/${c}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
+              axios.get(process.env.host+`solicitarile/${c}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                       //console.log('Toate solicitarile',res.data)

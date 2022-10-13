@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
+import Satisfactia from 'App/Models/Satisfactia';
 
 export default class ClinicasController {
   public async index({}: HttpContextContract) {}
@@ -32,11 +33,14 @@ export default class ClinicasController {
       })
     }
   }
-  public async prelucraresatisfactie({request,response,session,view}:HttpContextContract){
-   console.log('Prelucrare satisfactie',request.body())
+  public async prelucraresatisfactie({request,view}:HttpContextContract){
+   //console.log('Prelucrare satisfactie',request.body())
+   let r=request.body();
+   delete r._csrf
+    let s = await Satisfactia.create(r)
+   //console.log(s.id)
 
-
-   return view.render('multumirisatisfactie')
+   return view.render('multumirisatisfactie',{id:s.id})
   }
 
   public async formularsatisfactie({params,view}:HttpContextContract){

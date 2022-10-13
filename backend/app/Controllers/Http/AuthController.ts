@@ -36,8 +36,9 @@ export default class AuthController {
    }
 
    public async index(){
-
-    return user.all();
+    const users =  await user.query().
+                          where('rol','operator')
+    return users//user.all();
    }
 
    public async updateuser({params,request}:HttpContextContract){
