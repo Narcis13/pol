@@ -15,13 +15,16 @@
 
 <script>
 import { defineComponent,ref,inject } from 'vue';
-
+import { useRoute } from "vue-router";
 export default defineComponent({
   name: 'PageIndex',
   setup(){
     const global=inject('global');
     const bus=inject('bus');
-    console.log('INDEX',global.state.user.clinica.denumire)
+    console.log('INDEX')
+    const route =useRoute()
+    console.log('Ruta este...',route.params.slug)
+    bus.emit('ruta-stabilita',route.params.slug)
     const numeclinica=ref('')//ref(global.state.user.clinica.denumire)
     const urlsigla=ref('')//ref(process.env.host+global.state.user.clinica.fisiersigla)
     

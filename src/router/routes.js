@@ -1,20 +1,20 @@
 
 const routes = [
   {
-    path: '/',
+    path: '/:slug',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { path: 'u852', component: () => import('pages/Utilizatori.vue') },
-      { path: 'sp987', component: () => import('pages/Specialitati.vue') },
-      { path: 'ser369', component: () => import('pages/Servicii.vue') },
-      { path: 'med1313', component: () => import('pages/Medici.vue') },
-      { path: 'cab999', component: () => import('pages/Cabinete.vue') },
-      { path: 'soli456', component: () => import('pages/Solicitari.vue') },
-      { path: 'clin777', component: () => import('pages/Clinica.vue') },
-      { path: 'indi13', component: () => import('pages/Indisponibilitati.vue') },
-      { path: 'orarcab777', component: () => import('pages/OrarCabinete.vue') },
-      { path: 'adminpro', component: () => import('pages/Administrare.vue') }
+      { path: '/u852', component: () => import('pages/Utilizatori.vue') },
+      { path: '/sp987', component: () => import('pages/Specialitati.vue') },
+      { path: '/ser369', component: () => import('pages/Servicii.vue') },
+      { path: '/med1313', component: () => import('pages/Medici.vue') },
+      { path: '/cab999', component: () => import('pages/Cabinete.vue') },
+      { path: '/soli456', component: () => import('pages/Solicitari.vue') },
+      { path: '/clin777', component: () => import('pages/Clinica.vue') },
+      { path: '/indi13', component: () => import('pages/Indisponibilitati.vue') },
+      { path: '/orarcab777', component: () => import('pages/OrarCabinete.vue') },
+      { path: '/adminpro', component: () => import('pages/Administrare.vue') }
     ]
   },
   {

@@ -64,7 +64,7 @@ const authConfig: AuthConfig = {
         | of the mentioned columns to find their user record.
         |
         */
-        uids: ['nume'],
+        uids: ['numeunic'],
 
         /*
         |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ const authConfig: AuthConfig = {
       provider: {
         driver: 'lucid',
         identifierKey: 'id',
-        uids: ['nume'],
+        uids: ['numeunic'],
         model: () => import('App/Models/User'),
       },
       tokenProvider: {

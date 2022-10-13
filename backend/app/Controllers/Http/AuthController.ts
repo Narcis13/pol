@@ -35,9 +35,10 @@ export default class AuthController {
 
    }
 
-   public async index(){
+   public async index({request}:HttpContextContract){
+    let idclinica=request.headers().idclinica;
     const users =  await user.query().
-                          where('rol','operator')
+                          where({'rol':'operator','idclinica':idclinica})
     return users//user.all();
    }
 
@@ -61,21 +62,27 @@ export default class AuthController {
    }
 
    public async login({auth,request}:HttpContextContract){
-       const {nume,password} = request.all()
+       const {nume,password,slug} = request.all()
 
        try {
           // await auth.attempt(nume,password)
-         // console.log(nume,password)
-           const token = await auth.use('api').attempt(nume, password,{
+          const clinica = await Clinica.findBy('slug',slug);
+          let idclinica = clinica?.id;
+          let numeunic=nume+idclinica;
+       //   console.log(numeunic,password,slug,idclinica)
+
+           const token = await auth.use('api').attempt(numeunic, password,{
             expiresIn: '30 mins'
           })
            //return token
-           const loggeduser = await user.findBy('nume',nume)
-           const clinica = await Clinica.findOrFail(loggeduser?.idclinica);
-          // if (loggeduser) loggeduser.token=token;
-           return {loggeduser,token,clinica}
+
+           const loggeduser = await user.findBy('numeunic',numeunic)// aici trebuie sa ma intreb de stare ......
+           if(loggeduser?.stare=="activ")
+            return {loggeduser,token,clinica}
+           else
+             return 'Utilizatorul nu a putut fi autentificat!'
        } catch (error) {
-           console.log(error)
+          // console.log(error)
            return 'Utilizatorul nu a putut fi autentificat!'
        }
    }

@@ -16,7 +16,13 @@ export default class user extends BaseModel {
   public numeintreg: string
 
   @column()
+  public numeunic: string
+
+  @column()
   public rol: string
+
+  @column()
+  public stare: string
 
   @column({ serializeAs: null })
   public password: string

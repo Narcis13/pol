@@ -42,7 +42,7 @@
         <q-separator />
 
         <q-card-actions vertical>
-          <q-btn to="/" flat @click="global.actions.deconectare">Deconectare!</q-btn>
+          <q-btn :to="'/'+slug" flat @click="global.actions.deconectare">Deconectare!</q-btn>
 
         </q-card-actions>
     </q-card>
@@ -79,20 +79,26 @@ export default defineComponent({
     const global=inject('global');
     const bus = inject('bus') 
     const $q = useQuasar()
+    let slug=ref('')
       console.log('MainLayout!')
+      bus.on('ruta-stabilita',s=>{
+        console.log('Receptionat ruta-stabilita in MainLayout',s)
+        slug.value=s;
+      })
     return {
      
       leftDrawerOpen,
       username,
       password,
       global,
+      slug,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       autentificare(){
         console.log('Tentativa de autentificare...',process.env.host)
 
-                  axios.post(process.env.host+'login',{nume:username.value,password:password.value}).then(
+                  axios.post(process.env.host+'login',{nume:username.value,password:password.value,slug:slug.value}).then(
                       res => {
                         console.log('Raspuns la autentificare ',res)
                         username.value=''
@@ -107,7 +113,7 @@ export default defineComponent({
 
                             global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica)
                             bus.emit('succes-autentificare',res.data.loggeduser,res.data.clinica)
-                           
+                            slug.value=res.data.clinica.slug
                         }
                         else
                         {

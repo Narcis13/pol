@@ -47,6 +47,8 @@ export default class Clinica extends BaseModel {
   public website: string
   @column()
   public urlpol: string
+  @column()
+  public slug: string
 
 
   @column.dateTime({ autoCreate: true })
