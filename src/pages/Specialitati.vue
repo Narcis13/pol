@@ -10,7 +10,7 @@
                 <q-banner inline-actions rounded class="bg-orange text-white">
                     Utilizatori platforma programare online
                     <template v-slot:action>
-                        <q-btn @click="tab='adaugare'" flat label="Adauga" />
+                        <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
                 </q-banner>
                 <q-card class="q-mt-sm">
@@ -89,7 +89,7 @@ export default defineComponent({
         const global=inject('global');
         let tab=ref('lista')
         let denumire=ref('')
-        
+        let token = global.state.user.token;
 
 //computed zone
         let actiune = computed(()=>{
@@ -97,7 +97,7 @@ export default defineComponent({
         })
 
         function toatespecialitatile(){
-                axios.get(process.env.host+`toatespecialitatile`).then(
+                axios.get(process.env.host+`toatespecialitatile`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -137,7 +137,7 @@ export default defineComponent({
                             persistent: true
                         }).onOk(() => {
                              console.log('>>>> Sterg ',id,arguments)
-                             axios.delete(process.env.host+`specialitati/${id}`,).then(
+                             axios.delete(process.env.host+`specialitati/${id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
                                             $q.notify({
@@ -177,7 +177,7 @@ export default defineComponent({
                   
                }
             //   console.log('patch',user_modificat,state.userselectat.id)
-            axios.patch(process.env.host+`specialitati/${state.specialitateselectata.id}`,spec_modificat).then(res =>{
+            axios.patch(process.env.host+`specialitati/${state.specialitateselectata.id}`,spec_modificat,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                                    console.log('Am editat spe c ',res.data)
                                 toatespecialitatile();
@@ -203,11 +203,11 @@ export default defineComponent({
            } else {
                     let spec_nou={
                         denumire:denumire.value,
-                   
+                        idclinica:global.state.user.idclinica
                     } 
                     console.log('salvez spec',spec_nou)
 
-                    axios.post(process.env.host+'specialitati',spec_nou).then(res =>{
+                    axios.post(process.env.host+'specialitati',spec_nou,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                                 //   console.log('Am salvat utilizator nou',res.data)
                                 toatespecialitatile();
@@ -238,7 +238,7 @@ export default defineComponent({
             global,
              state,
              denumire,
-       
+       reset,
              salveaza,
              actiune,
             onLeft (p) {

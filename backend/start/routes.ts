@@ -50,15 +50,15 @@ Route.get('/solicitarile/:cod','ProgramarisController.solicitari').middleware('a
 Route.get('/raportprogramari', 'ProgramarisController.raportprogramari')
 Route.get('/programaricabinet/:id', 'ProgramarisController.programaricabinet')
 
-Route.get('/toatespecialitatile', 'SpecialitatisController.index')/*.middleware('auth')*/
-Route.post('/specialitati','SpecialitatisController.store')
-Route.patch('/specialitati/:id','SpecialitatisController.updatespecialitate')
-Route.delete('/specialitati/:id','SpecialitatisController.stergspecialitate')
+Route.get('/toatespecialitatile', 'SpecialitatisController.index').middleware('auth')
+Route.post('/specialitati','SpecialitatisController.store').middleware('auth')
+Route.patch('/specialitati/:id','SpecialitatisController.updatespecialitate').middleware('auth')
+Route.delete('/specialitati/:id','SpecialitatisController.stergspecialitate').middleware('auth')
 
-Route.post('/registeruser','AuthController.register')
+Route.post('/registeruser','AuthController.register').middleware('auth')
 Route.get('/allusers','AuthController.index').middleware('auth')
-Route.patch('/users/:id','AuthController.updateuser')
-Route.delete('/users/:id','AuthController.deleteuser')
+Route.patch('/users/:id','AuthController.updateuser').middleware('auth')
+Route.delete('/users/:id','AuthController.deleteuser').middleware('auth')
 Route.post('/login','AuthController.login')
 Route.post('/logout','AuthController.logout')
 

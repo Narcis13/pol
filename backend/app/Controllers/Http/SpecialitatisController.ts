@@ -3,16 +3,21 @@ import Specialitate from 'App/Models/Specialitate'
 import { schema} from '@ioc:Adonis/Core/Validator'
 
 export default class SpecialitatisController {
-    public async index(){
-        
-        return await Specialitate.all();
+    public async index({request}:HttpContextContract){
+        let idclinica=request.headers().idclinica;
+
+        const specialitati = await Specialitate.query()
+                                   .where({'idclinica':idclinica}) 
+     //   return await Specialitate.all();
+        return specialitati; 
     }
 
     public async store({request}:HttpContextContract){
 
         const validare_specialitate = schema.create(
             {
-                denumire:schema.string({trim:true})
+                denumire:schema.string({trim:true}),
+                idclinica:schema.number()
             }
         )
     

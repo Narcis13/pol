@@ -11,12 +11,14 @@ export default class AuthController {
 
     const validare_user = schema.create(
         {
-            nume:schema.string({trim:true},[rules.unique({table:'users',column:'nume'})]),
+            nume:schema.string({trim:true}),
+            numeunic:schema.string({trim:true},[rules.unique({table:'users',column:'numeunic'})]),
             rol:schema.string({trim:true}),
             numeintreg:schema.string({trim:true}),
             password:schema.string({trim:true}),
             email:schema.string.optional({trim:true},[rules.email()]),
-            idclinica:schema.number()
+            idclinica:schema.number(),
+            createdby:schema.number(),
         }
     )
 
@@ -42,13 +44,37 @@ export default class AuthController {
     return users//user.all();
    }
 
-   public async updateuser({params,request}:HttpContextContract){
+   public async updateuser({params,request,response}:HttpContextContract){
 
     const utilizator = await user.findOrFail(params.id)
-     
-    return await utilizator
+    const validare_user = schema.create(
+      {
+          nume:schema.string({trim:true}),
+          numeunic:schema.string.optional({trim:true},[rules.unique({table:'users',column:'numeunic'})]),
+          rol:schema.string({trim:true}),
+          numeintreg:schema.string({trim:true}),
+          
+          email:schema.string.optional({trim:true},[rules.email()])
+
+      }
+     )
+
+     try {
+      const utilizator_validat = await request.validate({schema:validare_user,messages:{
+        'numeunic.unique':'Numele trebuie sa fie unic!',
+        'email':'Adresa email invalida!'
+      }});
+
+      return await utilizator
+      .merge(utilizator_validat)
+      .save()
+    } catch (error) {
+      response.send({errors:error.messages})
+    }
+   /* return await utilizator
         .merge(request.body())
-        .save()
+        .save()*/
+
 
    }
 

@@ -33,6 +33,9 @@ export default class user extends BaseModel {
   @column()
   public idclinica: number
 
+  @column()
+  public createdby: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

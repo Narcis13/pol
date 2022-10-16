@@ -10,7 +10,7 @@
                 <q-banner inline-actions rounded class="bg-orange text-white">
                     Utilizatori platforma programare online
                     <template v-slot:action>
-                        <q-btn @click="tab='adaugare'" flat label="Adauga" />
+                        <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
                 </q-banner>
                 <q-card class="q-mt-sm">
@@ -52,23 +52,24 @@
 
                     <q-tab-panel name="editare">
                         <div class="q-gutter-md" style="max-width: 480px">
-                            <q-input v-model="nume_user" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume utilizator *" />
-                            <q-input v-model="numeintreg" :rules="[val => !!val || 'Cimp obligatoriu']" label="Nume complet *" />
-                            <q-input v-model="rol" :rules="[val => !!val || 'Cimp obligatoriu']" label="Rol *" />
-                            <q-input v-model="email" label="Adresa e-mail" />
-                            <q-input type="password" v-model="parola_user" :rules="[val => !!val || 'Cimp obligatoriu']" label="Parola *" />
+                            <q-input autofocus v-model="nume_user" :rules="[val => !!val || 'Cimp obligatoriu (min 5 caractere)',val => val.length > 4 || 'Minimum 5 caractere!']" lazy-rules label="Nume utilizator *" dense/>
+                            <q-input v-model="numeintreg" :rules="[val => !!val || 'Cimp obligatoriu (min 5 caractere)',val => val.length > 4 || 'Minimum 5 caractere!']"  lazy-rules label="Nume complet *" dense/>
+                            <q-input v-model="rol" readonly label="Rol *" dense/>
+                            <q-input v-model="email" label="Adresa e-mail" dense autocomplete="new-password"/>
+                           
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
 
                     <q-tab-panel name="adaugare">
                         <div class="q-gutter-md" style="max-width: 480px">
-                            <q-input v-model="nume_user" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume utilizator *" />
-                            <q-input v-model="numeintreg" :rules="[val => !!val || 'Cimp obligatoriu']" label="Nume complet *" />
-                            <q-input v-model="rol" :rules="[val => !!val || 'Cimp obligatoriu']" label="Rol *" />
-                            <q-input v-model="email" label="Adresa e-mail" />
-                            <q-input type="password" v-model="parola_user" :rules="[val => !!val || 'Cimp obligatoriu']" label="Parola *" />
-                            <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <q-input autofocus v-model="nume_user" :rules="[val => !!val || 'Cimp obligatoriu (min 5 caractere)',val => val.length > 4 || 'Minimum 5 caractere!']" lazy-rules label="Nume utilizator *" dense/>
+                            <q-input v-model="numeintreg" :rules="[val => !!val || 'Cimp obligatoriu (min 5 caractere)',val => val.length > 4 || 'Minimum 5 caractere!']"  lazy-rules label="Nume complet *" dense/>
+                            <q-input v-model="rol" readonly label="Rol *" dense/>
+                            <q-input v-model="email" label="Adresa e-mail" dense/>
+                            <q-input type="password" no-error-icon v-model="parola_user" hint="Min. 8 caractere " bottom-slots error-message="Folositi litere mari,mici,cifre si semne!" :error="!parolaInvalida" label="Parola *" autocomplete="new-password" dense/>
+                            <q-input type="password" no-error-icon v-model="confirmare_parola" bottom-slots error-message="Parola trebuie sa fie aceeasi!" :error="!parolaDiferita" label="Confirmare parola *" autocomplete="new-password" dense/>
+                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!formularValid" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
                     </q-tab-panels>
@@ -100,6 +101,7 @@ export default defineComponent({
         let rol=ref('operator')
         let email=ref('')
         let parola_user=ref('')
+        let confirmare_parola=ref('')
 
 //computed zone
         let actiune = computed(()=>{
@@ -153,7 +155,7 @@ export default defineComponent({
                             persistent: true
                         }).onOk(() => {
                              console.log('>>>> Sterg ',id,arguments)
-                             axios.delete(process.env.host+`users/${id}`,).then(
+                             axios.delete(process.env.host+`users/${id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
                                             $q.notify({
@@ -196,21 +198,31 @@ export default defineComponent({
                         nume:nume_user.value,
                         numeintreg :numeintreg.value,
                         rol:rol.value,
-                        email:email.value 
+                        email:email.value ,
+                       // numeunic:state.userselectat.nume_user+global.state.user.idclinica
                }
-            //   console.log('patch',user_modificat,state.userselectat.id)
-            axios.patch(process.env.host+`users/${state.userselectat.id}`,user_modificat).then(res =>{
+               if(state.userselectat.nume_user!==nume_user.value) user_modificat.numeunic=nume_user.value+global.state.user.idclinica
+             // console.log('patch',user_modificat,state.userselectat,nume_user.value)
+            axios.patch(process.env.host+`users/${state.userselectat.id}`,user_modificat,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                                    console.log('Am editat utilizator ',res.data)
                                 totiuserii();
                                 reset();
                                 tab.value='lista';
-                                $q.notify({
+                                if(res.data.errors)
+                                         $q.notify({
+                                                        message:'EROARE! Cod: '+res.data.errors.errors[0].message,
+                                                        timeout:3000,
+                                                        position:'top',
+                                                        color:'negative'
+                                                        }) 
+                                   else
+                                    $q.notify({
                                         message:'Utilizator actualizat cu succes!',
                                         timeout:2000,
                                         position:'top',
                                         color:'positive'
-                                        }) 
+                                        })
 
                                             }).catch(err=>{
                                                 console.log(err)
@@ -228,14 +240,18 @@ export default defineComponent({
                         numeintreg :numeintreg.value,
                         rol:rol.value,
                         password:parola_user.value,
-                        email:email.value 
+                        email:email.value ,
+                        idclinica:global.state.user.idclinica,
+                        numeunic:nume_user.value+global.state.user.idclinica,
+                        createdby:global.state.user.idutilizator
+
 
                     } 
                     console.log('salvez user',user_nou)
 
-                    axios.post(process.env.host+'registeruser',user_nou).then(res =>{
+                    axios.post(process.env.host+'registeruser',user_nou,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
-                                   console.log('Am salvat utilizator nou',res.data)
+                                console.log('Am salvat utilizator nou',res.data)
                                 totiuserii();
                                 reset();
                                 tab.value='lista';
@@ -266,6 +282,16 @@ export default defineComponent({
            }
 
        }
+        let parolaInvalida=computed(()=>{
+                const hasUpperCase = /[A-Z]/.test(parola_user.value);
+                const hasLowerCase = /[a-z]/.test(parola_user.value);
+                const hasNumbers = /\d/.test(parola_user.value);
+                const hasNonalphas = /\W/.test(parola_user.value);
+                return parola_user.value.length>7&&(hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas ==4)
+             })
+        let parolaDiferita=computed(()=>{
+                return  parola_user.value==confirmare_parola.value
+             })
 
         return {
             tab,
@@ -276,8 +302,15 @@ export default defineComponent({
              rol,
              email,
              parola_user,
+             confirmare_parola,
              salveaza,
              actiune,
+             reset,
+             parolaInvalida,
+             parolaDiferita,
+             formularValid:computed(()=>{
+                  return parolaInvalida&&parolaDiferita&&nume_user.value.length>4&&numeintreg.value.length>4
+             }),
             onLeft (p) {
                 tab.value='editare'
                 editeaza(p);
