@@ -8,7 +8,7 @@
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
                 <q-banner inline-actions rounded class="bg-orange text-white">
-                    Utilizatori platforma programare online
+                    Specialitati medicale
                     <template v-slot:action>
                         <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
@@ -52,17 +52,17 @@
 
                     <q-tab-panel name="editare">
                         <div class="q-gutter-md" style="max-width: 480px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Specialitate medicala *" />
+                            <q-input autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea specialitatii trebuie sa fie unica!" :error="!denumireUnica"  label="Specialitate medicala *" />
 
-                            <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <div class="q-mt-lg flex flex-center"><q-btn outline :disable="!denumireUnica" rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
 
                     <q-tab-panel name="adaugare">
                         <div class="q-gutter-md" style="max-width: 480px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Specialitate medicala *" />
+                            <q-input autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea specialitatii trebuie sa fie unica!" :error="!denumireUnica"  label="Specialitate medicala *" />
 
-                            <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <div class="q-mt-lg flex flex-center"><q-btn :disable="!denumireUnica" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
                     </q-tab-panels>
@@ -233,11 +233,22 @@ export default defineComponent({
 
        }
 
+       let denumireUnica=computed(()=>{
+                 let existaDeja=false;
+
+                 state.specialitati.map(s=>{
+                    if (s.denumire==denumire.value) existaDeja=true
+                 })
+                return  !existaDeja&&denumire.value.length>2
+             })
+
+
         return {
             tab,
             global,
              state,
              denumire,
+             denumireUnica,
        reset,
              salveaza,
              actiune,

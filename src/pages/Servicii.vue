@@ -8,7 +8,7 @@
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
                 <q-banner inline-actions rounded class="bg-orange text-white">
-                    Utilizatori platforma programare online
+                    Servicii medicale
                     <template v-slot:action>
                         <q-btn @click="tab='adaugare'" flat label="Adauga" />
                     </template>
@@ -53,17 +53,17 @@
 
                     <q-tab-panel name="editare">
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Denumire serviciu *" />
-                            <q-slider style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'" snap :max="240" color="green"/>
-                            <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <q-input class="q-mb-lg" autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea serviciului trebuie sa fie unica!" :error="!denumireUnica" label="Denumire serviciu *" />
+                            <q-slider class="q-mt-lg" style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'" snap :max="240" color="green"/>
+                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
 
                     <q-tab-panel name="adaugare">
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Denumire serviciu *" />
-                            <q-slider style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'"  snap :max="240" color="green"/>
-                            <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <q-input class="q-mb-lg" autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea serviciului trebuie sa fie unica!" :error="!denumireUnica" label="Denumire serviciu *" />
+                            <q-slider class="q-mt-lg" style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'"  snap :max="240" color="green"/>
+                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
                     </q-tab-panels>
@@ -91,7 +91,7 @@ export default defineComponent({
         let tab=ref('lista')
         let denumire=ref('')
         let durata=ref(5);
-        
+        let token = global.state.user.token;
 
 //computed zone
         let actiune = computed(()=>{
@@ -99,7 +99,7 @@ export default defineComponent({
         })
 
         function toateserviciile(){
-                axios.get(process.env.host+`toateserviciile`).then(
+                axios.get(process.env.host+`toateserviciile`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -141,7 +141,7 @@ export default defineComponent({
                             persistent: true
                         }).onOk(() => {
                              console.log('>>>> Sterg ',id,arguments)
-                             axios.delete(process.env.host+`servicii/${id}`,).then(
+                             axios.delete(process.env.host+`servicii/${id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
                                             $q.notify({
@@ -168,7 +168,7 @@ export default defineComponent({
         function editeaza(p){
                 console.log('editez...',p)
              //   let userselectat={}
-                state.specialitati.map(s=>{
+                state.servicii.map(s=>{
                     if(s.id==p) state.serviciuselectat=s
                 })
               denumire.value=state.serviciuselectat.denumire
@@ -183,7 +183,7 @@ export default defineComponent({
                   
                }
             //   console.log('patch',user_modificat,state.userselectat.id)
-            axios.patch(process.env.host+`servicii/${state.serviciuselectat.id}`,serv_modificat).then(res =>{
+            axios.patch(process.env.host+`servicii/${state.serviciuselectat.id}`,serv_modificat,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                                    console.log('Am editat serv ',res.data)
                                 toateserviciile();
@@ -209,12 +209,13 @@ export default defineComponent({
            } else {
                     let serv_nou={
                         denumire:denumire.value,
-                        durata:durata.value
+                        durata:durata.value,
+                        idclinica:global.state.user.idclinica,
                    
                     } 
                     console.log('salvez serv',serv_nou)
 
-                    axios.post(process.env.host+'servicii',serv_nou).then(res =>{
+                    axios.post(process.env.host+'servicii',serv_nou,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                                 //   console.log('Am salvat utilizator nou',res.data)
                                 toateserviciile();
@@ -240,6 +241,15 @@ export default defineComponent({
 
        }
 
+       let denumireUnica=computed(()=>{
+                 let existaDeja=false;
+
+                 state.servicii.map(s=>{
+                    if (s.denumire==denumire.value) existaDeja=true
+                 })
+                return  !existaDeja&&denumire.value.length>2
+             })
+
         return {
             tab,
             global,
@@ -248,6 +258,7 @@ export default defineComponent({
              durata,
              salveaza,
              actiune,
+             denumireUnica,
             onLeft (p) {
                 tab.value='editare'
                 editeaza(p);

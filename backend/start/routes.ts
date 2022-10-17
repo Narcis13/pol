@@ -62,10 +62,10 @@ Route.delete('/users/:id','AuthController.deleteuser').middleware('auth')
 Route.post('/login','AuthController.login')
 Route.post('/logout','AuthController.logout')
 
-Route.post('/servicii','ServiciusController.store')
-Route.get('/toateserviciile', 'ServiciusController.index')
+Route.post('/servicii','ServiciusController.store').middleware('auth')
+Route.get('/toateserviciile', 'ServiciusController.index').middleware('auth')
 Route.patch('/servicii/:id','ServiciusController.updateserviciu')
-Route.delete('/servicii/:id','ServiciusController.deleteserviciu')
+Route.delete('/servicii/:id','ServiciusController.deleteserviciu').middleware('auth')
 
 Route.post('/medici','MedicsController.register')
 Route.get('/totimedicii', 'MedicsController.index')

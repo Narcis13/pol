@@ -8,8 +8,9 @@ export default class ServiciusController {
 
         const validare_serviciu = schema.create(
             {
-                denumire:schema.string({trim:true},[rules.unique({table:'servicius',column:'denumire'})]),
-                durata:schema.number([rules.range(5,240)])
+                denumire:schema.string({trim:true}/*,[rules.unique({table:'servicius',column:'denumire'})]*/),
+                durata:schema.number([rules.range(5,240)]),
+                idclinica:schema.number()
 
             }
         )
@@ -23,9 +24,13 @@ export default class ServiciusController {
     
        }
 
-       public async index(){
+       public async index({request}:HttpContextContract){
+        const idclinica=request.headers().idclinica;
+        const servicii = await Serviciu.query()
+        .where({'idclinica':idclinica}) 
 
-        return Serviciu.all();
+        return servicii; 
+       
        }
     
        public async updateserviciu({params,request}:HttpContextContract){
