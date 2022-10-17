@@ -17,7 +17,7 @@
 
  ==== BUGURI ======
 
- - nu prea merge editarea serviciilor
+ - pt diaCRITICE CHARSET=utf8mb4 eventual unicode_ci;
  - la administrarea programarilor daca derulez la o anumita saptamina si apoi schimb cabinetul ramine default saptamina aceea de dinainte....
 
 
