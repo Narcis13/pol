@@ -141,7 +141,7 @@ export default defineComponent({
 
                                 res => {
                                             $q.notify({
-                                                message:'Specialitate stearsa cu succes!',
+                                                message:'Specialitate inactivata cu succes!',
                                                 timeout:2000,
                                                 position:'top',
                                                 color:'positive'

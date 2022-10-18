@@ -13,6 +13,9 @@ export default class Serviciu extends BaseModel {
 
   @column()
   public idclinica: number
+
+  @column()
+  public stare:string
   
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

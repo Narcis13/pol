@@ -85,3 +85,11 @@ CREATE TABLE `satisfactias` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+
+====== pt diacritice si STARTED
+ALTER TABLE `pols`.`specialitates` 
+CHARACTER SET = utf8mb4 , COLLATE = utf8mb4_unicode_ci ,
+CHANGE COLUMN `denumire` `denumire` VARCHAR(255) CHARACTER SET 'utf8mb4' NULL DEFAULT NULL ,
+ADD COLUMN `stare` VARCHAR(45) NOT NULL DEFAULT 'activ' AFTER `idclinica`;
+

@@ -10,6 +10,9 @@ export default class Specialitate extends BaseModel {
 
   @column()
   public idclinica: number
+
+  @column()
+  public stare:string
   
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

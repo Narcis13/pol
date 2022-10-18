@@ -7,7 +7,7 @@ export default class SpecialitatisController {
         let idclinica=request.headers().idclinica;
 
         const specialitati = await Specialitate.query()
-                                   .where({'idclinica':idclinica}) 
+                                   .where({'idclinica':idclinica,'stare':'activ'}) 
      //   return await Specialitate.all();
         return specialitati; 
     }
@@ -45,7 +45,9 @@ export default class SpecialitatisController {
         const spec = await Specialitate.findOrFail(params.id)
          
         await spec
-                     .delete()
-            return `Specialitate ${spec.denumire} a fost stearsa cu succes!`
+            .merge({stare:'inactiv'})
+            .save()
+                    // .delete()
+            return `Specialitate ${spec.denumire} a fost inactivata cu succes!`
        }
 }

@@ -27,7 +27,7 @@ export default class ServiciusController {
        public async index({request}:HttpContextContract){
         const idclinica=request.headers().idclinica;
         const servicii = await Serviciu.query()
-        .where({'idclinica':idclinica}) 
+        .where({'idclinica':idclinica,'stare':'activ'}) 
 
         return servicii; 
        
@@ -48,7 +48,9 @@ export default class ServiciusController {
         const serviciu = await Serviciu.findOrFail(params.id)
          
         await serviciu
-                     .delete()
-            return `Serviciul ${serviciu.denumire} a fost sters cu succes!`
+            .merge({stare:'inactiv'})
+            .save()
+                   // .delete()
+            return `Serviciul ${serviciu.denumire} a fost inactivat cu succes!`
        }
 }
