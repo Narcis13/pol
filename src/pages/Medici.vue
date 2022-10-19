@@ -8,7 +8,7 @@
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
                 <q-banner inline-actions rounded class="bg-orange text-white">
-                    Utilizatori platforma programare online
+                    Medici platforma programare online
                     <template v-slot:action>
                         <q-btn @click="tab='adaugare'" flat label="Adauga" />
                     </template>
@@ -71,14 +71,25 @@
                     </q-tab-panel>
 
                     <q-tab-panel name="adaugare">
-                        <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="nume" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume medic *" />
-                            <q-input v-model="grad" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Grad profesional *" />
-                            <q-input v-model="codparafa" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Cod parafa *" />
-                            <q-select v-model="specialitate" :rules="[val => !!val || 'Cimp obligatoriu']" :options="specialitati" label="Specialitate *" />
-                            <q-input v-model="competente" label="Competente" />
-                            <q-input v-model="urlpoza"  label="URL poza" />
-                            <q-input v-model="mail"  label="Adresa e-mail" />
+                        <div class="q-pa-sm q-gutter-md" column style="width: 380px">
+                            <q-card class="my-card flex flex-center" style="max-width: 380px" bordered>
+                                <q-item>
+
+                                    <q-avatar size='120px'>
+                                     <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                                    </q-avatar>
+
+                             </q-item>
+
+                            </q-card>
+
+                            <q-input v-model="nume" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Nume medic *" dense/>
+                            <q-input v-model="grad" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Grad profesional *" dense/>
+                            <q-input v-model="codparafa" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Cod parafa *" dense/>
+                            <q-select v-model="specialitate" :rules="[val => !!val || 'Cimp obligatoriu']" :options="specialitati" label="Specialitate *" dense/>
+                            <q-input v-model="competente" label="Competente" dense/>
+                            <q-input v-model="urlpoza"  label="URL poza" dense/>
+                            <q-input v-model="mail"  label="Adresa e-mail" dense/>
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
