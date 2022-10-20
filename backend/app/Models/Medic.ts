@@ -26,6 +26,12 @@ export default class Medic extends BaseModel {
   @column()
   public idspecialitate:number
 
+  @column()
+  public idclinica:number
+
+  @column()
+  public stare: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

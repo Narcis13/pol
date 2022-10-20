@@ -29,7 +29,7 @@
 
                     <q-tab-panels v-model="tab" animated>
                     <q-tab-panel name="lista">
-                            <q-slide-item v-for="medic in state.medici" :key="medic.id" @left="onLeft(medic.id)" @right="onRight(medic.id)" left-color="purple" right-color="red">
+                            <q-slide-item v-for="medic in state.medici" :key="medic.id" @left="onLeft(medic.id)" @right="onRight(medic.id)" left-color="purple" right-color="red" style="width: 380px">
                                 <template v-slot:left>
                                 <div class="row items-center">
                                     <q-icon left name="create" /> Actualizeaza
@@ -42,14 +42,20 @@
                                 </template>
 
                                 <q-item>
+                                    <q-item-section top avatar>
+                                        <q-avatar size="64px">
+                                            <img :src="host+medic.urlpoza">
+                                        </q-avatar>
+                                    </q-item-section>
+
                                     <q-item-section>
-                                    <q-item-label>{{medic.nume}}</q-item-label>
-                                    <q-item-label caption>{{medic.grad}}</q-item-label>
-                                     <q-item-label caption>{{medic.specialitate}}</q-item-label>
+                                        <q-item-label>{{medic.nume}}</q-item-label>
+                                        <q-item-label caption>{{medic.grad}}</q-item-label>
+                                        <q-item-label caption>{{medic.specialitate}}</q-item-label>
                                     </q-item-section>
 
                                     <q-item-section side top>
-                                    <q-item-label caption>{{medic.codparafa}}</q-item-label>
+                                        <q-badge :label="medic.codparafa" />
                                     </q-item-section>
                                 </q-item>
 
@@ -76,7 +82,7 @@
                                 <q-item>
 
                                     <q-avatar size='120px'>
-                                     <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                                     <img :src="calePozaImplicita">
                                     </q-avatar>
 
                              </q-item>
@@ -115,9 +121,12 @@ export default defineComponent({
     setup() {
         const $q = useQuasar()
         const global=inject('global');
+        const token = global.state.user.token;
         let tab=ref('lista')
         let nume=ref('')
         let grad=ref('')
+        let host=ref(process.env.host)
+        let calePozaImplicita=ref(process.env.host+'/medici/doctor.png')
         let competente=ref('')
         let urlpoza = ref('')
         let mail = ref('')
@@ -151,7 +160,7 @@ export default defineComponent({
 
 
         function totimedicii(){
-                axios.get(process.env.host+`totimedicii`).then(
+                axios.get(process.env.host+`totimedicii`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -331,6 +340,8 @@ export default defineComponent({
         return {
             tab,
             global,
+            host,
+            calePozaImplicita,
              state,
              nume,
             grad,

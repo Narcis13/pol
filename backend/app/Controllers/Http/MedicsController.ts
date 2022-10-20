@@ -47,12 +47,14 @@ export default class MedicsController {
 
         }
 
-       public async index(){
+       public async index({request}:HttpContextContract){
+        let idclinica=request.headers().idclinica;
         const medici= await Database
             .from('medics')
             .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
             .select('medics.*')
             .select('specialitates.denumire')
+            .where({'medics.idclinica':idclinica,'medics.stare':'activ'}) 
      //   return Medic.all();
             return {medici}
        }
