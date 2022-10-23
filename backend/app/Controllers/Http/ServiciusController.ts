@@ -10,6 +10,7 @@ export default class ServiciusController {
             {
                 denumire:schema.string({trim:true}/*,[rules.unique({table:'servicius',column:'denumire'})]*/),
                 durata:schema.number([rules.range(5,240)]),
+                tarif:schema.number.optional(),
                 idclinica:schema.number()
 
             }

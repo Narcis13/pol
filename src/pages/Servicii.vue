@@ -10,7 +10,7 @@
                 <q-banner inline-actions rounded class="bg-orange text-white">
                     Servicii medicale
                     <template v-slot:action>
-                        <q-btn @click="tab='adaugare'" flat label="Adauga" />
+                        <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
                 </q-banner>
                 <q-card class="q-mt-sm">
@@ -44,7 +44,8 @@
                                 <q-item>
                                       <q-item-section>
                                             <q-item-label>{{serv.denumire}} </q-item-label>
-                                            <q-item-label>Durata: {{serv.durata}} </q-item-label>
+                                            <q-item-label>Durata: {{serv.durata}} minute</q-item-label>
+                                            <q-item-label>Tarif: {{serv.tarif}} lei</q-item-label>
                                            
                                       </q-item-section>     
                                 </q-item>
@@ -55,7 +56,18 @@
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
                             <q-input class="q-mb-lg" autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea serviciului trebuie sa fie unica!" :error="!denumireUnica" label="Denumire serviciu *" />
                             <q-slider class="q-mt-lg" style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'" snap :max="240" color="green"/>
-                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <q-input
+                                v-model.number="tarif"
+                                no-error-icon
+                                bottom-slots
+                                error-message="Doar valori mai mari ca 0"
+                                :error="!tarifMaiMareCaZero"
+                                type="number"
+                                label="Tarif"
+                                filled
+                               
+                                />
+                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica&&!tarifMaiMareCaZero" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
 
@@ -63,7 +75,18 @@
                         <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
                             <q-input class="q-mb-lg" autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea serviciului trebuie sa fie unica!" :error="!denumireUnica" label="Denumire serviciu *" />
                             <q-slider class="q-mt-lg" style="max-width: 320px" v-model="durata" :min="5" :step="5" label label-always :label-value="'Durata: ' + durata + 'min'"  snap :max="240" color="green"/>
-                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                            <q-input
+                                v-model.number="tarif"
+                                no-error-icon
+                                bottom-slots
+                                error-message="Doar valori mai mari ca 0"
+                                :error="!tarifMaiMareCaZero"
+                                type="number"
+                                label="Tarif"
+                                filled
+                               
+                                />
+                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica&&!tarifMaiMareCaZero" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
                     </q-tab-panels>
@@ -79,7 +102,7 @@ import { useQuasar } from 'quasar'
 const state = reactive(
   {
     servicii : []  ,
-    serviciuselectat:{}
+    serviciuselectat:null
   }
   )
 
@@ -91,6 +114,7 @@ export default defineComponent({
         let tab=ref('lista')
         let denumire=ref('')
         let durata=ref(5);
+        let tarif = ref(0)
         let token = global.state.user.token;
 
 //computed zone
@@ -108,6 +132,7 @@ export default defineComponent({
                         state.servicii.push({
                         denumire:s.denumire,
                         durata:s.durata,
+                        tarif:s.tarif,
                         id:s.id
                         
                         })
@@ -125,6 +150,8 @@ export default defineComponent({
        function reset(){
               denumire.value=''
               durata.value=5
+              state.serviciuselectat=null;
+              tarif.value=0
             
        }
 
@@ -173,13 +200,15 @@ export default defineComponent({
                 })
               denumire.value=state.serviciuselectat.denumire
               durata.value=state.serviciuselectat.durata
+              tarif.value=state.serviciuselectat.tarif
         }
 
        function salveaza(){
            if(tab.value=='editare'){
                let serv_modificat = {
                         denumire:denumire.value,
-                        durata:durata.value
+                        durata:durata.value,
+                        tarif:tarif.value
                   
                }
             //   console.log('patch',user_modificat,state.userselectat.id)
@@ -210,6 +239,7 @@ export default defineComponent({
                     let serv_nou={
                         denumire:denumire.value,
                         durata:durata.value,
+                        tarif:tarif.value,
                         idclinica:global.state.user.idclinica,
                    
                     } 
@@ -243,12 +273,20 @@ export default defineComponent({
 
        let denumireUnica=computed(()=>{
                  let existaDeja=false;
-
+                 //console.log('denumireUnica',state.serviciuselectat)
                  state.servicii.map(s=>{
-                    if (s.denumire==denumire.value) existaDeja=true
+                    if(state.serviciuselectat){
+                        if (s.denumire==denumire.value&&s.denumire!==state.serviciuselectat.denumire) existaDeja=true
+                    } else{
+                        if (s.denumire==denumire.value) existaDeja=true
+                    }
+                   
                  })
                 return  !existaDeja&&denumire.value.length>2
              })
+         let tarifMaiMareCaZero = computed(()=>{
+              return tarif.value>=0
+         })
 
         return {
             tab,
@@ -257,8 +295,11 @@ export default defineComponent({
              denumire,
              durata,
              salveaza,
+             tarif,
              actiune,
+             reset,
              denumireUnica,
+             tarifMaiMareCaZero,
             onLeft (p) {
                 tab.value='editare'
                 editeaza(p);

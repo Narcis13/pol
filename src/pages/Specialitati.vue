@@ -137,6 +137,7 @@ export default defineComponent({
                             persistent: true
                         }).onOk(() => {
                              console.log('>>>> Sterg ',id,arguments)
+                             //EFECTE IN CASCADA !!!!!!!!!!
                              axios.delete(process.env.host+`specialitati/${id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {

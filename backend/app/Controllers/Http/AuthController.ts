@@ -98,7 +98,7 @@ export default class AuthController {
        //   console.log(numeunic,password,slug,idclinica)
 
            const token = await auth.use('api').attempt(numeunic, password,{
-            expiresIn: '30 mins'
+            expiresIn: '60 mins'
           })
            //return token
 

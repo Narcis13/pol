@@ -113,7 +113,8 @@ export const csrf: ShieldConfig['csrf'] = {
     '/programare/:token',
     '/program/:id',
     '/programcabinet/:id',
-    '/uploadsigla'
+    '/uploadsigla',
+    '/uploadpozamedic'
   ],
 
   /*
