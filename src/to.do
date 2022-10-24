@@ -31,3 +31,4 @@
   PRIMARY KEY (`id`));
 
 
+xcodebuild -runFirstLaunch
