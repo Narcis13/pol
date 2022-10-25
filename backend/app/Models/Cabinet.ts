@@ -16,7 +16,16 @@ export default class Cabinet extends BaseModel {
   public orar: string
 
   @column()
+  public stare: string
+
+  @column()
+  public urlpoza: string
+
+  @column()
   public idoperator:number
+
+  @column()
+  public idclinica:number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

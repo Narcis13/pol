@@ -36,10 +36,10 @@ Route.get('/programcabinet/:id', 'ProgramsController.programcabinet')
 Route.patch('/program/:id','ProgramsController.updateprogram')
 Route.delete('/program/:id','ProgramsController.deleteprogram')
 
-Route.post('/cabinete', 'CabinetsController.register')
-Route.get('/cabinete', 'CabinetsController.index')
+Route.get('/toatecabinetele', 'CabinetsController.index')
+Route.post('/cabinete', 'CabinetsController.register').middleware('auth')
 Route.patch('/cabinete/:id','CabinetsController.updatecabinet')
-Route.delete('/cabinete/:id','CabinetsController.deletecabinet')
+Route.delete('/cabinete/:id','CabinetsController.deletecabinet').middleware('auth')
 
 Route.get('/solicitareprogramare/:slug', 'ProgramarisController.formular')
 Route.get('/formularsatisfactie/:slug', 'ClinicasController.formularsatisfactie')
@@ -83,3 +83,4 @@ Route.delete('/indis/:id','IndisponibilitatesController.deletemedic')
 
 Route.post('/uploadsigla','ClinicasController.uploadsigla')
 Route.post('/uploadpozamedic','MedicsController.uploadpoza')
+Route.post('/uploadpozacabinet','CabinetsController.uploadpoza')

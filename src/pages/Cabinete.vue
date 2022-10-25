@@ -8,9 +8,9 @@
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
                 <q-banner inline-actions rounded class="bg-orange text-white">
-                    Utilizatori platforma programare online
+                    Cabinete platforma programare online
                     <template v-slot:action>
-                        <q-btn @click="tab='adaugare'" flat label="Adauga" />
+                        <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
                 </q-banner>
                 <q-card class="q-mt-sm">
@@ -29,7 +29,7 @@
 
                     <q-tab-panels v-model="tab" animated>
                     <q-tab-panel name="lista">
-                            <q-slide-item v-for="cabinet in state.cabinete" :key="cabinet.id" @left="onLeft(cabinet.id)" @right="onRight(cabinet.id)" left-color="purple" right-color="red">
+                            <q-slide-item v-for="cabinet in state.cabinete" :key="cabinet.id" @left="onLeft(cabinet.id)" @right="onRight(cabinet.id)" left-color="purple" right-color="red" style="width: 370px">
                                 <template v-slot:left>
                                 <div class="row items-center">
                                     <q-icon left name="create" /> Actualizeaza
@@ -55,56 +55,211 @@
                     </q-tab-panel>
 
                     <q-tab-panel name="editare">
-                        <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Denumire cabinet *" />
+                        <div class="q-pa-sm q-gutter-md" column style="width: 370px">
 
-                             <q-select v-model="operator" :rules="[val => !!val || 'Cimp obligatoriu']" :options="operatori" label="Operator *" />
-                             <q-input
-                                v-model="dotare"
-                                label="Dotare"
-                                filled
-                                autogrow
-                                ></q-input>   
-                                <q-input
-                                v-model="servicii"
-                                label="Servicii"
-                                filled
-                                autogrow
-                                ></q-input>   
-                                <q-input
-                                v-model="orar"
-                                label="Orar"
-                                filled
-                                autogrow
-                                ></q-input>   
+                            <q-card class="my-card flex flex-center" style="max-width: 370px" bordered>
+                               
+
+
+                                    <q-img
+                                        :src="calePozaImplicita"
+                                        class="q-ma-sm"
+                                         style="height: 180px; max-width: 240px">
+                                    </q-img>
+                                   
+                           
+                             <q-uploader
+                                   :url="uploadURL"
+                                    auto-upload
+                                    :form-fields="ff"
+                                    field-name="pozacabinet"
+                                    max-file-size="1048576"
+                                    accept=".jpg,.png, image/*"
+                                    color="teal"
+                                    label="Schimba poza"
+                                    flat
+                                    bordered
+                                    no-thumbnails
+                                    @uploaded="pozaUrcata"
+                                    @rejected="onRejected"
+                                    style="max-width: 300px"
+                            />
+                            </q-card>
+
+                            <q-input autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea cabinetului trebuie sa fie unica!" :error="!denumireUnica" label="Denumire cabinet *" dense/>
+
+                             <q-select v-model="operator" :rules="[val => !!val || 'Cimp obligatoriu']" :options="operatori" label="Operator *" dense/>
+                                <q-tabs
+                                            v-model="tabu"
+                                            dense
+                                            class="text-grey"
+                                            active-color="primary"
+                                            indicator-color="primary"
+                                            
+                                            narrow-indicator
+                                            >
+                                            <q-tab name="dotare" label="Dotare" />
+                                            <q-tab name="servicii" label="Servicii" />
+                                            <q-tab name="orar" label="Orar" />
+                                            </q-tabs>
+
+                                            
+
+                                            <q-tab-panels v-model="tabu" animated>
+                                            <q-tab-panel name="dotare">
+                                                <q-editor 
+                                                    v-model="dotare"
+                                                    dense
+                                                    min-height="5rem" 
+                                                    :toolbar="[
+                                                                [
+                                                                {
+                                                                    label: $q.lang.editor.align,
+                                                                    icon: $q.iconSet.editor.align,
+                                                                    fixedLabel: true,
+                                                                    list: 'only-icons',
+                                                                    options: ['left', 'center', 'right', 'justify']
+                                                                },
+                                                                        'bold', 'italic',  'underline','hr', 'unordered'
+                                                                ],
+
+                                                            ]"
+                                                ></q-editor>
+                                            </q-tab-panel>
+
+                                            <q-tab-panel name="servicii">
+                                                <q-editor 
+                                                    v-model="servicii"
+                                                    dense
+                                                    min-height="5rem" 
+                                                    :toolbar="[
+                                                                [
+                                                                {
+                                                                    label: $q.lang.editor.align,
+                                                                    icon: $q.iconSet.editor.align,
+                                                                    fixedLabel: true,
+                                                                    list: 'only-icons',
+                                                                    options: ['left', 'center', 'right', 'justify']
+                                                                },
+                                                                        'bold', 'italic',  'underline','hr', 'unordered'
+                                                                ],
+
+                                                            ]"
+                                                ></q-editor>
+                                            </q-tab-panel>
+
+                                            <q-tab-panel name="orar">
+                                                <q-editor 
+                                                    v-model="orar"
+                                                    dense
+                                                    min-height="5rem" 
+                                                    :toolbar="[
+                                                                [
+                                                                {
+                                                                    label: $q.lang.editor.align,
+                                                                    icon: $q.iconSet.editor.align,
+                                                                    fixedLabel: true,
+                                                                    list: 'only-icons',
+                                                                    options: ['left', 'center', 'right', 'justify']
+                                                                },
+                                                                        'bold', 'italic',  'underline','hr', 'unordered'
+                                                                ],
+
+                                                            ]"
+                                                ></q-editor>
+                                            </q-tab-panel>
+                                            </q-tab-panels>  
                             <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
 
                     <q-tab-panel name="adaugare">
-                        <div class="q-pa-sm q-gutter-md" column style="max-width: 540px">
-                            <q-input v-model="denumire" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Denumire cabinet *" />
+                        <div class="q-pa-sm q-gutter-md" column style="width: 370px">
+                            <q-input dense autofocus no-error-icon v-model="denumire" bottom-slots error-message="Denumirea cabinetului trebuie sa fie unica!" :error="!denumireUnica" label="Denumire cabinet *"/>
 
-                             <q-select v-model="operator" :rules="[val => !!val || 'Cimp obligatoriu']" :options="operatori" label="Operator *" />
-                             <q-input
-                                v-model="dotare"
-                                label="Dotare"
-                                filled
-                                autogrow
-                                ></q-input>   
-                                <q-input
-                                v-model="servicii"
-                                label="Servicii"
-                                filled
-                                autogrow
-                                ></q-input>   
-                                <q-input
-                                v-model="orar"
-                                label="Orar"
-                                filled
-                                autogrow
-                                ></q-input>   
-                            <div class="q-mt-sm flex flex-center"><q-btn outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
+                             <q-select v-model="operator" :rules="[val => !!val || 'Cimp obligatoriu']" :options="operatori" label="Operator *" dense/>
+
+                                <q-tabs
+                                            v-model="tabu"
+                                            dense
+                                            class="text-grey"
+                                            active-color="primary"
+                                            indicator-color="primary"
+                                            
+                                            narrow-indicator
+                                            >
+                                            <q-tab name="dotare" label="Dotare" />
+                                            <q-tab name="servicii" label="Servicii" />
+                                            <q-tab name="orar" label="Orar" />
+                                            </q-tabs>
+
+                                            <q-separator />
+
+                                            <q-tab-panels v-model="tabu" animated>
+                                            <q-tab-panel name="dotare">
+                                                <q-editor 
+                                                    v-model="dotare"
+                                                    dense
+                                                    min-height="5rem" 
+                                                    :toolbar="[
+                                                                [
+                                                                {
+                                                                    label: $q.lang.editor.align,
+                                                                    icon: $q.iconSet.editor.align,
+                                                                    fixedLabel: true,
+                                                                    list: 'only-icons',
+                                                                    options: ['left', 'center', 'right', 'justify']
+                                                                },
+                                                                        'bold', 'italic',  'underline','hr', 'unordered'
+                                                                ],
+
+                                                            ]"
+                                                ></q-editor>
+                                            </q-tab-panel>
+
+                                            <q-tab-panel name="servicii">
+                                                <q-editor 
+                                                    v-model="servicii"
+                                                    dense
+                                                    min-height="5rem" 
+                                                    :toolbar="[
+                                                                [
+                                                                {
+                                                                    label: $q.lang.editor.align,
+                                                                    icon: $q.iconSet.editor.align,
+                                                                    fixedLabel: true,
+                                                                    list: 'only-icons',
+                                                                    options: ['left', 'center', 'right', 'justify']
+                                                                },
+                                                                        'bold', 'italic',  'underline','hr', 'unordered'
+                                                                ],
+
+                                                            ]"
+                                                ></q-editor>
+                                            </q-tab-panel>
+
+                                            <q-tab-panel name="orar">
+                                                <q-editor 
+                                                    v-model="orar"
+                                                    dense
+                                                    min-height="5rem" 
+                                                    :toolbar="[
+                                                                [
+                                                                {
+                                                                    label: $q.lang.editor.align,
+                                                                    icon: $q.iconSet.editor.align,
+                                                                    fixedLabel: true,
+                                                                    list: 'only-icons',
+                                                                    options: ['left', 'center', 'right', 'justify']
+                                                                },
+                                                                        'bold', 'italic',  'underline','hr', 'unordered'
+                                                                ],
+
+                                                            ]"
+                                                ></q-editor>
+                                            </q-tab-panel>
+                                            </q-tab-panels>
+                            <div class="q-mt-sm flex flex-center"><q-btn :disable="!denumireUnica" outline rounded color="primary" label="Salveaza" @click="salveaza" /></div>
                         </div>
                     </q-tab-panel>
                     </q-tab-panels>
@@ -129,23 +284,40 @@ export default defineComponent({
     setup() {
         const $q = useQuasar()
         const global=inject('global');
+        const token = global.state.user.token;
         let tab=ref('lista')
+        let tabu = ref('dotare')
         let denumire=ref('')
         let dotare=ref('')
         let servicii=ref('')
         let orar = ref('')
-
+        let ff=ref([{name: 'idcabinet', value: 0}])
+        let uploadURL = ref(process.env.host+'uploadpozacabinet')
+        let calePozaImplicita=ref(process.env.host+'/cabs/cabinet.png')
         let operator=ref(null)
         let operatori=[]
      //  let durata=ref(5);
-        
+         function pozaUrcata(info){
+          console.log('Poza urcata',JSON.parse(info.xhr.response).numefisier)
+          let numefisier=JSON.parse(info.xhr.response).numefisier
+          calePozaImplicita.value=process.env.host+'/cabs/'+numefisier;
+         // totimedicii();
+        }
+
+        function onRejected (rejectedEntries) {
+
+                $q.notify({
+                    type: 'negative',
+                    message: `Imagine invalida sau dimensiune fisier > 1Mb!`
+                })
+    }
 
 //computed zone
         let actiune = computed(()=>{
             return tab.value=='editare'? 'Actualizare' : tab.value=='lista'? '':'Adaugare' 
         })
 
-         axios.get(process.env.host+`allusers`).then(
+         axios.get(process.env.host+`allusers`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
            
@@ -164,7 +336,8 @@ export default defineComponent({
 
 
         function toatecabinetele(){
-                axios.get(process.env.host+`cabinete`).then(
+            console.log(global.state.user.idclinica);
+                axios.get(process.env.host+`toatecabinetele`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -185,7 +358,7 @@ export default defineComponent({
                 })
             
             
-                .catch(err =>{})
+                .catch(err =>{console.log(err)})
                 
         }
 
@@ -197,7 +370,8 @@ export default defineComponent({
               orar.value=''
               servicii.value=''
 
-              operator.value = {label:'',value:0};
+              operator.value = {label:'',value:null};
+              state.cabinetselectat=null;
        
             
        }
@@ -215,7 +389,7 @@ export default defineComponent({
                             persistent: true
                         }).onOk(() => {
                              console.log('>>>> Sterg ',id,arguments)
-                             axios.delete(process.env.host+`cabinete/${id}`,).then(
+                             axios.delete(process.env.host+`cabinete/${id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
                                             $q.notify({
@@ -246,7 +420,7 @@ export default defineComponent({
                     if(c.id==p) state.cabinetselectat=c
                 })
 
-         
+                ff.value[0]={name: 'idcabinet', value: state.cabinetselectat.id}
               denumire.value=state.cabinetselectat.denumire
                orar.value=state.cabinetselectat.orar
                 dotare.value=state.cabinetselectat.dotare
@@ -303,19 +477,28 @@ export default defineComponent({
                         servicii:servicii.value,
                         idoperator:operator.value.value,
                         orar:orar.value,
-       
+                        idclinica:global.state.user.idclinica,
+                        urlpoza:'/cabs/cabinet.png'
                       //  durata:durata.value
                    
                     } 
                     console.log('salvez cabinet',cabinet_nou)
 
-                    axios.post(process.env.host+'cabinete',cabinet_nou).then(res =>{
+                    axios.post(process.env.host+'cabinete',cabinet_nou,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                                 //   console.log('Am salvat utilizator nou',res.data)
                                 toatecabinetele();
                                 reset();
                                 tab.value='lista';
-                                $q.notify({
+                                if(res.data.errors)
+                                         $q.notify({
+                                                        message:'EROARE! Cod: '+res.data.errors.errors[0].message,
+                                                        timeout:3000,
+                                                        position:'top',
+                                                        color:'negative'
+                                                        }) 
+                                   else
+                                    $q.notify({
                                         message:'Cabinet adaugat cu succes!',
                                         timeout:2000,
                                         position:'top',
@@ -334,7 +517,19 @@ export default defineComponent({
            }
 
        }
-
+       let denumireUnica=computed(()=>{
+                 let existaDeja=false;
+                 //console.log('denumireUnica',state.serviciuselectat)
+                 state.cabinete.map(c=>{
+                    if(state.cabinetselectat){
+                        if (c.denumire==denumire.value&&c.denumire!==state.cabinetselectat.denumire) existaDeja=true
+                    } else{
+                        if (c.denumire==denumire.value) existaDeja=true
+                    }
+                   
+                 })
+                return  !existaDeja&&denumire.value.length>2
+             })
         return {
             tab,
             global,
@@ -343,10 +538,17 @@ export default defineComponent({
             dotare,
             servicii,
             orar,
-
+            reset,
             operator,
             operatori,
              salveaza,
+             denumireUnica,
+             tabu,
+             calePozaImplicita,
+             uploadURL,
+             ff,
+             onRejected,
+             pozaUrcata,
              actiune,
             onLeft (p) {
                 tab.value='editare'

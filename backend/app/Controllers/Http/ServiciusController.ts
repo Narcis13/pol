@@ -27,6 +27,7 @@ export default class ServiciusController {
 
        public async index({request}:HttpContextContract){
         const idclinica=request.headers().idclinica;
+        //console.log('ajung aici', idclinica)
         const servicii = await Serviciu.query()
         .where({'idclinica':idclinica,'stare':'activ'}) 
 
