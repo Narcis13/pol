@@ -109,6 +109,7 @@
                                             <q-tab-panel name="dotare">
                                                 <q-editor 
                                                     v-model="dotare"
+                                                   
                                                     dense
                                                     min-height="5rem" 
                                                     :toolbar="[
