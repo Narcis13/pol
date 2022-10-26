@@ -283,6 +283,7 @@ export default defineComponent({
                  competente.value=state.medicselectat.competente
                   urlpoza.value=state.medicselectat.urlpoza
                   calePozaImplicita.value=process.env.host+state.medicselectat.urlpoza
+                 
                    mail.value=state.medicselectat.mail
                    specialitati.map(s=>{
                        if(s.value==state.medicselectat.idspecialitate ) specialitate.value={value:state.medicselectat.idspecialitate,label:s.label}

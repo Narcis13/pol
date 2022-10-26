@@ -301,7 +301,7 @@ export default defineComponent({
           console.log('Poza urcata',JSON.parse(info.xhr.response).numefisier)
           let numefisier=JSON.parse(info.xhr.response).numefisier
           calePozaImplicita.value=process.env.host+'/cabs/'+numefisier;
-         // totimedicii();
+          toatecabinetele();
         }
 
         function onRejected (rejectedEntries) {
@@ -350,8 +350,9 @@ export default defineComponent({
                         idoperator:c.idoperator,
                         orar:c.orar,
                         id:c.id,
-                        operator:c.nume
-                        
+                        operator:c.nume,
+
+                        urlpoza:c.urlpoza
                         })
                     })
                 
@@ -425,11 +426,13 @@ export default defineComponent({
                orar.value=state.cabinetselectat.orar
                 dotare.value=state.cabinetselectat.dotare
                  servicii.value=state.cabinetselectat.servicii
+                 calePozaImplicita.value=process.env.host+state.cabinetselectat.urlpoza
+                 
 
                    operatori.map(o=>{
                        if(o.value==state.cabinetselectat.idoperator ) operator.value={value:state.cabinetselectat.idoperator,label:o.label}
                    })
-                        //  console.log('editez...',p,specialitati,state.medicselectat,specialitate.value)
+                          console.log('editez...',process.env.host+state.cabinetselectat.urlpoza)
                    //specialitate.value={value:state.medicselectat.id,label:}
              // durata.value=state.serviciuselectat.durata
         }
