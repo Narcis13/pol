@@ -11,9 +11,9 @@ export default class CabinetsController {
         const validare_cabinet = schema.create(
             {
                 denumire:schema.string({trim:true}),
-                dotare:schema.string.optional({trim:true,escape:true}),
-                servicii:schema.string.optional({trim:true,escape:true}),
-                orar:schema.string.optional({trim:true,escape:true}),
+                dotare:schema.string.optional({trim:true}),
+                servicii:schema.string.optional({trim:true}),
+                orar:schema.string.optional({trim:true}),
                 idoperator:schema.number(),
                 idclinica:schema.number(),
                 urlpoza:schema.string.optional({trim:true})

@@ -295,9 +295,13 @@ export default defineComponent({
         let tab=ref('lista')
         let tabu = ref('dotare')
         let denumire=ref('')
-        let dotare=ref('<div></div>')
-        let servicii=ref(null)
-        let orar = ref(null)
+        let dotare=ref('')
+        dotare.value=null;
+
+        let servicii=ref('')
+        servicii.value=null;
+        let orar = ref('')
+        orar.value=null;
         let ff=ref([{name: 'idcabinet', value: 0}])
         let uploadURL = ref(process.env.host+'uploadpozacabinet')
         let calePozaImplicita=ref(process.env.host+'/cabs/cabinet.png')
@@ -343,12 +347,13 @@ export default defineComponent({
 
 
         function toatecabinetele(){
-            console.log(global.state.user.idclinica);
+            
                 axios.get(process.env.host+`toatecabinetele`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
                     state.cabinete=[];
+                    console.log('Cabinete',res.data.cabinete);
                     res.data.cabinete.map(c=>{
                         state.cabinete.push({
                         denumire:c.denumire,
@@ -483,10 +488,10 @@ export default defineComponent({
            } else {
                     let cabinet_nou={
                         denumire:denumire.value,
-                        dotare:decodeEntities(dotare.value),
-                        servicii:decodeEntities(servicii.value),
+                        dotare:dotare.value,
+                        servicii:servicii.value,
                         idoperator:operator.value.value,
-                        orar:decodeEntities(orar.value),
+                        orar:orar.value,
                         idclinica:global.state.user.idclinica,
                         urlpoza:'/cabs/cabinet.png'
                       //  durata:durata.value
