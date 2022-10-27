@@ -280,6 +280,12 @@ const state = reactive(
   }
   )
 
+  var decodeEntities =function(text){
+    var textArea = document.createElement('textarea');
+  textArea.innerHTML = text;
+  return textArea.value;
+  }
+
 export default defineComponent({
     name:'Cabinete',
     setup() {
@@ -289,9 +295,9 @@ export default defineComponent({
         let tab=ref('lista')
         let tabu = ref('dotare')
         let denumire=ref('')
-        let dotare=ref('')
-        let servicii=ref('')
-        let orar = ref('')
+        let dotare=ref('<div></div>')
+        let servicii=ref(null)
+        let orar = ref(null)
         let ff=ref([{name: 'idcabinet', value: 0}])
         let uploadURL = ref(process.env.host+'uploadpozacabinet')
         let calePozaImplicita=ref(process.env.host+'/cabs/cabinet.png')
@@ -433,7 +439,7 @@ export default defineComponent({
                    operatori.map(o=>{
                        if(o.value==state.cabinetselectat.idoperator ) operator.value={value:state.cabinetselectat.idoperator,label:o.label}
                    })
-                          console.log('editez...',process.env.host+state.cabinetselectat.urlpoza)
+                          console.log('editez...',state.cabinetselectat.dotare)
                    //specialitate.value={value:state.medicselectat.id,label:}
              // durata.value=state.serviciuselectat.durata
         }
@@ -450,7 +456,7 @@ export default defineComponent({
                       /* durata:durata.value*/
                   
                }
-            //   console.log('patch',user_modificat,state.userselectat.id)
+             console.log('patch',cab_modificat)
             axios.patch(process.env.host+`cabinete/${state.cabinetselectat.id}`,cab_modificat).then(res =>{
                                 
                                    console.log('Am editat med ',res.data)
@@ -477,10 +483,10 @@ export default defineComponent({
            } else {
                     let cabinet_nou={
                         denumire:denumire.value,
-                        dotare:dotare.value,
-                        servicii:servicii.value,
+                        dotare:decodeEntities(dotare.value),
+                        servicii:decodeEntities(servicii.value),
                         idoperator:operator.value.value,
-                        orar:orar.value,
+                        orar:decodeEntities(orar.value),
                         idclinica:global.state.user.idclinica,
                         urlpoza:'/cabs/cabinet.png'
                       //  durata:durata.value
