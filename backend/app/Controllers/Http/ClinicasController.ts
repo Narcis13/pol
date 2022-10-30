@@ -6,6 +6,23 @@ import Satisfactia from 'App/Models/Satisfactia';
 export default class ClinicasController {
   public async index({}: HttpContextContract) {}
 
+  public async oclinica({params}: HttpContextContract) {
+      //console.log(params.id)
+      let c = await Clinica.findOrFail(params.id)
+      //console.log(c)
+      return c;
+
+  }
+   
+  public async updateclinica({request,params}:HttpContextContract){
+
+    const clinica = await Clinica.findOrFail(params.id)
+         
+    return await clinica
+        .merge(request.body())
+        .save()
+  }
+
   public async uploadsigla({request,response}: HttpContextContract) {
    // console.log('Incercare upload',request.body())
     let {idclinica} = request.body();

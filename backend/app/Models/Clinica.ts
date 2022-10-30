@@ -38,11 +38,11 @@ export default class Clinica extends BaseModel {
   @column()
   public emailconducere3: string
   @column()
-  public numePR: string
+  public numepr: string
   @column()
-  public telPR: string
+  public telpr: string
   @column()
-  public emailPR: string
+  public emailpr: string
   @column()
   public website: string
   @column()
