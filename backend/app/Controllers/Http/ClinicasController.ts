@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
 import Satisfactia from 'App/Models/Satisfactia';
+import {rules , schema} from '@ioc:Adonis/Core/Validator'
 
 export default class ClinicasController {
   public async index({}: HttpContextContract) {}
@@ -14,13 +15,48 @@ export default class ClinicasController {
 
   }
    
-  public async updateclinica({request,params}:HttpContextContract){
+  public async updateclinica({request,params,response}:HttpContextContract){
 
     const clinica = await Clinica.findOrFail(params.id)
-         
+
+    const validare_clinica = schema.create(
+      {
+        adresa: schema.string({trim:true}),
+        denumire: schema.string({trim:true}),
+        email:  schema.string.optional({trim:true},[rules.email()]),
+        emailconducere1: schema.string.optional({trim:true},[rules.email()]),
+        emailconducere2: schema.string.optional({trim:true},[rules.email()]),
+        emailconducere3: schema.string.optional({trim:true},[rules.email()]),
+        emailpr: schema.string.optional({trim:true},[rules.email()]),
+        facebook: schema.string.optional({trim:true}),
+        instagram: schema.string.optional({trim:true}),
+        numeconducere1:schema.string.optional({trim:true}),
+        numeconducere2: schema.string.optional({trim:true}),
+        numeconducere3: schema.string.optional({trim:true}),
+        numepr: schema.string.optional({trim:true}),
+        telconducere1: schema.string.optional({trim:true},[rules.mobile(),rules.maxLength(10),rules.minLength(10)]),
+        telconducere2: schema.string.optional({trim:true},[rules.mobile(),rules.maxLength(10),rules.minLength(10)]),
+        telconducere3: schema.string.optional({trim:true},[rules.mobile(),rules.maxLength(10),rules.minLength(10)]),
+        telpr: schema.string.optional({trim:true},[rules.mobile(),rules.maxLength(10),rules.minLength(10)]),
+        website: schema.string.optional({trim:true})
+
+      }
+  )
+  try {
+    const clinca_valida = await request.validate({schema:validare_clinica,messages:{
+    
+      'email':'Adresa email invalida!',
+      'mobile':'Numar de telefon invalid!'
+    }});
+
     return await clinica
-        .merge(request.body())
-        .save()
+    .merge(clinca_valida)
+    .save()
+  } catch (error) {
+    response.send({errors:error.messages})
+  }
+
+
   }
 
   public async uploadsigla({request,response}: HttpContextContract) {

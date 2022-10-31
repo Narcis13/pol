@@ -143,7 +143,7 @@
         </q-tab-panels>
       </q-card>
     </div>
-    <div class="q-mt-xl flex flex-center"><q-btn outline rounded color="primary" label="Salveaza!" @click="salveaza" /></div>
+    <div class="q-mt-xl flex flex-center"><q-btn  outline rounded color="primary" label="Salveaza!" @click="salveaza" /></div>
     </div>
     </q-page>
        
@@ -155,6 +155,7 @@
 <script>
 import { defineComponent,ref , reactive,inject,computed,onMounted} from 'vue'
 import axios from 'axios'
+import { useRouter } from "vue-router";
 import { useQuasar } from 'quasar'
 
 const state = reactive({
@@ -166,8 +167,10 @@ export default defineComponent({
     name:'Clinica',
     setup(){
         const global=inject('global');
+        const bus=inject('bus');
         const token = global.state.user.token;
         const $q = useQuasar()
+        const router =useRouter()
         let caleSigla=ref(process.env.host+global.state.user.clinica.fisiersigla)
         let uploadURL = ref(process.env.host+'uploadsigla')
         let denumireclinica=ref('');
@@ -196,11 +199,11 @@ export default defineComponent({
        let ff=ref([{name: 'idclinica', value: global.state.user.idclinica}])
 
        onMounted(()=>{
-         
+        console.log('Detalii clinica mounted...',global.state.user.clinica.slug)
             axios.get(process.env.host+`clinici/${global.state.user.idclinica}`).then(
 
                         res => {
-                            console.log('Detalii clinica mounted...',res.data)
+                        
                             denumireclinica.value=res.data.denumire;
                             sediuclinica.value=res.data.adresa;
                             emailclinica.value=res.data.email;
@@ -269,23 +272,26 @@ export default defineComponent({
             website: website.value,
            }
          
-          console.log('SALVEZ MODIFICARI CLINICA!',this)
+          console.log('SALVEZ MODIFICARI CLINICA!')
           axios.patch(process.env.host+`clinici/${global.state.user.idclinica}`,clinica_modificata,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
            
                              if(res.data.errors)
-                                      $q.notify({
+                                      {$q.notify({
                                                      message:'EROARE! Cod: '+res.data.errors.errors[0].message,
                                                      timeout:3000,
                                                      position:'top',
                                                      color:'negative'
-                                                     }) 
+                                                     }) }
                                 else
-                                 $q.notify({
+                                 {$q.notify({
                                      message:'Clinica actualizata cu succes!',
                                      timeout:2000,
                                      position:'top',
                                      color:'positive'
                                      }) 
+                                     bus.emit('succes-autentificare',{},global.state.user.clinica)
+                                    router.push('/'+global.state.user.clinica.slug)
+                                    }
 
                                          }).catch(err=>{
                                              console.log(err)

@@ -22,14 +22,14 @@ export default defineComponent({
     const global=inject('global');
     const bus=inject('bus');
     console.log('INDEX')
-    const route =useRoute()
+    const route = useRoute()
     console.log('Ruta este...',route.params.slug)
     bus.emit('ruta-stabilita',route.params.slug)
-    const numeclinica=ref('')//ref(global.state.user.clinica.denumire)
-    const urlsigla=ref('')//ref(process.env.host+global.state.user.clinica.fisiersigla)
+    const numeclinica=ref(global.state.user.clinica.denumire)
+    const urlsigla=ref(process.env.host+global.state.user.clinica.fisiersigla)
     
     bus.on('succes-autentificare',(user,clinica)=>{
-      //console.log('Receptionat succes autentificare',user,clinica)
+      console.log('Receptionat succes autentificare',user,clinica,global.state.user.autentificat)
       numeclinica.value=clinica.denumire
       urlsigla.value=process.env.host+clinica.fisiersigla
     })
