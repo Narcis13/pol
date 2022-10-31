@@ -166,6 +166,7 @@ export default defineComponent({
     name:'Clinica',
     setup(){
         const global=inject('global');
+        const token = global.state.user.token;
         const $q = useQuasar()
         let caleSigla=ref(process.env.host+global.state.user.clinica.fisiersigla)
         let uploadURL = ref(process.env.host+'uploadsigla')
@@ -268,7 +269,33 @@ export default defineComponent({
             website: website.value,
            }
          
-          console.log('SALVEZ MODIFICARI CLINICA!',clinica_modificata)
+          console.log('SALVEZ MODIFICARI CLINICA!',this)
+          axios.patch(process.env.host+`clinici/${global.state.user.idclinica}`,clinica_modificata,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
+           
+                             if(res.data.errors)
+                                      $q.notify({
+                                                     message:'EROARE! Cod: '+res.data.errors.errors[0].message,
+                                                     timeout:3000,
+                                                     position:'top',
+                                                     color:'negative'
+                                                     }) 
+                                else
+                                 $q.notify({
+                                     message:'Clinica actualizata cu succes!',
+                                     timeout:2000,
+                                     position:'top',
+                                     color:'positive'
+                                     }) 
+
+                                         }).catch(err=>{
+                                             console.log(err)
+                                                  $q.notify({
+                                                     message:'EROARE! Cod: '+res.data.errors.errors[0].message,
+                                                     timeout:3000,
+                                                     position:'top',
+                                                     color:'negative'
+                                                     }) 
+                                         })
         }
 
         return {
@@ -303,24 +330,3 @@ export default defineComponent({
     }
 })
 </script>
-/*
-denumireclinica,
-sediuclinica,
-emailclinica,
-facebook,
-instagram,
-website,
-numeconducere1,
-telconducere1,
-emailconducere1,
-numeconducere2,
-telconducere2,
-emailconducere2,
-numeconducere3,
-telconducere3,
-emailconducere3,
-numepr,
-telpr,
-emailpr,
-
-*/
