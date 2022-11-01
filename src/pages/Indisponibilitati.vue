@@ -140,7 +140,7 @@ export default defineComponent({
         let medic=ref(null)
         let medici=[]
         let tip=ref('C.O.')
-
+        let token = global.state.user.token;
         const today = new Date()
 
         console.log("today => ",today)
@@ -161,7 +161,7 @@ export default defineComponent({
 
         let perioada= ref({ from: date.formatDate(today, 'YYYY/MM/DD'), to: date.formatDate(tomorrow, 'YYYY/MM/DD') })
 
-        axios.get(process.env.host+`mediciperoperator/${userid}`).then(
+        axios.get(process.env.host+`mediciperoperator/${userid}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
            
@@ -181,7 +181,7 @@ export default defineComponent({
 
 
         function indisponibilitatile(){
-            axios.get(process.env.host+`indisoperator/${userid}`).then(
+            axios.get(process.env.host+`indisoperator/${userid}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -217,7 +217,7 @@ export default defineComponent({
 
         function sterge(){
           console.log('sterg ',selected.value[0].id)
-          axios.delete(process.env.host+`indis/${selected.value[0].id}`,).then(
+          axios.delete(process.env.host+`indis/${selected.value[0].id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
                                             $q.notify({
@@ -237,11 +237,12 @@ export default defineComponent({
                idmedic:medic.value.value,
                tipindisponibilitate:tip.value,
                datastart:date.formatDate(deladata.value, 'YYYY-MM-DD'),
-               datastop:date.formatDate(ladata.value, 'YYYY-MM-DD')
+               datastop:date.formatDate(ladata.value, 'YYYY-MM-DD'),
+               idclinica:global.state.user.idclinica
            }
            
 
-                            axios.post(process.env.host+'indis',indi).then(res =>{
+                            axios.post(process.env.host+'indis',indi,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
                               
                                 indisponibilitatile();

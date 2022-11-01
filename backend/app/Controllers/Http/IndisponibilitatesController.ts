@@ -13,6 +13,7 @@ export default class IndisponibilitatesController {
 
                 tipindisponibilitate:schema.string({trim:true}),
                 idmedic:schema.number(),
+                idclinica:schema.number(),
                 datastart:schema.date({}, [
                     rules.after('today')
                   ]),
@@ -58,7 +59,8 @@ export default class IndisponibilitatesController {
           return {test_data}
       } 
 
-      public async indisperoperator({params}:HttpContextContract){
+      public async indisperoperator({params,request}:HttpContextContract){
+        let idclinica  = request.headers().idclinica;
         const indis= await Database
           .from('indisponibilitates')
           .join('medics', 'indisponibilitates.idmedic', '=', 'medics.id')
@@ -67,6 +69,7 @@ export default class IndisponibilitatesController {
           .select('indisponibilitates.*')
           .select('medics.nume')
           .where('cabinets.idoperator',params.id==0?'>':'=',params.id)
+          .andWhere({'indisponibilitates.idclinica':idclinica})
           .groupByRaw('cabinets.idoperator,indisponibilitates.id,medics.nume')
           .orderBy('indisponibilitates.created_at', 'desc') // daca se devodeste a fi naspa o sa comentez linia asta!!!!
   //   return Medic.all();

@@ -69,17 +69,17 @@ Route.delete('/servicii/:id','ServiciusController.deleteserviciu').middleware('a
 
 Route.post('/medici','MedicsController.register').middleware('auth')
 Route.get('/totimedicii', 'MedicsController.index')
-Route.get('/mediciperoperator/:id', 'MedicsController.medicioperator')
+Route.get('/mediciperoperator/:id', 'MedicsController.medicioperator').middleware('auth')
 Route.patch('/medici/:id','MedicsController.updatemedic').middleware('auth')
 Route.delete('/medici/:id','MedicsController.deletemedic').middleware('auth')
 
-Route.post('/indis','IndisponibilitatesController.register')
+Route.post('/indis','IndisponibilitatesController.register').middleware('auth')
 Route.get('/indis', 'IndisponibilitatesController.index')
 Route.get('/inditeste','IndisponibilitatesController.inditeste')
-Route.get('/indisoperator/:id', 'IndisponibilitatesController.indisperoperator')
+Route.get('/indisoperator/:id', 'IndisponibilitatesController.indisperoperator').middleware('auth')
 Route.get('/indis/:id', 'IndisponibilitatesController.indisperspecialitate')
 Route.patch('/indis/:id','IndisponibilitatesController.updatemedic')
-Route.delete('/indis/:id','IndisponibilitatesController.deletemedic')
+Route.delete('/indis/:id','IndisponibilitatesController.deletemedic').middleware('auth')
 
 Route.post('/uploadsigla','ClinicasController.uploadsigla')
 Route.post('/uploadpozamedic','MedicsController.uploadpoza')

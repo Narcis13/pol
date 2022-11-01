@@ -34,8 +34,9 @@ export default class MedicsController {
           }
        }
 
-        public async medicioperator({params}:HttpContextContract){
-
+        public async medicioperator({params,request}:HttpContextContract){
+          let idclinica  = request.headers().idclinica;
+         // console.log(typeof idclinica)
             const medici= await Database
             .from('medics')
             .join('programs', 'programs.idmedic', '=', 'medics.id')
@@ -43,6 +44,7 @@ export default class MedicsController {
             .select('medics.id')
             .select('medics.nume')
             .where('cabinets.idoperator',params.id==0?'>':'=',params.id)
+            .andWhere({'cabinets.idclinica':idclinica})
             .groupByRaw('cabinets.idoperator,medics.id,medics.nume')
      //   return Medic.all();
             return {medici}

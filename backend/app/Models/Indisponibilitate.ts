@@ -17,6 +17,9 @@ export default class Indisponibilitate extends BaseModel {
   @column.dateTime()
   public datastop: DateTime
 
+  @column()
+  public idclinica: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
