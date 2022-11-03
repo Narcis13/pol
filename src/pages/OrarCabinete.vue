@@ -107,9 +107,10 @@ export default defineComponent({
     setup() {
         const $q = useQuasar()
         const global=inject('global');
+        const token = global.state.user.token;
         let tab=ref('lista')
 
-                axios.get(process.env.host+`cabinete`).then(
+                axios.get(process.env.host+`toatecabinetele`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -133,7 +134,7 @@ export default defineComponent({
             
                 .catch(err =>{})
 
-                axios.get(process.env.host+`totimedicii`).then(
+                axios.get(process.env.host+`totimedicii`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -158,7 +159,7 @@ export default defineComponent({
             
                 .catch(err =>{})
 
-                axios.get(process.env.host+`toateserviciile`).then(
+                axios.get(process.env.host+`toateserviciile`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -178,7 +179,7 @@ export default defineComponent({
                 .catch(err =>{})
 
             
-                axios.get(process.env.host+`program`).then(
+                axios.get(process.env.host+`program`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    

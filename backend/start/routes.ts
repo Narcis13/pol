@@ -29,7 +29,7 @@ Route.get('/programaremedic', 'ProgramarisController.programaremedic')
 Route.delete('/programare/:token', 'ProgramarisController.anulare')
 
 Route.post('/program', 'ProgramsController.register')
-Route.get('/program', 'ProgramsController.index')
+Route.get('/program', 'ProgramsController.index').middleware('auth')
 Route.get('/sarbatori', 'ProgramsController.sarbatori')
 Route.get('/program/:id', 'ProgramsController.cabinetespecialitate')
 Route.get('/programcabinet/:id', 'ProgramsController.programcabinet')

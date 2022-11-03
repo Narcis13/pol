@@ -57,10 +57,10 @@ export default class ProgramsController {
         return {sarbatori}
        } 
 
-       public async index(){
+       public async index({request}:HttpContextContract){
 
        // return Program.all();
-
+       let idclinica=request.headers().idclinica;
        const program= await Database
        .from('programs')
        .join('medics', 'programs.idmedic', '=', 'medics.id')
@@ -69,7 +69,7 @@ export default class ProgramsController {
        .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
        .select('programs.*')
        .select({numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
- 
+       .where({'programs.idclinica':idclinica})
        .orderBy('idcabinet', 'asc')
        .orderBy('ziuadinsaptamina', 'asc')
        .orderBy('orastart', 'asc')
