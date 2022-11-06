@@ -42,7 +42,7 @@
 
                                         <div class="row">
                                             <div :key="zi.zidinsaptamina" v-for="zi in zile" class="q-pa-md col-12 col-md">
-                                                    <zi-cabinet @interval-sters="intervalsters" :zi="zi" :liste="state.liste"/>
+                                                    <zi-cabinet @interval-sters="intervalsters" @interval-adaugat="intervaladaugat" :zi="zi" :liste="state.liste"/>
                                             </div>
                                         </div>        
                             </div>
@@ -183,7 +183,7 @@ export default defineComponent({
 
                 res => {
                    
-                        console.log('Orar cabinete ',res.data)
+                      // console.log('Orar cabinete ',res.data)
                         state.liste.program=[]
                         res.data.program.map(p=>{
                             state.liste.program.push(p)
@@ -214,6 +214,20 @@ export default defineComponent({
             intervalsters(p){
                 console.log('INterval sters (PARENT)',p)
                 state.liste.program = state.liste.program.filter((item) => item.id !== p.id);
+            },
+            intervaladaugat(id){
+                console.log('Interval adaugat ',id)
+                axios.get(process.env.host+`program`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
+
+                res => {
+                
+                    // console.log('Orar cabinete ',res.data)
+                        state.liste.program=[]
+                        res.data.program.map(p=>{
+                            state.liste.program.push(p)
+                        })
+
+                })
             }
             
         }

@@ -17,6 +17,9 @@
                   <q-btn to="indi13" class="full-width q-ma-xs" color="indigo"  no-caps>
                      Indisponibilitati<br>Medici
                   </q-btn>
+                  <q-btn to="libere638" class="full-width q-ma-xs" color="indigo"  no-caps>
+                     Zile libere<br>Sarbatori legale
+                  </q-btn>
               </q-card-section>
             </q-card>
           </q-expansion-item>

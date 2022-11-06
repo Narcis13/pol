@@ -35,7 +35,7 @@
                                     <q-item-label caption>{{interval.spec_medic}}</q-item-label>
                                     <q-item-label caption>( {{interval.durataserviciu}} min. )</q-item-label>
                         </q-item-section>
-
+                        <q-tooltip anchor="top start" self="center right" class="bg-accent">Gliseaza stinga pentru stergere</q-tooltip>
                
         </q-item>
       </q-slide-item>
@@ -56,6 +56,9 @@
                </q-card-section>
 
                 <q-card-section>
+                        <q-badge v-show="serviciu.durata>1" color="orange">
+                            <q-icon name="access_time" color="white" class="q-mt-xs q-mb-xs q-mr-sm" />{{serviciu.durata}} minute.
+                         </q-badge>
                             <q-select v-model="serviciu" :options="servicii" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Serviciu *" />
                             <q-select v-model="medic" :options="medici" :rules="[val => !!val || 'Cimp obligatoriu']"  label="Medic *" />
                             <q-input  label="Ora start" v-model="orastart" mask="time" :rules="['time']">
@@ -100,7 +103,7 @@
 
 </template>
 <script>
-import { defineComponent, ref ,reactive,computed} from 'vue'
+import { defineComponent, ref ,reactive,computed,inject} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
 const state=reactive({
@@ -111,11 +114,13 @@ export default defineComponent({
     name:'ZiCabinet',
     props:['zi','liste'],
     setup(props, { emit }){
-     
+    // console.log('setup zi cabinet')
        const $q = useQuasar()
+       const global=inject('global');
+        const token = global.state.user.token;
        let adaug_interval=ref(false)
        let orastart=ref('10:00')
-       let orastop=ref('10:00')
+       let orastop=ref('11:00')
        let medic=ref(null)
        let serviciu=ref({durata:1,value:0,label:''})
       let medici=[]
@@ -126,14 +131,24 @@ export default defineComponent({
 
        //computed
          let interval_valid=computed(()=>{
+            // console.log('verific interval valid',intervalele.value)
              var date1 = new Date(2015, 1,7,  orastart.value.split(":")[0],orastart.value.split(":")[1]);
 
              var date2 = new Date(2015, 1,7,  orastop.value.split(":")[0],orastop.value.split(":")[1]);
              var minute=(date2-date1)/60000
              var durataserviciu = serviciu.value.durata;
              var rest = minute % durataserviciu
-
-             return minute>0&&rest==0&&minute>=durataserviciu
+             
+             var interval_nesuprapus=true
+             intervalele.value.map((i)=>{
+                 
+                  var d1 = new Date(2015, 1,7,  i.orastart.split(":")[0],i.orastart.split(":")[1]);
+                  var d2 = new Date(2015, 1,7,  i.orastop.split(":")[0],i.orastop.split(":")[1]);
+                  //console.log('Date1',date1,'Date2',date2,'d1',d1,'d2',d2)
+                  if((date1>d1&&date1<d2)||(date2>d1&&date2<d2)||(date1.toISOString()==d1.toISOString())||(date2.toISOString()==d2.toISOString())) interval_nesuprapus=false
+             })
+             
+             return minute>0&&rest==0&&minute>=durataserviciu&&interval_nesuprapus&&medic.value&&serviciu.value.durata>1
          })
 
        props.liste.program.map(p=>{
@@ -184,8 +199,10 @@ export default defineComponent({
        function reset(){
          medic.value=null;
          serviciu.value={durata:1,value:0,label:''};
-         orastart.value='09:00'
-         orastop.value='09:00'
+         orastart.value='10:00'
+         orastop.value='11:00'
+         intervalele.value.sort((a,b) => (a.orastart > b.orastart) ? 1 : ((b.orastart > a.orastart) ? -1 : 0))
+        // console.log('reset intervalele',intervalele.value)
        }
 
        function adaugainterval(){
@@ -199,8 +216,9 @@ export default defineComponent({
                idserviciumedical:serviciu.value.value,
                orastart:orastart.value.toString().replace(':','')+'00',
                orastop:orastop.value.toString().replace(':','')+'00',
-               stare:"test",
-              ziuadinsaptamina:props.zi.zidinsaptamina
+               stare:"activ",
+              ziuadinsaptamina:props.zi.zidinsaptamina,
+              idclinica:global.state.user.idclinica
              }
 
              var date1 = new Date(2015, 1,7,  orastart.value.split(":")[0],orastart.value.split(":")[1]);
@@ -210,13 +228,14 @@ export default defineComponent({
               // console.log('Adauga interval',minute,info)
                
 
-              axios.post(process.env.host+'program',info).then(res =>{
+              axios.post(process.env.host+'program',info,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
-                                //   console.log('Am salvat utilizator nou',res.data)
-                           
+                                 //console.log('Am adaugat interval nou',props.liste.program)
+                                emit('interval-adaugat',{id:res.data.id})
                               
                                adaug_interval.value=false;
                               intervalele.value.push({
+                                          id:res.data.id,
                                           idmedic:medic.value.value,
                                           numemedic:medic.value.label,
                                           spec_medic:medic.value.specialitate,
@@ -235,7 +254,7 @@ export default defineComponent({
                                         position:'top',
                                         color:'positive'
                                         }) 
-
+                                      //  console.log('Am adaugat interval nou',props.liste.program)
                                             }).catch(err=>{
                                                 console.log(err)
                                                     $q.notify({
@@ -266,7 +285,7 @@ export default defineComponent({
           onLeft(id){
             console.log('Sterg interval cu id',id)
 
-                              axios.delete(process.env.host+`program/${id}`,).then(
+                              axios.delete(process.env.host+`program/${id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
                                    intervalele.value = intervalele.value.filter((item) => item.id !== id);

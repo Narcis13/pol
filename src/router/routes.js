@@ -14,7 +14,8 @@ const routes = [
       { path: '/clin777', component: () => import('pages/Clinica.vue') },
       { path: '/indi13', component: () => import('pages/Indisponibilitati.vue') },
       { path: '/orarcab777', component: () => import('pages/OrarCabinete.vue') },
-      { path: '/adminpro', component: () => import('pages/Administrare.vue') }
+      { path: '/adminpro', component: () => import('pages/Administrare.vue') },
+      { path: '/libere638', component: () => import('pages/Libere.vue') }
     ]
   },
   {

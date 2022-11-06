@@ -13,6 +13,7 @@ export default class ProgramsController {
                 orastop:schema.string({trim:true},[rules.minLength(6),rules.maxLength(6)]),
                 stare:schema.string.optional(),
                 idcabinet:schema.number(),
+                idclinica:schema.number(),
                 idserviciumedical:schema.number(),
                 idspecialitate:schema.number(),
                 idmedic:schema.number(),
@@ -47,11 +48,13 @@ export default class ProgramsController {
         return {program_cabinet}
         }
 
-       public async sarbatori(){
+       public async sarbatori({request}:HttpContextContract){
+        let idclinica=request.headers().idclinica;
         const sarbatori= await Database
         .from('sarbatori')
    
         .select('sarbatori.*')
+        .where({'sarbatori.idclinica':idclinica})
        
  //   return Medic.all();
         return {sarbatori}
@@ -69,7 +72,7 @@ export default class ProgramsController {
        .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
        .select('programs.*')
        .select({numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
-       .where({'programs.idclinica':idclinica})
+       .where({'programs.idclinica':idclinica,'programs.stare':'activ'})
        .orderBy('idcabinet', 'asc')
        .orderBy('ziuadinsaptamina', 'asc')
        .orderBy('orastart', 'asc')
@@ -127,7 +130,8 @@ export default class ProgramsController {
         const program = await Program.findOrFail(params.id)
          
         await program
-                     .delete()
-            return `Slotul de program clinica a fost sters cu succes!`
+                .merge({stare:'inactiv'})
+                .save()
+            return `Slotul de program clinica a fost inactivat cu succes!`
        }
 }
