@@ -109,10 +109,11 @@ export const csrf: ShieldConfig['csrf'] = {
     '/logout',
     '/program',
     '/programare',
-   
+    '/sarbatori',
     '/anulareprogramare',
     '/programare/:token',
     '/program/:id',
+    '/sarbatori/:id',
     '/programcabinet/:id',
     '/uploadsigla',
     '/uploadpozamedic',

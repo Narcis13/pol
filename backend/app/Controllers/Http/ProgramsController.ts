@@ -2,6 +2,7 @@
  import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Program from 'App/Models/Program';
+import Sarbatoare from 'App/Models/Sarbatoare';
 import { DateTime } from 'luxon'
 
 export default class ProgramsController {
@@ -30,6 +31,14 @@ export default class ProgramsController {
     
        }
        
+       public async sarbatoarenoua({request}:HttpContextContract){
+        // console.log(request.body())
+        const sarbatoare  = await Sarbatoare.create(request.body())
+        
+        return sarbatoare;
+
+       }
+
        public async programcabinet({params}:HttpContextContract){
 
         // return Program.all();
@@ -51,10 +60,10 @@ export default class ProgramsController {
        public async sarbatori({request}:HttpContextContract){
         let idclinica=request.headers().idclinica;
         const sarbatori= await Database
-        .from('sarbatori')
+        .from('sarbatoares')
    
-        .select('sarbatori.*')
-        .where({'sarbatori.idclinica':idclinica})
+        .select('sarbatoares.*')
+        .where({'sarbatoares.idclinica':idclinica})
        
  //   return Medic.all();
         return {sarbatori}
@@ -125,6 +134,15 @@ export default class ProgramsController {
     
        }
     
+       public async stergesarbatoare({params}:HttpContextContract){
+
+        const sarbatoare = await Sarbatoare.findOrFail(params.id)
+         
+        await sarbatoare
+                     .delete()
+            return `Sarbatoarea legala a fost stearsa cu succes!`
+       }
+
        public async deleteprogram({params}:HttpContextContract){
     
         const program = await Program.findOrFail(params.id)

@@ -29,6 +29,8 @@ Route.get('/programaremedic', 'ProgramarisController.programaremedic')
 Route.delete('/programare/:token', 'ProgramarisController.anulare')
 
 Route.post('/program', 'ProgramsController.register').middleware('auth')
+Route.post('/sarbatori', 'ProgramsController.sarbatoarenoua').middleware('auth')
+Route.delete('/sarbatori/:id','ProgramsController.stergesarbatoare').middleware('auth')
 Route.get('/program', 'ProgramsController.index').middleware('auth')
 Route.get('/sarbatori', 'ProgramsController.sarbatori')
 Route.get('/program/:id', 'ProgramsController.cabinetespecialitate')
