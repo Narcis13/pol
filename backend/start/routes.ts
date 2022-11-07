@@ -35,7 +35,7 @@ Route.get('/program', 'ProgramsController.index').middleware('auth')
 Route.get('/sarbatori', 'ProgramsController.sarbatori')
 Route.get('/program/:id', 'ProgramsController.cabinetespecialitate')
 Route.get('/programcabinet/:id', 'ProgramsController.programcabinet')
-//Route.patch('/program/:id','ProgramsController.updateprogram')
+Route.patch('/program/:id','ProgramsController.updatesarbatoare').middleware('auth')
 Route.delete('/program/:id','ProgramsController.deleteprogram').middleware('auth')
 
 Route.get('/toatecabinetele', 'CabinetsController.index')

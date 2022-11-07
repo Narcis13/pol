@@ -46,21 +46,21 @@
           </q-td>
           <q-td key="detalii" :props="props">
             {{ props.row.detalii }}
-            <q-popup-edit v-model="props.row.detalii" auto-save v-slot="scope" @save="editeaza(props.row.id,'detalii')" buttons>
+            <q-popup-edit v-model="props.row.detalii" auto-save v-slot="scope"  @hide="editeaza(props.row.id,'detalii',props.row.detalii)" buttons>
               <q-input v-model="scope.value" dense autofocus  />
             </q-popup-edit>
           </q-td>
           <q-td key="zi" :props="props">
             {{ props.row.zi }}
-            <q-popup-edit v-model="props.row.zi" title="Modifica zi" buttons v-slot="scope" @save="editeaza">
-              <q-input type="number" v-model="scope.value" dense autofocus />
+            <q-popup-edit v-model="props.row.zi" title="Modifica zi" buttons v-slot="scope" @hide="editeaza(props.row.id,'zi',props.row.zi)">
+              <q-input type="number" v-model="scope.value" dense autofocus :rules="[ val => val>=1&&val<=31 || 'Introduceti date valide']"/>
             </q-popup-edit>
           </q-td>
 
           <q-td key="luna" :props="props">
             {{ props.row.luna }}
-            <q-popup-edit v-model="props.row.luna" title="Modifica luna" buttons persistent v-slot="scope" @save="editeaza(props.row.id,'luna',props.row.luna)">
-              <q-input type="number" v-model="scope.value" dense autofocus  />
+            <q-popup-edit v-model="props.row.luna" title="Modifica luna" buttons persistent v-slot="scope" @hide="editeaza(props.row.id,'luna',props.row.luna)">
+              <q-input type="number" v-model="scope.value" dense autofocus :rules="[ val => val>=1&&val<=12 || 'Introduceti date valide']" />
             </q-popup-edit>
           </q-td>
 
@@ -109,7 +109,7 @@ import { defineComponent,inject,ref ,reactive,computed} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
 import { date } from 'quasar'
-import { parallelism } from 'app/backend/webpack.config'
+
 
 const columns = [
   {
@@ -153,7 +153,7 @@ export default defineComponent({
 
               res => {
                 
-                  console.log('Toate sarbatorile',res.data.sarbatori)
+                //  console.log('Toate sarbatorile',res.data.sarbatori)
                   state.sarbatori=[];
                    res.data.sarbatori.map(s=>{
                         state.sarbatori.push(s)
@@ -169,10 +169,59 @@ export default defineComponent({
 
     function editeaza(id,cheie,d){
       let newvalue=null
+      let dataValida=function(d,zi){
+        var dd=new Date(d)
+        return dd.getDate()===parseInt(zi)
+      }
+      let databuna=false
+      let dataunica=true
+      let newDate=null
       state.sarbatori.map(s=>{
-        if(s.id==id) newvalue=s[cheie]
+        if(s.id==id) {
+        
+          newvalue=s[cheie]
+          newDate = '2022/'+s.luna+'/'+s.zi
+         // console.log(newDate,dataValida(newDate,s.zi),s.luna,s.zi)
+          databuna=dataValida(newDate,s.zi)
+        }
       })
-      console.log('Editez...',id,cheie,newvalue)
+
+      state.sarbatori.map(s=>{
+        if(newDate=='2022/'+s.luna+'/'+s.zi&&s.id!==id) {
+            dataunica=false
+        }
+      })
+
+      if(databuna&&dataunica){
+        $q.notify('Data validata!')
+        axios.patch(process.env.host+`program/${id}`,{[cheie]:newvalue},{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
+                                
+                                console.log('Am editat sarbatopare ',res.data)
+                             toatesarbatorile();
+
+                             $q.notify({
+                                     message:'Actualizare reusita!',
+                                     timeout:2000,
+                                     position:'top',
+                                     color:'positive'
+                                     }) 
+
+                                         }).catch(err=>{
+                                             console.log(err)
+                                                 $q.notify({
+                                                     message:'EROARE!',
+                                                     timeout:2000,
+                                                     position:'top',
+                                                     color:'negative'
+                                                     })                  
+                                         })
+      }
+      else
+      {
+        $q.notify('Data invalida !')
+        toatesarbatorile()
+      }
+     // console.log('Editez...',id,cheie,newvalue,d)
     } 
     
     function inputdetaliu(v){

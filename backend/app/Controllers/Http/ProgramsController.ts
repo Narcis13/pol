@@ -64,6 +64,8 @@ export default class ProgramsController {
    
         .select('sarbatoares.*')
         .where({'sarbatoares.idclinica':idclinica})
+        .orderBy('sarbatoares.luna', 'asc')
+        .orderBy('sarbatoares.zi', 'asc')
        
  //   return Medic.all();
         return {sarbatori}
@@ -124,11 +126,11 @@ export default class ProgramsController {
         return {cabinete,zile}
        }
     
-       public async updateprogram({params,request}:HttpContextContract){
+       public async updatesarbatoare({params,request}:HttpContextContract){
     
-        const program = await Program.findOrFail(params.id)
+        const s = await Sarbatoare.findOrFail(params.id)
          
-        return await program
+        return await s
             .merge(request.body())
             .save()
     
