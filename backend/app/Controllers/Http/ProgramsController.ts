@@ -51,7 +51,7 @@ export default class ProgramsController {
         .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
         .select('programs.*')
         .select({grad:'medics.grad',numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
-        .where('cabinets.id',params.id)
+        .where({'cabinets.id':params.id,'programs.stare':'activ'})
         .orderBy('created_at', 'asc')
  //   return Medic.all();
         return {program_cabinet}
@@ -91,13 +91,14 @@ export default class ProgramsController {
        return {program}
        }
 
-     public async cabinetespecialitate({params}:HttpContextContract){
+     public async cabinetespecialitate({params,request}:HttpContextContract){
+        let idclinica=request.headers().idclinica;
         const cabinete= await Database
         .from('programs')
         .join('cabinets', 'programs.idcabinet', '=', 'cabinets.id')
 
         .select({idcabinet:'programs.idcabinet',cabinet:'cabinets.denumire'})
-        .where('programs.idspecialitate',params.id)
+        .where({'programs.idclinica':idclinica,'programs.idspecialitate':params.id,'programs.stare':'activ'})
         .groupBy('programs.idcabinet')
 
         let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO')//.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
@@ -111,7 +112,7 @@ export default class ProgramsController {
             pagina
         }) 
 
-        for(var i=1;i<35;i++){
+        for(var i=1;i<35;i++){   //for(var i=1;i<70;i++){   .... daca vreau 2 luni de programari in fata
            if(i%7==0) pagina++ 
            let zi= primazi.plus({days:i})
            zile.push({

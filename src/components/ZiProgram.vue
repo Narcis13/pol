@@ -46,7 +46,7 @@ export default defineComponent({
         props.liste.sarbatori.map(s=>{
             if(s==zicodata) sarbatoare=true
         })
-       console.log('Proprietati zi program',props.liste.sarbatori,props.zi,sarbatoare)
+       console.log('Proprietati zi program',props.liste,props.zi,sarbatoare)
         let intervale = ref([])
         const $q = useQuasar()
 
@@ -55,7 +55,7 @@ export default defineComponent({
 
      
         let programari=[]
-        axios.get(process.env.host+`programarecabinet/${props.liste.idc}`).then(
+        axios.get(process.env.host+`programarecabinet/${props.liste.idc}`,{headers:{'idclinica':props.liste.clinica.idclinica}}).then(
 
                                         res => {
                                         console.log('Program pe cabinet',props.liste.program);
@@ -105,7 +105,8 @@ export default defineComponent({
                                                                 grad:p.grad,
                                                                 index:idx,
                                                                 indexzi:props.zi.indexzi,
-                                                                data:props.zi.formatata
+                                                                data:props.zi.formatata,
+                                                                idclinica:props.liste.clinica.idclinica
                                                             })
                                                               idx++
                                                             t0=t1;
@@ -139,7 +140,8 @@ export default defineComponent({
 
                 orastart: interval.orastart,
                 orastop: interval.orastop,
-                stare: "activ"
+                stare: "activ",
+                idclinica:interval.idclinica
           }
  console.log('Rezerv index',info,index)
          

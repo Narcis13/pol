@@ -10,8 +10,20 @@
 
 
     <div v-if="solicitarevalida" class="q-mt-xs flex flex-center column" style="max-width:90vw">
-
-            <q-item v-if="solicitarevalida" class="q-mt-xs">
+           <div v-if="state.cabinete.length>0" class="row ">
+            <q-img
+             :src="urlsigla"
+             ratio="4/3"
+             fit="contain"
+             style="height: 90px; max-width: 120px"
+             class="col-4"
+             />
+             <div class="col-8 column" style="min-width:300px">
+              <div class="text-h6">{{numeclinica}}</div>
+              <div>Email: {{emailclinica}}</div>
+             </div>
+           </div>
+            <q-item v-if="solicitarevalida&&tab=='lista'&&state.cabinete.length>0" class="q-mt-xs">
                 <q-item-section side>
                   <q-avatar rounded size="64px">
                     <img src="~assets/doctor.jpeg" />
@@ -30,7 +42,7 @@
                     <q-tab-panels v-model="tab" animated>
 
                         <q-tab-panel name="lista">
-                            <div class="row items-start">
+                            <div v-if="state.cabinete.length>0" class="row items-start">
                                 <q-card v-for="cab in state.cabinete" inline style="width: 300px" class="bg-secondary text-white q-ma-xs" :key="cab.idcabinet">
                                     <q-card-section>
                                         <div class="text-h5">{{cab.cabinet}}</div>
@@ -45,6 +57,13 @@
                                     </q-card-actions>
 
                                 </q-card>
+                            </div>
+                            <div v-else>
+                              <q-banner  class="text-white bg-red">
+                                Ne pare rau, niciun cabinet nu este disponibil conform solicitarii dumneavoastra!
+
+                              </q-banner>
+                               
                             </div>
                         </q-tab-panel>
 
@@ -72,7 +91,7 @@
                 </div>    
 
             <q-page-sticky  position="bottom-right" :offset="[24, 24]">
-                    <q-btn v-show="paginacurenta!==5&&tab=='editare'" @click="paginaUrmatoare"  fab   icon="east" color="accent" >
+                    <q-btn v-show="paginacurenta!==limitamaximapaginacurenta&&tab=='editare'" @click="paginaUrmatoare"  fab   icon="east" color="accent" >
                     <q-tooltip anchor="top start" self="center right" class="bg-accent">Zilele urmatoare</q-tooltip>
                     </q-btn>
             </q-page-sticky>
@@ -101,28 +120,22 @@ export default defineComponent({
     ZiProgram
   },
   setup(){
-    let solicitarevalida=ref(false)
+    let solicitarevalida=ref(true)
     let tab=ref('lista')
+    let numeclinica=ref('')
+    let emailclinica=ref('')
     let zile=ref([])
     let zileperpagina=ref([])
     let paginacurenta=ref(1)
+    let urlsigla=ref("https://placeimg.com/500/300/nature")
+    let limitamaximapaginacurenta=5 // aici trebuie sa fie 10 daca vreau 2 lunide programare
     const route =useRoute()
     console.log('Ruta este...',route.params.token)
 
     onMounted(() => {
       // aici aflu sarbatorile legale...
-       console.log('Component Programari is mounted!',state.liste.sarbatori)
-           axios.get(process.env.host+`sarbatori`).then(
-                               
-                                res => {
-                                  console.log('Sarbatori',res.data)
-                                  state.liste.sarbatori=[]
-                                    res.data.sarbatori.map(s=>{
-                                      state.liste.sarbatori.push('d'+s.zi.toString()+'m'+s.luna.toString())
-                                    })
-                                    console.log('Component Programari is mounted!',state.liste.sarbatori)
-                                })       
-                                .catch(err =>{})
+      // console.log('Component Programari is mounted!',state.liste.sarbatori)
+
         
                 
       })
@@ -134,10 +147,29 @@ export default defineComponent({
                   res => {
                   console.log('Raspuns la o solicitare',res.data.solicitare_q[0]);
                   idc=res.data.solicitare_q[0].idspecialitate;
+
                   if(res.data.solicitare_q[0]!=='undefined'&&res.data.solicitare_q[0].confirmat==null){
                    state.solicitare=res.data.solicitare_q[0]
                    solicitarevalida.value=true
                    state.liste.indis=[]
+                     urlsigla.value=process.env.host+res.data.solicitare_q[0].calesiglaclinica
+                     numeclinica.value=res.data.solicitare_q[0].numeclinica
+                     emailclinica.value=res.data.solicitare_q[0].emailclinica
+                   state.liste.clinica={idclinica:res.data.solicitare_q[0].idclinica,numeclinica:res.data.solicitare_q[0].numeclinica,emailclinica:res.data.solicitare_q[0].emailclinica}
+                   axios.get(process.env.host+`sarbatori`,{headers:{'idclinica':res.data.solicitare_q[0].idclinica}}).then(
+                               
+                               res => {
+                                // console.log('Sarbatori',res.data)
+                                 state.liste.sarbatori=[]
+                                   res.data.sarbatori.map(s=>{
+                                     state.liste.sarbatori.push('d'+s.zi.toString()+'m'+s.luna.toString())
+                                   })
+                                  console.log('Component Programari is mounted!',state.liste.sarbatori)
+                               })       
+                               .catch(err =>{})
+
+
+
                                 axios.get(process.env.host+`indis/${idc}`).then(
                                
                                 res => {
@@ -155,7 +187,7 @@ export default defineComponent({
                                 })       
                                 .catch(err =>{})
 
-                                 axios.get(process.env.host+`program/${idc}`).then(
+                                 axios.get(process.env.host+`program/${idc}`,{headers:{'idclinica':res.data.solicitare_q[0].idclinica}}).then(
 
                                         res => {
                                         console.log('Cabinete pe specialitate',idc,res.data);
@@ -218,8 +250,13 @@ export default defineComponent({
        zileperpagina,
        paginacurenta,
        maprogramez,
+       urlsigla,
+       numeclinica,
+       emailclinica,
+       limitamaximapaginacurenta,
        paginaUrmatoare(){
-           if(paginacurenta.value<6) paginacurenta.value ++   
+        
+           if(paginacurenta.value<6) paginacurenta.value ++   //if(paginacurenta.value<11) paginacurenta.value ++ daca vreau 2 luni de programare
        
           
            zileperpagina.value=[]

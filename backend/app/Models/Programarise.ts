@@ -43,6 +43,9 @@ export default class Programarise extends BaseModel {
   @column()
   public token: string
 
+  @column()
+  public idclinica:number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

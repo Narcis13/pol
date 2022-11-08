@@ -77,12 +77,14 @@ export default class ProgramarisController {
 
         }
 
-    public async programarecabinet({params}:HttpContextContract){
+    public async programarecabinet({params,request}:HttpContextContract){
+
+        let idclinica=request.headers().idclinica;
       //  let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO').toFormat('yyyy-MM-dd').toString();
         const programari= await Database
         .from('programarises')
         .select('programarises.*')
-        .where({'programarises.stare':'activ','programarises.idcabinet':params.id})
+        .where({'programarises.stare':'activ','programarises.idcabinet':params.id,'programarises.idclinica':idclinica})
         .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
         .orderBy('created_at', 'asc')
  //   return Medic.all();
@@ -177,8 +179,10 @@ export default class ProgramarisController {
         const solicitare_q = await Database
             .from('solicitares')
             .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')
+            .join('clinicas','solicitares.idclinica','=','clinicas.id')
             .select('solicitares.*')
             .select('specialitates.denumire')
+            .select({numeclinica:'clinicas.denumire',calesiglaclinica:'clinicas.fisiersigla',emailclinica:'clinicas.email'})
             .where('solicitares.hash',params.token)
             
              return {solicitare,solicitare_q};
