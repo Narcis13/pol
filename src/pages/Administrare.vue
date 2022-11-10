@@ -8,40 +8,7 @@
                 </div>
 
     <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column" style="max-width:90vw">
-            <div class="row flex flex-center ">
-                    <q-input class="col q-ml-md q-mt-md" dense outlined v-model="dataraport" mask="date" :rules="['date']">
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                            <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
-                                <q-date v-model="dataraport">
-                                <div class="row items-center justify-end">
-                                    <q-btn v-close-popup label="Inchide" color="primary" flat />
-                                </div>
-                                </q-date>
-                            </q-popup-proxy>
-                            </q-icon>
-                        </template>
-                     </q-input>
-                     <q-badge class="q-ml-md " color="purple">
-                        <q-icon name="keyboard_double_arrow_right" color="white" />
-                     </q-badge>
-                     <q-input class="col q-ml-md q-mt-md" dense outlined v-model="dataraportstop" mask="date" :rules="['date']">
-                        <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                            <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
-                                <q-date v-model="dataraportstop">
-                                <div class="row items-center justify-end">
-                                    <q-btn v-close-popup label="Inchide" color="primary" flat />
-                                </div>
-                                </q-date>
-                            </q-popup-proxy>
-                            </q-icon>
-                        </template>
-                     </q-input>
 
-
-                      <q-btn :disable="dataraportstop<dataraport" class="col q-ml-md" @click="raport"    color="primary" icon="mail" label="RAPORT" /> 
-            </div>
 
             <q-tab-panels v-model="tab" animated>
 
@@ -56,7 +23,7 @@
                                     <q-separator dark />
 
                                     <q-card-actions>
-                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id)">Programari</q-btn>
+                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire)">Programari</q-btn>
 
                                     </q-card-actions>
 
@@ -72,7 +39,7 @@
                                                 <q-tooltip>Inapoi la toate cabinetele</q-tooltip>
                                             </q-btn>
                                             <q-space />
-                                            <div class="text-h4">Toate cabinetele</div>
+                                            <div class="text-h4">{{numecabinet}}</div>
 
                                         </q-bar>
 
@@ -87,7 +54,7 @@
                     </q-tab-panels>
     </div>
             <q-page-sticky  position="bottom-right" :offset="[24, 24]">
-                    <q-btn v-show="paginacurenta!==5&&tab=='editare'" @click="paginaUrmatoare"  fab   icon="east" color="accent" >
+                    <q-btn v-show="paginacurenta!==10&&tab=='editare'" @click="paginaUrmatoare"  fab   icon="east" color="accent" >
                     <q-tooltip anchor="top start" self="center right" class="bg-accent">Zilele urmatoare</q-tooltip>
                     </q-btn>
             </q-page-sticky>
@@ -106,6 +73,7 @@ import axios from 'axios'
 const state = reactive(
   {
     cabinete : []  ,
+
     cabinetselectat:{},
     liste:{}
   }
@@ -119,23 +87,33 @@ export default defineComponent({
     setup() {
         const global=inject('global');
         let tab=ref('lista')
+        let numecabinet=ref('Toate cabinetele')
         let zile=ref([])
         let zileperpagina=ref([])
         let paginacurenta=ref(1)
+        const token = global.state.user.token;
         let userid= global.state.user.rol=='admin'? 0:global.state.user.idutilizator
         console.log('Administrare programari',userid)
-        let dataraport = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
-        let dataraportstop = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
 
-        function raport(){
-            let d=date.formatDate(dataraport.value,'YYYY-MM-DD')
-            let dbis=date.formatDate(dataraportstop.value,'YYYY-MM-DD')
-            console.log(dbis,dataraportstop.value>=dataraport.value)
-           if(dataraportstop.value>=dataraport.value)  window.open(process.env.host+'raportprogramari?d='+d+'&userid='+userid+'&stop='+dbis,'_blank');
-        }
+        axios.get(process.env.host+`toatespecialitatile`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
+
+            res => {
+            
+                state.liste.specialitati=[];
+                res.data.map(s=>{
+                    state.liste.specialitati.push({
+                    denumire:s.denumire,
+                    id:s.id
+                    
+                    })
+                })
+
+            })
 
 
-                axios.get(process.env.host+`cabinete`).then(
+            .catch(err =>{})
+
+        axios.get(process.env.host+`toatecabinetele`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
                    
@@ -159,7 +137,7 @@ export default defineComponent({
             
                 .catch(err =>{})
 
-                axios.get(process.env.host+`program/0}`).then(
+                axios.get(process.env.host+`program/0}`,{headers:{'idclinica':global.state.user.idclinica}}).then(
 
                                         res => {
                                         console.log('Zile...',res.data);
@@ -172,11 +150,11 @@ export default defineComponent({
                                         }
                                         ).catch(err =>{})
 
-        function programariCabinet(idcabinet){
+        function programariCabinet(idcabinet,denumirecabinet){
                 console.log('Programarile cabinetului ',idcabinet)
                  // aici trebuie sa interoghez programarile cabinetului
-
-                axios.get(process.env.host+`programaricabinet/${idcabinet}`).then(
+                 numecabinet.value=denumirecabinet
+                axios.get(process.env.host+`programaricabinet/${idcabinet}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                    res => {
                    
@@ -195,19 +173,18 @@ export default defineComponent({
         } 
 
         return {
-            dataraport,
-            dataraportstop,
+      
             global,
             tab,
             state,
             programariCabinet,
-            raport,
+         
              zile,
                     zileperpagina,
                     paginacurenta,
-                  
+                  numecabinet,
                     paginaUrmatoare(){
-                        if(paginacurenta.value<6) paginacurenta.value ++   
+                        if(paginacurenta.value<11) paginacurenta.value ++   
                     
                         
                         zileperpagina.value=[]

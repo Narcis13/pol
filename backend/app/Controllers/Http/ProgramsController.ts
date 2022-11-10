@@ -101,7 +101,7 @@ export default class ProgramsController {
         .where({'programs.idclinica':idclinica,'programs.idspecialitate':params.id,'programs.stare':'activ'})
         .groupBy('programs.idcabinet')
 
-        let primazi = DateTime.now().plus({days:1}).setLocale('ro-RO')//.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
+        let primazi =params.id>0 ? DateTime.now().plus({days:1}).setLocale('ro-RO'):DateTime.now().setLocale('ro-RO')//.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
         let zile : any[]=[]
         let pagina=1;
         zile.push({
@@ -109,10 +109,11 @@ export default class ProgramsController {
             iso:primazi.toISO(),
             formatata:primazi.toFormat('yyyy-MM-dd'),
             indexzi:primazi.weekday,
+            nrcrt:0,
             pagina
         }) 
-
-        for(var i=1;i<35;i++){   //for(var i=1;i<70;i++){   .... daca vreau 2 luni de programari in fata
+        let maxzile =params.id>0 ? 35: 70
+        for(var i=1;i<maxzile;i++){   //for(var i=1;i<70;i++){   .... daca vreau 2 luni de programari in fata
            if(i%7==0) pagina++ 
            let zi= primazi.plus({days:i})
            zile.push({
@@ -120,6 +121,7 @@ export default class ProgramsController {
             iso:zi.toISO(),
             formatata:zi.toFormat('yyyy-MM-dd'),
             indexzi:zi.weekday,
+            nrcrt:i,
             pagina
         }) 
         }

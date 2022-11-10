@@ -33,6 +33,9 @@
                   <q-btn to="adminpro" class="full-width q-ma-xs" color="teal" no-caps>
                     Administrare<br>Programari
                   </q-btn>
+                  <q-btn to="rappro" class="full-width q-ma-xs" color="teal" no-caps>
+                    Rapoarte<br>Programari
+                  </q-btn>
 
               </q-card-section>
             </q-card>

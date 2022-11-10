@@ -15,6 +15,7 @@ const routes = [
       { path: '/indi13', component: () => import('pages/Indisponibilitati.vue') },
       { path: '/orarcab777', component: () => import('pages/OrarCabinete.vue') },
       { path: '/adminpro', component: () => import('pages/Administrare.vue') },
+      { path: '/rappro', component: () => import('pages/Rapoarte.vue') },
       { path: '/libere638', component: () => import('pages/Libere.vue') }
     ]
   },

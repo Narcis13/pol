@@ -94,6 +94,7 @@ export const csrf: ShieldConfig['csrf'] = {
   */
   exceptRoutes: [
     '/specialitati',
+    '/solicitarereprogramare',
     '/indis',
     '/indis/:id',
     '/users/:id',

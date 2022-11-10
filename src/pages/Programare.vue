@@ -130,7 +130,8 @@ export default defineComponent({
     let urlsigla=ref("https://placeimg.com/500/300/nature")
     let limitamaximapaginacurenta=5 // aici trebuie sa fie 10 daca vreau 2 lunide programare
     const route =useRoute()
-    console.log('Ruta este...',route.params.token)
+    let elemente=route.params.token.split('-')
+    console.log('Ruta este...',elemente)
 
     onMounted(() => {
       // aici aflu sarbatorile legale...
@@ -142,13 +143,13 @@ export default defineComponent({
 
              let idc=0;
 
-              axios.get(process.env.host+`solicitari/${route.params.token}`).then(
+              axios.get(process.env.host+`solicitari/${elemente[1]}`).then( //axios.get(process.env.host+`solicitari/${route.params.token}`).then(
 
                   res => {
                   console.log('Raspuns la o solicitare',res.data.solicitare_q[0]);
                   idc=res.data.solicitare_q[0].idspecialitate;
 
-                  if(res.data.solicitare_q[0]!=='undefined'&&res.data.solicitare_q[0].confirmat==null){
+                  if(res.data.solicitare_q[0]!=='undefined'&&res.data.solicitare_q[0].confirmat==null&&res.data.solicitare_q[0].hash==elemente[0]){
                    state.solicitare=res.data.solicitare_q[0]
                    solicitarevalida.value=true
                    state.liste.indis=[]

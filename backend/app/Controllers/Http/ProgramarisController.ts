@@ -136,9 +136,9 @@ export default class ProgramarisController {
         .join('solicitares', 'programarises.idsolicitare', '=', 'solicitares.id')
         .join('medics', 'programarises.idmedic', '=', 'medics.id')
         .select('programarises.*')
-        .select({medic:'medics.nume',nume:'solicitares.nume',telefon:'solicitares.telefon',email:'solicitares.email'})
+        .select({medic:'medics.nume',nume:'solicitares.nume',telefon:'solicitares.telefon',email:'solicitares.email',specialitateid:'solicitares.idspecialitate'})
         .where({'programarises.stare':'activ','programarises.idcabinet':params.id})
-        .andWhere('programarises.data','>=',DateTime.now().plus({days:1}).toSQLDate())
+        .andWhere('programarises.data','>=',DateTime.now()./*plus({days:1}).*/toSQLDate())
         .orderBy('programarises.data', 'asc')
         .orderBy('programarises.orastart', 'asc')
         programari.map(p=>{
@@ -175,7 +175,7 @@ export default class ProgramarisController {
 
     public async osolicitare({params}:HttpContextContract){
       
-        const solicitare = await Solicitare.findBy('hash',params.token) 
+       // const solicitare = await Solicitare.findBy('hash',params.token) 
         const solicitare_q = await Database
             .from('solicitares')
             .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')
@@ -183,9 +183,9 @@ export default class ProgramarisController {
             .select('solicitares.*')
             .select('specialitates.denumire')
             .select({numeclinica:'clinicas.denumire',calesiglaclinica:'clinicas.fisiersigla',emailclinica:'clinicas.email'})
-            .where('solicitares.hash',params.token)
+            .where('solicitares.id',params.token)
             
-             return {solicitare,solicitare_q};
+             return {solicitare_q};
     }
 
     public async solicitari({request,params}:HttpContextContract){
@@ -238,8 +238,15 @@ export default class ProgramarisController {
             return {solicitari}
        }
 
+    public async solicitarereprogramare({request}:HttpContextContract){
+       // console.log('solicitare',request.body())
+
+       const solicitare = await Solicitare.create(request.body())
+        return solicitare;
+    }  
+
     public async solicitare({request,response,session,view}:HttpContextContract){
-        //console.log('solicitare',request.body())
+
         const validare_solicitare = schema.create(
             {
                 nume:schema.string({trim:true},[rules.maxLength(70),rules.minLength(7)]),
@@ -270,13 +277,14 @@ export default class ProgramarisController {
         });
        const solicitare = await Solicitare.create(solicitare_validata);
        const hash:string=solicitare.hash;
+       const id:number = solicitare.id;
 
       await Mail.sendLater((message) => {
         message
           .from('programari@smupitesti.org')
           .to(request.input('email'))
           .subject('Programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
-          .htmlView('emails/programator', { nume: request.input('nume'),hash })
+          .htmlView('emails/programator', { nume: request.input('nume'),hash,id })
       })
        // response.redirect().toRoute('ProgramarisController.successolicitare')
        return view.render('welcome')
