@@ -33,6 +33,7 @@ export default defineComponent({
     name:'Anulare',
     setup() {
          const route =useRoute()
+        // let elemente=route.params.token.split('-')
         console.log('Ruta este...',route.params.token)
         let token=route.params.token;
         let mesaj=ref('interogare')

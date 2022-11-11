@@ -142,7 +142,8 @@ export default defineComponent({
             email:solicitare.value.email,
             idspecialitate:solicitare.value.specialitate.value,
             idclinica:global.state.user.idclinica,
-            mesaj:solicitare.value.mesaj
+            mesaj:solicitare.value.mesaj,
+            tip:'Intern'
            }
         
           axios.post(process.env.host+'solicitarereprogramare',repro).then(res =>{

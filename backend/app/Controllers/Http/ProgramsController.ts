@@ -112,8 +112,8 @@ export default class ProgramsController {
             nrcrt:0,
             pagina
         }) 
-        let maxzile =params.id>0 ? 35: 70
-        for(var i=1;i<maxzile;i++){   //for(var i=1;i<70;i++){   .... daca vreau 2 luni de programari in fata
+        //let maxzile =params.id>0 ? 35: 70
+        for(var i=1;i<70;i++){   //for(var i=1;i<70;i++){   .... daca vreau 2 luni de programari in fata
            if(i%7==0) pagina++ 
            let zi= primazi.plus({days:i})
            zile.push({

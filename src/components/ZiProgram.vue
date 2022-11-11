@@ -151,7 +151,7 @@ export default defineComponent({
                                 console.log('Programare noua',res.data)
                 if(res.data.data){
                                 let token= btoa('pentru data '+res.data.data+' la ora '+res.data.orastart+' ')
-                                this.$router.push(`./${token}/succes`)
+                                this.$router.push(`./${token}/succes/`+props.liste.mod)
                                 $q.notify({
                                         message:'Programare efectuata cu succes!',
                                         timeout:2000,

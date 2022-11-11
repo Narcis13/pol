@@ -34,7 +34,7 @@ export default class ProgramarisController {
               .from('programari@smupitesti.org')
               .to(email)
               .subject('Confirmare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
-              .htmlView('emails/confirmare', { medic:medic.nume,grad:medic.grad,nume,token:programare.token,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+              .htmlView('emails/confirmare', { medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
           })
 
         return programare;
@@ -47,13 +47,14 @@ export default class ProgramarisController {
        }
 
        public async anulare({params}:HttpContextContract){
-      
-        const programare = await Programarise.findBy('token',params.token) 
-        if (programare){
-            await programare
-            .delete()
+        let elemente=params.token.split('-')
+        const programare = await Programarise.findOrFail(elemente[1]) 
+        if (programare&& programare.token==elemente[0]){
+            programare.stare='anulata'
+            await programare.save()
                  return "Programare anulata cu succes!";
         }
+        return 'Eroare';
 
     }
     
@@ -187,6 +188,27 @@ export default class ProgramarisController {
             
              return {solicitare_q};
     }
+    
+    public async stergsolicitare({params}:HttpContextContract){
+         //console.log(params.token)   
+         const s = await Solicitare.findOrFail(params.token)
+         
+         await s
+                      .delete()
+             return `Solicitarea a fost stearsa cu succes!`
+    }
+
+    public async oprogramare({params}:HttpContextContract){
+          const pro = await Database
+                   .from('programarises')
+                   .join('medics','programarises.idmedic','=','medics.id')
+                   .join('cabinets','programarises.idcabinet','=','cabinets.id')
+                   .select('programarises.*')
+                   .select({medic:'medics.nume',cabinet:'cabinets.denumire'})
+                   .where({'programarises.idsolicitare':params.id})
+
+            return pro;       
+    }
 
     public async solicitari({request,params}:HttpContextContract){
 
@@ -219,14 +241,19 @@ export default class ProgramarisController {
 
              // console.log('Headere solicitari',request.headers().idclinica)
               let idclinica=request.headers().idclinica;
+              let idoperator:number = parseInt(request.headers().idoperator?.toString());
         //console.log('Solicitari....',dataminima)
         const solicitari= await Database
             .from('solicitares')
             .join('specialitates', 'solicitares.idspecialitate', '=', 'specialitates.id')
+            .join('programs', 'programs.idspecialitate', '=', 'solicitares.idspecialitate')
+            .join('cabinets','cabinets.id','=','programs.idcabinet')
             .select('solicitares.*')
             .select('specialitates.denumire')
             .where('solicitares.created_at','>=',dataminima)
+            .andWhere('cabinets.idoperator',idoperator==0?'>':'=',idoperator)
             .andWhere({'solicitares.idclinica':idclinica})
+            .groupByRaw('solicitares.id')
             .orderBy('solicitares.id','desc')
      //   return Medic.all();
          //   console.log(solicitari)

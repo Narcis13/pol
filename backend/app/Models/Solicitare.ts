@@ -22,6 +22,9 @@ export default class Solicitare extends BaseModel {
   public hash: string
 
   @column()
+  public tip: string
+
+  @column()
   public idspecialitate: number
 
   @column()

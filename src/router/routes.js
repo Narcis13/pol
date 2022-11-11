@@ -24,7 +24,7 @@ const routes = [
     component: () => import('layouts/ProgramariLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Programare.vue') },
-      { path: 'succes', component: () => import('pages/Succes.vue') },
+      { path: 'succes/:mod', component: () => import('pages/Succes.vue') },
       { path: 'anulare', component: () => import('pages/Anulare.vue') }
     ]
   },

@@ -128,11 +128,12 @@ export default defineComponent({
     let zileperpagina=ref([])
     let paginacurenta=ref(1)
     let urlsigla=ref("https://placeimg.com/500/300/nature")
-    let limitamaximapaginacurenta=5 // aici trebuie sa fie 10 daca vreau 2 lunide programare
+ // aici trebuie sa fie 10 daca vreau 2 lunide programare
     const route =useRoute()
     let elemente=route.params.token.split('-')
     console.log('Ruta este...',elemente)
-
+    state.liste.mod=elemente[2]
+    let limitamaximapaginacurenta=elemente[2]=='e'?5:10
     onMounted(() => {
       // aici aflu sarbatorile legale...
       // console.log('Component Programari is mounted!',state.liste.sarbatori)
@@ -257,7 +258,7 @@ export default defineComponent({
        limitamaximapaginacurenta,
        paginaUrmatoare(){
         
-           if(paginacurenta.value<6) paginacurenta.value ++   //if(paginacurenta.value<11) paginacurenta.value ++ daca vreau 2 luni de programare
+           if(paginacurenta.value<limitamaximapaginacurenta+1) paginacurenta.value ++   //if(paginacurenta.value<11) paginacurenta.value ++ daca vreau 2 luni de programare
        
           
            zileperpagina.value=[]

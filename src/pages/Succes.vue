@@ -2,9 +2,10 @@
 <q-page padding>
     <div class="doc-note">
         <p>Programarea dumneavoastra {{mesaj}} a fost inregistrata cu succes! In scurt timp veti primi un e-mail de confirmare.  </p>
-        <p>Va informam ca trebuie sa aveti in momentul prezentarii cardul de asigurat si biletul de trimitere</p>
+        <p>Va informam ca trebuie sa aveti in momentul prezentarii cardul de asigurat(daca a fost emis) si biletul de trimitere sau alte documente medicale pe care le considerati necesare</p>
         <p>Va multumim si va asteptam!</p>
     </div>
+    <q-btn v-show="reprogramare" icon="directions" label="INAPOI" stack glossy color="purple" to="../../../adminpro"/>
 </q-page>
 </template>
 <script>
@@ -15,15 +16,16 @@ export default defineComponent({
     name:'Succes',
     setup() {
          const route =useRoute()
-        console.log('Ruta este...',route.params.token)
+        console.log('Ruta este...',route.params.token,route.params.mod)
         let token=route.params.token;
 
         let mesaj=ref(atob(token))
 
-
+        let reprogramare = route.params.mod=='e'? false:true
 
         return {
-            mesaj
+            mesaj,
+            reprogramare
         }
     },
 })

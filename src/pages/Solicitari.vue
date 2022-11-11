@@ -41,6 +41,28 @@
         </q-btn-dropdown>
 
         <q-btn dense :disable="selected.length==0" class="q-ml-sm" color="primary"  label="Mesaj primit"  @click="afiseazaMesaj"/>
+
+        <div class="q-pa-md q-gutter-sm">
+          <q-btn :disable="selected.length==0||(selected.length>0&&selected[0].confirmat==null)" round color="primary" icon="event" @click="veziProgramarea">
+            <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                <strong>Vezi programarea</strong> 
+         
+             </q-tooltip>
+          </q-btn>
+          <q-btn :disable="selected.length==0||(selected.length>0&&(selected[0].confirmat==1||selected[0].tip=='Online'))" round color="primary" icon="directions" @click="reprogramare">
+            <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                <strong>Reprogramare</strong> 
+         
+             </q-tooltip>
+          </q-btn>
+          <q-btn :disable="selected.length==0||(selected.length>0&&selected[0].confirmat==1)" round color="red" icon="remove" @click="stergeSolicitarea" >
+            <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                <strong>Sterge solicitarea</strong> 
+         
+             </q-tooltip>
+          </q-btn>
+
+       </div>
         <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
           <template v-slot:append>
@@ -58,6 +80,7 @@
 import { defineComponent,ref , reactive,inject,computed} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
+import { date } from 'quasar'
 
 const state = reactive({
     solicitari:[],
@@ -79,6 +102,7 @@ const columns = [
   { name: 'telefon', align:'left',label: 'Telefon', field: 'telefon', sortable: true },
   { name: 'email', align:'left',label: 'Email', field: 'email' },
   { name: 'specialitate', align:'left',label: 'Specialitate', field: 'denumire', sortable: true },
+  { name: 'tip', align:'left',label: 'Tip', field: 'tip', sortable: true },
   { name: 'confirmat', label: 'Confirmata?', field: 'confirmat' ,align:'center'}
   
 ]
@@ -116,19 +140,25 @@ export default {
     let token = global.state.user.token;
      let intervalAles=ref(intervale[3])
      const $q = useQuasar()
-         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
+     let idoperator = global.state.user.rol=='admin' ? 0 : global.state.user.idutilizator
 
-                res => {
-                      console.log('Toate solicitarile',res.data)
-                      state.solicitari=[];
-                   res.data.solicitari.map(s=>{
-                        state.solicitari.push(s)
-                    })
-                
-                })
-            
-            
-                .catch(err =>{})
+     function toatesolicitarile(){
+        axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica,'idoperator':idoperator}}).then(
+
+              res => {
+                    console.log('Toate solicitarile',res.data)
+                    state.solicitari=[];
+                res.data.solicitari.map(s=>{
+                      state.solicitari.push(s)
+                  })
+
+              })
+
+
+              .catch(err =>{})
+      }
+      toatesolicitarile()
+ 
 
            function afiseazaMesaj(){
             console.log("Afiseaza mesaj",selected.value[0].mesaj);
@@ -138,6 +168,7 @@ export default {
                 position:'top',
                 timeout:8000
               })
+              selected.value=[]
            }
            
            function schimbaInterval(c){
@@ -169,6 +200,54 @@ export default {
 
            }
 
+    function stergeSolicitarea(){
+      let idsolicitare=selected.value[0].id
+      axios.delete(process.env.host+`solicitari/${idsolicitare}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
+
+                                res => {
+
+                                            $q.notify({
+                                                message:'Solicitare stearsa cu succes!',
+                                                timeout:2000,
+                                                position:'top',
+                                                color:'positive'
+                                                }) 
+                                      toatesolicitarile()
+                                                selected.value=[]
+                            }
+                                ).catch(err =>{})
+
+    } 
+    
+    function reprogramare(){
+      console.log(selected.value)
+    }
+     
+    function veziProgramarea(){
+       console.log(selected.value)
+       let idsolicitare=selected.value[0].id
+
+       axios.get(process.env.host+`oprogramare/${idsolicitare}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
+
+            res => {
+                //  console.log('O programare',res.data)
+                let stare = res.data[0].stare=='anulata'? 'ANULATA':''
+                let d = date.formatDate(new Date(res.data[0].data), 'DD/MM/YYYY')
+                 let mesaj = `Data: ${d} Ora:${res.data[0].orastart} ${res.data[0].cabinet} Medic:${res.data[0].medic} ${stare}` 
+                 selected.value=[]
+                 $q.notify({
+                      message: mesaj,
+                      icon: 'announcement',
+                      position:'top',
+                      timeout:8000
+                    })
+
+            })
+
+
+            .catch(err =>{})
+    }
+
     return {
         initialPagination: {
         sortBy: 'desc',
@@ -184,7 +263,10 @@ export default {
       afiseazaMesaj,
       intervale,
       intervalAles,
-      schimbaInterval
+      schimbaInterval,
+      veziProgramarea,
+      stergeSolicitarea,
+      reprogramare
     }
   }
 }

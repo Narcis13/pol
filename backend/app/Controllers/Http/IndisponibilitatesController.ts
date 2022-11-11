@@ -77,7 +77,17 @@ export default class IndisponibilitatesController {
 
 
        } 
+/*
+SELECT sol.id,sol.nume,sol.created_at,sol.idspecialitate, specs.denumire FROM pols.solicitares sol
+inner join specialitates specs ON specs.id=sol.idspecialitate
+inner join programs progs ON progs.idspecialitate = sol.idspecialitate
+inner join cabinets cabs on cabs.id= progs.idcabinet
+where cabs.idoperator>0
+group by sol.id
+order by sol.id desc
 
+
+*/ 
        public async indisperspecialitate({params}:HttpContextContract){
 //console.log(DateTime.now().plus({days:1}).toSQLDate())
         const indis= await Database

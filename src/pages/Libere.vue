@@ -23,13 +23,13 @@
        
       
         <div class="q-pa-md q-gutter-sm">
-          <q-btn round color="primary" icon="add" @click="medium=true">
+          <q-btn :disable="global.state.user.rol!=='admin'" round color="primary" icon="add" @click="medium=true">
             <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                 <strong>Adauga zi libera</strong> 
          
              </q-tooltip>
           </q-btn>
-          <q-btn :disable="selected.length==0" round color="red" icon="remove" @click="stergsarbatoare" >
+          <q-btn :disable="selected.length==0||global.state.user.rol!=='admin'" round color="red" icon="remove" @click="stergsarbatoare" >
             <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                 <strong>Sterge zi libera</strong> 
          
@@ -42,24 +42,24 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td auto-width>
-                          <q-checkbox  v-model="props.selected" ></q-checkbox>
+                          <q-checkbox :disable="global.state.user.rol!=='admin'" v-model="props.selected" ></q-checkbox>
           </q-td>
           <q-td key="detalii" :props="props">
             {{ props.row.detalii }}
-            <q-popup-edit v-model="props.row.detalii" auto-save v-slot="scope"  @hide="editeaza(props.row.id,'detalii',props.row.detalii)" buttons>
+            <q-popup-edit :disable="global.state.user.rol!=='admin'" v-model="props.row.detalii" auto-save v-slot="scope"  @hide="editeaza(props.row.id,'detalii',props.row.detalii)" buttons>
               <q-input v-model="scope.value" dense autofocus  />
             </q-popup-edit>
           </q-td>
           <q-td key="zi" :props="props">
             {{ props.row.zi }}
-            <q-popup-edit v-model="props.row.zi" title="Modifica zi" buttons v-slot="scope" @hide="editeaza(props.row.id,'zi',props.row.zi)">
+            <q-popup-edit :disable="global.state.user.rol!=='admin'" v-model="props.row.zi" title="Modifica zi" buttons v-slot="scope" @hide="editeaza(props.row.id,'zi',props.row.zi)">
               <q-input type="number" v-model="scope.value" dense autofocus :rules="[ val => val>=1&&val<=31 || 'Introduceti date valide']"/>
             </q-popup-edit>
           </q-td>
 
           <q-td key="luna" :props="props">
             {{ props.row.luna }}
-            <q-popup-edit v-model="props.row.luna" title="Modifica luna" buttons persistent v-slot="scope" @hide="editeaza(props.row.id,'luna',props.row.luna)">
+            <q-popup-edit :disable="global.state.user.rol!=='admin'" v-model="props.row.luna" title="Modifica luna" buttons persistent v-slot="scope" @hide="editeaza(props.row.id,'luna',props.row.luna)">
               <q-input type="number" v-model="scope.value" dense autofocus :rules="[ val => val>=1&&val<=12 || 'Introduceti date valide']" />
             </q-popup-edit>
           </q-td>
