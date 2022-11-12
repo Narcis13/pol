@@ -81,6 +81,7 @@ import { defineComponent,ref , reactive,inject,computed} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
 import { date } from 'quasar'
+import { useRouter } from "vue-router";
 
 const state = reactive({
     solicitari:[],
@@ -141,7 +142,7 @@ export default {
      let intervalAles=ref(intervale[3])
      const $q = useQuasar()
      let idoperator = global.state.user.rol=='admin' ? 0 : global.state.user.idutilizator
-
+     const router =useRouter()
      function toatesolicitarile(){
         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica,'idoperator':idoperator}}).then(
 
@@ -221,6 +222,8 @@ export default {
     
     function reprogramare(){
       console.log(selected.value)
+      router.push('./programari/'+selected.value[0].hash+'-'+selected.value[0].id+'-i')
+      selected.value=[]                                  
     }
      
     function veziProgramarea(){
