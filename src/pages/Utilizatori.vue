@@ -45,7 +45,18 @@
                                       <q-item-section>
                                             <q-item-label>{{user.numeintreg}} ({{user.rol}})</q-item-label>
                                             <q-item-label overline>{{user.nume_user}}</q-item-label>
-                                      </q-item-section>     
+                                      </q-item-section>  
+                                      <q-item-section top side>
+                                        <div class="text-grey-8 q-gutter-xs">
+
+                                            <q-btn size="16px" flat dense round icon="lock_reset" @click="medium=true">
+                                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+                                                      <strong>Reseteaza parola</strong> 
+         
+                                                 </q-tooltip>
+                                            </q-btn>
+                                        </div>
+                                     </q-item-section>   
                                 </q-item>
                             </q-slide-item>
                     </q-tab-panel>
@@ -75,6 +86,25 @@
                     </q-tab-panels>
                 </q-card>
         </div>
+
+    <q-dialog
+      v-model="medium"
+    >
+      <q-card style="width: 400px; max-width: 80vw;">
+        <q-card-section>
+          <div class="text-h6">Resetare parola utilizator</div>
+        </q-card-section>
+        <q-card-section>
+            <q-input type="password" no-error-icon v-model="parola_user" hint="Min. 8 caractere " bottom-slots error-message="Folositi litere mari,mici,cifre si semne!" :error="!parolaInvalida" label="Parola *" autocomplete="new-password" dense/>
+            <q-input type="password" no-error-icon v-model="confirmare_parola" bottom-slots error-message="Parola trebuie sa fie aceeasi!" :error="!parolaDiferita" label="Confirmare parola *" autocomplete="new-password" dense/>
+       
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn   flat label="Reseteaza" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     </q-page>
 </template>
 <script>
@@ -98,6 +128,7 @@ export default defineComponent({
         let tab=ref('lista')
         let nume_user=ref('')
         let numeintreg=ref('')
+        let medium=ref(false)
         let rol=ref('operator')
         let email=ref('')
         let parola_user=ref('')
@@ -304,6 +335,7 @@ export default defineComponent({
              parola_user,
              confirmare_parola,
              salveaza,
+             medium,
              actiune,
              reset,
              parolaInvalida,
