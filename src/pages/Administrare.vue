@@ -137,6 +137,46 @@ export default defineComponent({
             
                 .catch(err =>{})
 
+                //   ****************************************
+                axios.get(process.env.host+`sarbatori`,{headers:{'idclinica':global.state.user.idclinica}}).then(
+                               
+                               res => {
+                                // console.log('Sarbatori',res.data)
+                                 state.liste.sarbatori=[]
+                                   res.data.sarbatori.map(s=>{
+                                     state.liste.sarbatori.push('d'+s.zi.toString()+'m'+s.luna.toString())
+                                   })
+                                
+                               })       
+                               .catch(err =>{})
+                
+                               axios.get(process.env.host+`indisoperator/${userid}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
+
+                                        res => {
+                                        
+                                            state.liste.indis=[];
+                                            res.data.indis.map(i=>{
+                                                let ds = new Date(i.datastop)
+                                                    ds.setDate(ds.getDate()+1)
+                                                    state.liste.indis.push({
+                                                        idmedic:i.idmedic,
+                                                        tipindi:i.tipindisponibilitate,
+                                                        datastart:new Date(i.datastart),
+                                                        datastop:ds//new Date(i.datastop)
+                                                    })
+                                            
+                                                
+                                                })
+                                            })
+
+                                     
+
+
+                                        .catch(err =>{})               
+
+                 // ********************************************************************
+                 
+                 
                 axios.get(process.env.host+`program/0}`,{headers:{'idclinica':global.state.user.idclinica}}).then(
 
                                         res => {
@@ -154,21 +194,37 @@ export default defineComponent({
                 console.log('Programarile cabinetului ',idcabinet)
                  // aici trebuie sa interoghez programarile cabinetului
                  numecabinet.value=denumirecabinet
-                axios.get(process.env.host+`programaricabinet/${idcabinet}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
+                 axios.get(process.env.host+`programcabinet/${idcabinet}`).then(
 
-                   res => {
-                   
-                        console.log('Programari cabinet ',res.data)
-                        state.liste.programari=[]
-                        res.data.programari.map(p=>{
-                            state.liste.programari.push(p)
+                        res => {
+
+                           // console.log('Orar cabinet ',res.data)
+                            state.liste.program=[]
+                            res.data.program_cabinet.map(p=>{
+                                state.liste.program.push(p)
+                            })
+
+                            axios.get(process.env.host+`programaricabinet/${idcabinet}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
+
+                                        res => {
+
+                                            console.log('Programari cabinet ',res.data)
+                                            state.liste.programari=[]
+                                            res.data.programari.map(p=>{
+                                                state.liste.programari.push(p)
+                                            })
+
+                                            tab.value='editare'
+
+                                        })
+
+                                        .catch(err =>{})  
+
                         })
-                
-                         tab.value='editare'
 
-                   })
+                        .catch(err =>{})  
 
-                 .catch(err =>{})  
+
                
         } 
 

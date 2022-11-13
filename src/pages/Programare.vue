@@ -176,6 +176,7 @@ export default defineComponent({
                                
                                 res => {
                                   console.log('Indisponibilitatile specialitatii',res.data)
+                                  state.liste.indis=[]
                                     res.data.indis.map(i=>{
                                       let ds = new Date(i.datastop)
                                       ds.setDate(ds.getDate()+1)

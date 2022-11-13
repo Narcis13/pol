@@ -52,7 +52,9 @@ export default class ProgramsController {
         .select('programs.*')
         .select({grad:'medics.grad',numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
         .where({'cabinets.id':params.id,'programs.stare':'activ'})
-        .orderBy('created_at', 'asc')
+        .orderBy('ziuadinsaptamina', 'asc')
+        .orderBy('orastart', 'asc')
+     // .orderBy('created_at', 'asc')
  //   return Medic.all();
         return {program_cabinet}
         }

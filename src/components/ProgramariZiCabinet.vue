@@ -7,15 +7,30 @@
                 :key="interval.idprogramare"
                 v-for="interval in intervale"
                 :subtitle="interval.orastart +'-'+ interval.orastop"
+                :color = "interval.programat?'red':'secondary'"
+                :icon="interval.icon"
                 side="right"
                 >
-                <div v-bind:class="{ 'text-strike': !interval.activ }">
-                   {{interval.nume}}
-                </div>
-                <div v-show="interval.activ" class="q-mt-xs">{{interval.telefon}}</div>
-                 <div v-show="interval.activ" class="q-mt-xs">{{interval.medic}}</div>
-                <q-btn v-show="interval.activ&&nrcrtzi>0" icon="event" class="q-mt-xs" dense outline rounded color="red" label="Anuleaza" @click="anulez_programare(interval.index)"/>
-                <q-btn v-show="interval.activ&&nrcrtzi==0"  class="q-mt-xs" dense outline rounded color="teal" label="Reprogramare" @click="solicitare_reprogramare(interval.index)"/>
+                <div v-if="interval.programat">
+                        <div v-bind:class="{ 'text-strike': !interval.activ }">
+                        {{interval.nume}}
+                        </div>
+                        <div v-show="interval.activ" class="q-mt-xs">{{interval.telefon}}</div>
+                        <div v-show="interval.activ" class="q-mt-xs">{{interval.medic}}</div>
+                        <q-btn v-show="interval.activ&&nrcrtzi>0" icon="event" class="q-mt-xs" dense outline rounded color="red" label="Anuleaza" @click="anulez_programare(interval.index)"/>
+                        <q-btn v-show="interval.activ&&nrcrtzi==0"  class="q-mt-xs" dense outline rounded color="teal" label="Reprogramare" @click="solicitare_reprogramare(interval.index)"/>
+                 </div>   
+                 
+                 <div v-if="!interval.programat">
+                        <div>
+                              {{interval.numemedic}}
+                         </div>
+                        <div class="q-mt-xs">{{interval.grad}}</div>
+                        <q-chip  :color="interval.stare=='liber'? 'green':'red'" text-color="white"  :label="interval.stare" />
+                        
+
+                 </div>
+
             </q-timeline-entry>
 
 
@@ -73,6 +88,15 @@ import axios from 'axios'
 import { useQuasar } from 'quasar'
 import { useRouter } from "vue-router";
 
+function addMinutes(time, minsToAdd) {
+  function D(J){ return (J<10? '0':'') + J};
+  
+  var piece = time.split(':');
+  
+  var mins = piece[0]*60 + +piece[1] + +minsToAdd;
+
+  return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);  
+}  
 
 export default defineComponent({
     name:'ProgramariZiCabinet',
@@ -80,7 +104,13 @@ export default defineComponent({
     setup(props, { emit }) {
         const global=inject('global');
         const router =useRouter()
-       console.log('Proprietati zi programari cabinet',props.liste.programari,props.zi)
+        let d=new Date(props.zi.iso)
+        let zicodata='d'+d.getDate().toString()+'m'+(d.getMonth()+1).toString()
+        let sarbatoare=false;
+        props.liste.sarbatori.map(s=>{
+            if(s==zicodata) sarbatoare=true
+        })
+       console.log('Proprietati zi programari cabinet',props.liste,sarbatoare)
         let intervale = ref([])
         const $q = useQuasar()
         let show_anulare_dialog = ref(false)
@@ -88,30 +118,128 @@ export default defineComponent({
         let solicitare = ref({mesaj:'Multumesc',nume:'',telefon:'',email:'',specialitate:null,specialitati:[]})
         let text=ref(`Ne pare rau sa va informam ca programarea dumneavoastra la Dr. Ionescu Ion din data 01/02/2022 incepind cu ora 10.15 a fost anulata din motive obiective, neprevazute.`)
         let token_anulare=null;
+
+
         //programari per cabinet
+        /*
         let index=0
-       props.liste.programari.map(p=>{
-           if (p.data==props.zi.formatata){
+       props.liste.programari.map(prog=>{
+           if (prog.data==props.zi.formatata){
                intervale.value.push({
                    index,
-                   idprogramare:p.id,
-                   nume:p.nume,
-                   telefon:p.telefon,
-                   medic:p.medic,
-                   idsolicitare:p.idsolicitare ,
-                   orastart:p.orastart,
-                   orastop:p.orastop,
-                   token:p.token,
-                   email:p.email,
-                   data:p.data,
-                   specialitateid:p.specialitateid,
-                   activ:true
+                   idprogramare:prog.id,
+                   nume:prog.nume,
+                   telefon:prog.telefon,
+                   medic:prog.medic,
+                   idsolicitare:prog.idsolicitare ,
+                   orastart:prog.orastart,
+                   orastop:prog.orastop,
+                   token:prog.token,
+                   email:prog.email,
+                   data:prog.data,
+                   specialitateid:prog.specialitateid,
+                   activ:true,
+                   programat:true
 
 
                })
                index++
            }
        })
+*/
+
+       if(!sarbatoare){
+
+                                                let idx=0;
+                                                let programat=false;
+                                                props.liste.program.map(p=>{
+                                                        if(p.ziuadinsaptamina==props.zi.indexzi){
+                                                            //aici e buba.... nu aflu corect numarul de segmente
+                                                            var date1 = new Date(2015, 1,7,  p.orastart.split(":")[0],p.orastart.split(":")[1]);
+
+                                                            var date2 = new Date(2015, 1,7,  p.orastop.split(":")[0],p.orastop.split(":")[1]);
+                                                            var minute=(date2-date1)/60000
+                                                            let nrsegmente=minute/p.durata
+                                                            let t0=p.orastart.split(":")[0]+':'+p.orastart.split(":")[1]
+                                                            for(var i=1;i<=nrsegmente;i++){
+                                                              //  console.log('Ciclu Segmente '+nrsegmente+' i '+i)
+                                                            let t1= addMinutes(t0,p.durata)
+                                                            let stare='liber'
+                                                            //aici ma intreb daca intervalul este ocupat sau indisponibil
+                                                            let index=0
+                                                            let slot_programare={}
+                                                            props.liste.programari.map(prog=>{
+                                                            
+                                                                if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&prog.indexslot==idx){
+                                                                    stare='OCUPAT'
+                                                                    slot_programare={
+                                                                                index,
+                                                                                idprogramare:prog.id,
+                                                                                nume:prog.nume,
+                                                                                telefon:prog.telefon,
+                                                                                medic:prog.medic,
+                                                                                idsolicitare:prog.idsolicitare ,
+                                                                                orastart:prog.orastart,
+                                                                                orastop:prog.orastop,
+                                                                                token:prog.token,
+                                                                                email:prog.email,
+                                                                                data:prog.data,
+                                                                                specialitateid:prog.specialitateid,
+                                                                                activ:true,
+                                                                                programat:true,
+                                                                                icon:'done_all'
+
+
+                                                                            }
+                                                                            index++
+                                                                }
+                                                                
+                                                            })
+
+                                                            props.liste.indis.map(ind=>{
+                                                                let dataprogram=new Date(props.zi.iso)
+                                                                //console.log('Verific indisponibilitati',dataprogram,ind.datastart,ind.datastop);
+                                                                let inintervalindisponibilitate=dataprogram>=ind.datastart&&dataprogram<=ind.datastop
+                                                                if(ind.idmedic==p.idmedic&&inintervalindisponibilitate){
+                                                                    stare='INDISPONIBIL'
+                                                                }
+                                                            })
+                                                            
+                                                            if(stare=='OCUPAT'){
+                                                                intervale.value.push(slot_programare)
+                                                            } else {
+                                                                intervale.value.push({
+                                                                        orastart:t0,
+                                                                        orastop:t1,
+                                                                        idsolicitare:0,
+                                                                        idmedic:p.idmedic,
+                                                                        numemedic:p.numemedic,
+                                                                        idcabinet:p.idcabinet,
+                                                                        idserviciumedical:p.idserviciumedical,
+                                                                        idspecialitate:p.idspecialitate,
+                                                                        idprogram:p.id,
+                                                                        stare,
+                                                                        grad:p.grad,
+                                                                        index:idx,
+                                                                        indexzi:props.zi.indexzi,
+                                                                        data:props.zi.formatata,
+                                                                        idclinica:global.state.user.idclinica,
+                                                                        programat:false,
+                                                                        icon:'cloud_upload'
+
+                                                            })
+                                                            }
+
+                                                              idx++
+                                                            t0=t1;
+                                                            }
+                                                            console.log('Am program',intervale.value)
+                                                          
+                                                        }
+                                             })
+
+
+       }
       
        function solicitare_reprogramare(index){
         //console.log('reprogramare',intervale.value[index],props.liste.specialitati)

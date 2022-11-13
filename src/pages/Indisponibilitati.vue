@@ -25,11 +25,11 @@
                                 
                                
                                 <div class="flex" style="min-width:200px;max-height:100px;">
-                                    <q-btn  @click="sterge" class="q-ma-sm" :disable="selected.length==0" round color="red" icon="delete_forever" >
+                                    <q-btn  @click="sterge" class="q-ma-sm" :disable="selected.length==0" round color="red" icon="remove" >
                                         <q-tooltip class="bg-accent">Sterge</q-tooltip>
                                     </q-btn>
 
-                                    <q-btn   @click="tab='adaugare'"  class="q-ma-sm" round color="amber"    icon="assignment" >
+                                    <q-btn   @click="tab='adaugare'"  class="q-ma-sm" round color="primary"    icon="add" >
 
                                             <q-tooltip class="bg-accent">Adauga</q-tooltip>
                                     </q-btn>

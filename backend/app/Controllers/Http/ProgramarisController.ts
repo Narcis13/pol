@@ -241,7 +241,8 @@ export default class ProgramarisController {
 
              // console.log('Headere solicitari',request.headers().idclinica)
               let idclinica=request.headers().idclinica;
-              let idoperator:number = parseInt(request.headers().idoperator?.toString());
+              let idoperator:number = parseInt(request.headers().idoperator);
+           
         //console.log('Solicitari....',dataminima)
         const solicitari= await Database
             .from('solicitares')

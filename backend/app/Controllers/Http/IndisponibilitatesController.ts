@@ -61,6 +61,8 @@ export default class IndisponibilitatesController {
 
       public async indisperoperator({params,request}:HttpContextContract){
         let idclinica  = request.headers().idclinica;
+       let  dataminima=new Date(new Date().getFullYear(), 0, 1);
+        dataminima.setHours(0,0,0,0)
         const indis= await Database
           .from('indisponibilitates')
           .join('medics', 'indisponibilitates.idmedic', '=', 'medics.id')
@@ -70,6 +72,7 @@ export default class IndisponibilitatesController {
           .select('medics.nume')
           .where('cabinets.idoperator',params.id==0?'>':'=',params.id)
           .andWhere({'indisponibilitates.idclinica':idclinica})
+          .andWhere('indisponibilitates.created_at','>=',dataminima)
           .groupByRaw('cabinets.idoperator,indisponibilitates.id,medics.nume')
           .orderBy('indisponibilitates.created_at', 'desc') // daca se devodeste a fi naspa o sa comentez linia asta!!!!
   //   return Medic.all();
@@ -77,17 +80,7 @@ export default class IndisponibilitatesController {
 
 
        } 
-/*
-SELECT sol.id,sol.nume,sol.created_at,sol.idspecialitate, specs.denumire FROM pols.solicitares sol
-inner join specialitates specs ON specs.id=sol.idspecialitate
-inner join programs progs ON progs.idspecialitate = sol.idspecialitate
-inner join cabinets cabs on cabs.id= progs.idcabinet
-where cabs.idoperator>0
-group by sol.id
-order by sol.id desc
 
-
-*/ 
        public async indisperspecialitate({params}:HttpContextContract){
 //console.log(DateTime.now().plus({days:1}).toSQLDate())
         const indis= await Database
