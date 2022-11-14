@@ -3,20 +3,11 @@
     <q-timeline layout="dense" side="right" color="secondary">
       <q-timeline-entry ><div class="text-h6">{{denumirezi}}</div></q-timeline-entry>
 
-      <!--<q-timeline-entry
-        title="Consultatie chirurgie generala"
-        subtitle="08.00 - 10.30"
-        side="right"
-      >
-        <div>
-          Lorem ipsum dolor 
-        </div>
-      </q-timeline-entry>
--->
+
       <q-timeline-entry
         :key="interval.orastart+interval.orastop"
         v-for="interval in intervalele"
-   
+        icon="cloud_upload" 
         :title="interval.numeserviciu"
         :subtitle="interval.orastart +'-'+ interval.orastop"
         side="right"

@@ -1,7 +1,7 @@
 <template>
     <div style="min-width:180px;" v-bind:class="{'q-pa-sm':true, 'column':true,'azi':(nrcrtzi ==0)}" >
        <div class="text-subtitle2">{{denumirezi}}</div> 
-       <div class="bg-blue-grey-7 text-white text-h6 fit row wrap justify-center items-center content-start q-pa-md q-mt-md" v-if="intervale.length==0" style="width:180px;height:180px;">INCHIS</div>
+       <div class="bg-blue-grey-7 text-white text-h6 fit row wrap justify-center items-center content-start q-pa-sm q-mt-sm" v-if="intervale.length==0" style="width:180px;height:180px;">INCHIS</div>
          <q-timeline layout="dense" side="right" color="secondary">
              <q-timeline-entry
                 :key="interval.idprogramare"
@@ -25,7 +25,7 @@
                         <div>
                               {{interval.numemedic}}
                          </div>
-                        <div class="q-mt-xs">{{interval.grad}}</div>
+                        <div >{{interval.grad}}</div>
                         <q-chip  :color="interval.stare=='liber'? 'green':'red'" text-color="white"  :label="interval.stare" />
                         
 

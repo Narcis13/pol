@@ -49,7 +49,7 @@
                                       <q-item-section top side>
                                         <div class="text-grey-8 q-gutter-xs">
 
-                                            <q-btn size="16px" flat dense round icon="lock_reset" @click="medium=true">
+                                            <q-btn size="16px" flat dense round icon="lock_reset" @click="medium=true;idcurent=user.id">
                                                 <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                                                       <strong>Reseteaza parola</strong> 
          
@@ -101,7 +101,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn   flat label="Reseteaza" v-close-popup />
+          <q-btn   flat label="Reseteaza" v-close-popup @click="resetezparola"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -125,6 +125,7 @@ export default defineComponent({
         const $q = useQuasar()
         const global=inject('global');
         let token = global.state.user.token;
+        let idcurent=ref(0)
         let tab=ref('lista')
         let nume_user=ref('')
         let numeintreg=ref('')
@@ -171,7 +172,55 @@ export default defineComponent({
               rol.value='operator'
               parola_user.value=''
               email.value =''
+              idcurent.value=0
        }
+
+        function resetezparola(id){
+            state.utilizatori.map(u=>{
+                    if(u.id==idcurent.value) state.userselectat=u
+                })
+                let user_modificat = {
+                        nume:state.userselectat.nume_user,
+                        numeintreg :state.userselectat.numeintreg,
+                        rol:state.userselectat.rol,
+                        email:state.userselectat.email ,
+                     //   numeunic:state.userselectat.nume_user+global.state.user.idclinica,
+                        password:parola_user.value
+               }
+               axios.patch(process.env.host+`users/${state.userselectat.id}`,user_modificat,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
+                                
+                                console.log('Am editat utilizator ',res.data)
+                            
+                             reset();
+                            
+                             if(res.data.errors)
+                                      $q.notify({
+                                                     message:'EROARE! Cod: '+res.data.errors.errors[0].message,
+                                                     timeout:3000,
+                                                     position:'top',
+                                                     color:'negative'
+                                                     }) 
+                                else
+                                 $q.notify({
+                                     message:'Parola resetata cu succes!',
+                                     timeout:2000,
+                                     position:'top',
+                                     color:'positive'
+                                     })
+
+                                         }).catch(err=>{
+                                             console.log(err)
+                                                 $q.notify({
+                                                     message:'EROARE!',
+                                                     timeout:2000,
+                                                     position:'top',
+                                                     color:'negative'
+                                                     })                  
+                                         })
+
+           // console.log('resetez parola id curent',user_modificat)
+
+        }
 
         function sterg(id){
 
@@ -335,9 +384,11 @@ export default defineComponent({
              parola_user,
              confirmare_parola,
              salveaza,
+             idcurent,
              medium,
              actiune,
              reset,
+             resetezparola,
              parolaInvalida,
              parolaDiferita,
              formularValid:computed(()=>{

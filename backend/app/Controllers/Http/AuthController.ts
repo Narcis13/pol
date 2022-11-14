@@ -45,7 +45,7 @@ export default class AuthController {
    }
 
    public async updateuser({params,request,response}:HttpContextContract){
-
+    //console.log(request.body())
     const utilizator = await user.findOrFail(params.id)
     const validare_user = schema.create(
       {
@@ -53,7 +53,7 @@ export default class AuthController {
           numeunic:schema.string.optional({trim:true},[rules.unique({table:'users',column:'numeunic'})]),
           rol:schema.string({trim:true}),
           numeintreg:schema.string({trim:true}),
-          
+          password:schema.string.optional({trim:true}),
           email:schema.string.optional({trim:true},[rules.email()])
 
       }
