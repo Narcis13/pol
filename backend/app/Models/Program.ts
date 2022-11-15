@@ -33,6 +33,9 @@ export default class Program extends BaseModel {
   public stare: string
 
   @column()
+  public tip: string
+
+  @column()
   public idclinica:number
 
   @column.dateTime({ autoCreate: true })

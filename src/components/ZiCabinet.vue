@@ -7,7 +7,8 @@
       <q-timeline-entry
         :key="interval.orastart+interval.orastop"
         v-for="interval in intervalele"
-        icon="cloud_upload" 
+        :icon="interval.tip=='online'?'cloud_upload':'perm_phone_msg'" 
+        :color="interval.tip=='online'?'teal':'accent'"
         :title="interval.numeserviciu"
         :subtitle="interval.orastart +'-'+ interval.orastop"
         side="right"
@@ -47,6 +48,32 @@
                </q-card-section>
 
                 <q-card-section>
+
+                  <q-list>
+
+
+                        <q-item tag="label" v-ripple>
+                          <q-item-section avatar>
+                            <q-radio v-model="tip" val="online" color="teal"></q-radio>
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>Online</q-item-label>
+                            <q-item-label caption>Acest interval orar este destinat exclusiv programarilor online </q-item-label>
+                          </q-item-section>
+                        </q-item>
+
+                        <q-item tag="label" v-ripple>
+                          <q-item-section avatar>
+                            <q-radio v-model="tip" val="offline" color="accent"></q-radio>
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>Offline</q-item-label>
+                            <q-item-label caption>Acest interval orar este destinat  programarilor telefonice sau in-personam efectuate manual de catre un operator </q-item-label>
+                          </q-item-section>
+                        </q-item>
+
+
+                  </q-list>
                         <q-badge v-show="serviciu.durata>1" color="orange">
                             <q-icon name="access_time" color="white" class="q-mt-xs q-mb-xs q-mr-sm" />{{serviciu.durata}} minute.
                          </q-badge>
@@ -117,6 +144,7 @@ export default defineComponent({
       let medici=[]
       let servicii=[]
        let intervalele = ref([])
+       let tip = ref('online')
 
        let programulzilei=[];
 
@@ -153,6 +181,7 @@ export default defineComponent({
                                           id:prog.id,
                                           idmedic:prog.idmedic,
                                           numemedic:prog.numemedic,
+                                          tip:prog.tip,
                                           spec_medic:prog.specialitate,
                                           idserviciumedical:prog.idserviciumedical,
                                           numeserviciu:prog.serviciu,
@@ -192,6 +221,7 @@ export default defineComponent({
          serviciu.value={durata:1,value:0,label:''};
          orastart.value='10:00'
          orastop.value='11:00'
+         tip.value='online'
          intervalele.value.sort((a,b) => (a.orastart > b.orastart) ? 1 : ((b.orastart > a.orastart) ? -1 : 0))
         // console.log('reset intervalele',intervalele.value)
        }
@@ -208,6 +238,7 @@ export default defineComponent({
                orastart:orastart.value.toString().replace(':','')+'00',
                orastop:orastop.value.toString().replace(':','')+'00',
                stare:"activ",
+               tip:tip.value,
               ziuadinsaptamina:props.zi.zidinsaptamina,
               idclinica:global.state.user.idclinica
              }
@@ -269,6 +300,7 @@ export default defineComponent({
           orastop,
           medici,
           servicii,
+          tip,
           adaugainterval,
           intervalele,
           reset,

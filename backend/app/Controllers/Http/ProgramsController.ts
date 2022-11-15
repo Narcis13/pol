@@ -13,6 +13,7 @@ export default class ProgramsController {
                 orastart:schema.string({trim:true},[rules.minLength(6),rules.maxLength(6)]),
                 orastop:schema.string({trim:true},[rules.minLength(6),rules.maxLength(6)]),
                 stare:schema.string.optional(),
+                tip:schema.string.optional(),
                 idcabinet:schema.number(),
                 idclinica:schema.number(),
                 idserviciumedical:schema.number(),

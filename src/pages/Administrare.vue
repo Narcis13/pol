@@ -24,7 +24,8 @@
 
                                     <q-card-actions>
                                         <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire)">Programari</q-btn>
-
+                                        <q-space />
+                                        <q-btn dense color="grey-4" text-color="purple" glossy unelevated icon="add" label="Offline" />
                                     </q-card-actions>
 
                                 </q-card>
