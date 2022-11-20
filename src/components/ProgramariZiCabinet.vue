@@ -7,7 +7,7 @@
                 :key="interval.idprogramare"
                 v-for="interval in intervale"
                 :subtitle="interval.orastart +'-'+ interval.orastop"
-                :color = "interval.programat?'red':'secondary'"
+                :color = "interval.programat?'red':interval.tip=='online'?'secondary':'accent'"
                 :icon="interval.icon"
                 side="right"
                 >
@@ -17,17 +17,17 @@
                         </div>
                         <div v-show="interval.activ" class="q-mt-xs">{{interval.telefon}}</div>
                         <div v-show="interval.activ" class="q-mt-xs">{{interval.medic}}</div>
-                        <q-btn v-show="interval.activ&&nrcrtzi>0" icon="event" class="q-mt-xs" dense outline rounded color="red" label="Anuleaza" @click="anulez_programare(interval.index)"/>
+                        <q-btn v-show="interval.activ&&nrcrtzi>0" icon="event" class="q-mt-xs" dense outline rounded :color="interval.tip=='online'?'red':'accent'" label="Anuleaza" @click="anulez_programare(interval.index)"/>
                         <q-btn v-show="interval.activ&&nrcrtzi==0"  class="q-mt-xs" dense outline rounded color="teal" label="Reprogramare" @click="solicitare_reprogramare(interval.index)"/>
                  </div>   
                  
                  <div v-if="!interval.programat">
                         <div>
                               {{interval.numemedic}}
-                         </div>
+                        </div>
                         <div >{{interval.grad}}</div>
-                        <q-chip  :color="interval.stare=='liber'? 'green':'red'" text-color="white"  :label="interval.stare" />
-                        
+                        <q-chip v-if="kind=='i'" :color="interval.stare=='liber'? interval.tip=='online'?'green':'accent':'red'" text-color="white"  :label="interval.stare" />
+                        <q-btn v-if="interval.stare=='liber'&&kind=='t'" icon="event" class="q-mt-xs" dense outline rounded color="accent" label="Rezervare " @click="solicitareprogramareoffline(interval)"/>
 
                  </div>
 
@@ -81,10 +81,39 @@
                 </q-card>
             </q-dialog>  
 
+            <q-dialog  v-model="show_programare_offline" persistent >
+                <q-card style="width: 350px; max-width: 80vw;">
+                    <q-card-section>
+                        <div class="text-h6">Medic: {{solicitareoffline.medic}}</div>
+                        <div class="text-subtitle2">Data: {{solicitareoffline.data}}</div>
+                        <div class="text-subtitle2">Interval: {{solicitareoffline.orastart}} - {{solicitareoffline.orastop}}</div>
+                    </q-card-section>
+
+                    <q-separator></q-separator>
+                    <q-card-section>
+                        <q-input class="q-mt-md" filled v-model="solicitareoffline.nume" label="Nume si prenume" />
+                        <q-input class="q-mt-md" filled v-model="solicitareoffline.telefon" label="Nr. telefon" />
+                        <q-input
+                            v-model="solicitareoffline.mesaj"
+                            filled
+                            hint="Scurt mesaj"
+                            type="textarea"
+                            class="q-mt-md"
+                            />
+                    </q-card-section>
+                     <q-card-actions align="right" class="bg-white text-teal">
+                                <q-btn  flat label="Renunt" v-close-popup />
+                                <q-space />
+                                <q-btn :disable="!dateProgramareValide" v-close-popup  flat label="Programeaza"  @click="programeazaOffline"/>
+                    </q-card-actions>
+                </q-card>
+            </q-dialog>  
+
 </template>
 <script>
-import { defineComponent,ref ,inject} from 'vue'
+import { defineComponent,ref ,inject,computed} from 'vue'
 import axios from 'axios'
+import { date } from 'quasar'
 import { useQuasar } from 'quasar'
 import { useRouter } from "vue-router";
 
@@ -107,6 +136,7 @@ export default defineComponent({
         let d=new Date(props.zi.iso)
         let zicodata='d'+d.getDate().toString()+'m'+(d.getMonth()+1).toString()
         let sarbatoare=false;
+        let kind=props.liste.kind;
         props.liste.sarbatori.map(s=>{
             if(s==zicodata) sarbatoare=true
         })
@@ -115,38 +145,11 @@ export default defineComponent({
         const $q = useQuasar()
         let show_anulare_dialog = ref(false)
         let show_reprogramare = ref(false)
+        let show_programare_offline = ref(false)
         let solicitare = ref({mesaj:'Multumesc',nume:'',telefon:'',email:'',specialitate:null,specialitati:[]})
+        let solicitareoffline = ref({mesaj:'',nume:'',telefon:'',specialitate:null,orastart:'',orastop:'',medic:'',data:'',interval:null})
         let text=ref(`Ne pare rau sa va informam ca programarea dumneavoastra la Dr. Ionescu Ion din data 01/02/2022 incepind cu ora 10.15 a fost anulata din motive obiective, neprevazute.`)
         let token_anulare=null;
-
-
-        //programari per cabinet
-        /*
-        let index=0
-       props.liste.programari.map(prog=>{
-           if (prog.data==props.zi.formatata){
-               intervale.value.push({
-                   index,
-                   idprogramare:prog.id,
-                   nume:prog.nume,
-                   telefon:prog.telefon,
-                   medic:prog.medic,
-                   idsolicitare:prog.idsolicitare ,
-                   orastart:prog.orastart,
-                   orastop:prog.orastop,
-                   token:prog.token,
-                   email:prog.email,
-                   data:prog.data,
-                   specialitateid:prog.specialitateid,
-                   activ:true,
-                   programat:true
-
-
-               })
-               index++
-           }
-       })
-*/
 
        if(!sarbatoare){
 
@@ -187,6 +190,7 @@ export default defineComponent({
                                                                                 specialitateid:prog.specialitateid,
                                                                                 activ:true,
                                                                                 programat:true,
+                                                                                tip:p.tip,
                                                                                 icon:'done_all'
 
 
@@ -221,11 +225,12 @@ export default defineComponent({
                                                                         stare,
                                                                         grad:p.grad,
                                                                         index:idx,
+                                                                        tip:p.tip,
                                                                         indexzi:props.zi.indexzi,
                                                                         data:props.zi.formatata,
                                                                         idclinica:global.state.user.idclinica,
                                                                         programat:false,
-                                                                        icon:'cloud_upload'
+                                                                        icon:p.tip=='online'?'cloud_upload':'perm_phone_msg'
 
                                                             })
                                                             }
@@ -240,7 +245,112 @@ export default defineComponent({
 
 
        }
+
+       function programeazaOffline(){
+
+       // console.log('Programez offline',solicitareoffline)
+        let offpro = {
+            nume:solicitareoffline.value.nume,
+            telefon:solicitareoffline.value.telefon,
+            email:'offline@programari.net',
+            idspecialitate:solicitareoffline.value.interval.idspecialitate,
+            idclinica:global.state.user.idclinica,
+            mesaj:solicitareoffline.value.mesaj,
+            tip:'Offline',
+            confirmat:true
+           }
+           axios.post(process.env.host+'solicitarereprogramare',offpro).then(res =>{
+                                
+                                console.log('Solicitare programare offline',res.data)
+                                    let info={
+                                                data: solicitareoffline.value.interval.data,
+                                            
+                                                idcabinet: solicitareoffline.value.interval.idcabinet,
+                                                idmedic: solicitareoffline.value.interval.idmedic,
+                                                idprogram: solicitareoffline.value.interval.idprogram,
+                                                idserviciumedical: solicitareoffline.value.interval.idserviciumedical,
+                                                idsolicitare: res.data.id,
+                                            
+                                                indexslot: solicitareoffline.value.interval.index,
+                                                indexzi: solicitareoffline.value.interval.indexzi,
+
+                                                orastart: solicitareoffline.value.interval.orastart,
+                                                orastop: solicitareoffline.value.interval.orastop,
+                                                stare: "activ",
+                                                idclinica:solicitareoffline.value.interval.idclinica
+                                        }
+                                        
+                                        axios.post(process.env.host+'programare',info).then(res =>{
+                           
+                                            if(res.data.data){
+                                                let  slot_programare_offline={
+                                                                                index:solicitareoffline.value.interval.index,
+                                                                                idprogramare:res.data.id,
+                                                                                nume:solicitareoffline.value.nume,
+                                                                                telefon:solicitareoffline.value.telefon,
+                                                                                medic:solicitareoffline.value.medic,
+                                                                                idsolicitare:info.idsolicitare ,
+                                                                                orastart:solicitareoffline.value.interval.orastart,
+                                                                                orastop:solicitareoffline.value.interval.orastop,
+                                                                                token:res.data.token,
+                                                                                email:'',
+                                                                                data:res.data.data,
+                                                                                specialitateid:solicitareoffline.value.interval.idspecialitate,
+                                                                                activ:true,
+                                                                                programat:true,
+                                                                                tip:'Offline',
+                                                                                icon:'done_all'
+
+
+                                                                            }
+                                                          //  console.log('Programare noua',res.data,slot_programare_offline)
+                                                            intervale.value[slot_programare_offline.index]=slot_programare_offline
+                                                solicitareoffline.value = {mesaj:'',nume:'',telefon:'',specialitate:null,orastart:'',orastop:'',medic:'',data:'',interval:null}
+                                                            $q.notify({
+                                                                    message:'Programare efectuata cu succes!',
+                                                                    timeout:2000,
+                                                                    position:'top',
+                                                                    color:'positive'
+                                                                    }) 
+                                            }
+                                            else
+                                            {
+                                                                                $q.notify({
+                                                                                    message:'EROARE! Slotul a fost rezervat de alt pacient cu citeva secunde in urma! ',
+                                                                                    timeout:5000,
+                                                                                    position:'top',
+                                                                                    color:'negative'
+                                                                                    })
+                                                                                //  window.location.reload();
+                                            }
+
+
+                                                                        }).catch(err=>{
+                                                                            console.log(err)
+                                                                                $q.notify({
+                                                                                    message:'EROARE!',
+                                                                                    timeout:2000,
+                                                                                    position:'top',
+                                                                                    color:'negative'
+                                                                                    })                  
+                                                                        })  
+                                                                    }).catch(err=>{
+                                                                        console.log(err)
+                                                                                
+                                                                    })
+
+       }
       
+       function solicitareprogramareoffline(interval){
+        console.log('programare offline',interval)
+        solicitareoffline.value.orastart=interval.orastart
+        solicitareoffline.value.orastop=interval.orastop
+        solicitareoffline.value.medic=interval.numemedic
+        solicitareoffline.value.data=date.formatDate(interval.data, 'DD/MM/YYYY')
+        solicitareoffline.value.interval=interval
+        show_programare_offline.value=true
+       }
+
        function solicitare_reprogramare(index){
         //console.log('reprogramare',intervale.value[index],props.liste.specialitati)
         solicitare.value.nume=intervale.value[index].nume
@@ -332,18 +442,29 @@ export default defineComponent({
 
       }
 
+      let dateProgramareValide = computed(()=>{
+           return solicitareoffline.value.nume.length>5&&solicitareoffline.value.telefon.length==10&&/^\d+$/.test(solicitareoffline.value.telefon)
+      })
+
       return {
           denumirezi:props.zi.textlocalizat,
           nrcrtzi:props.zi.nrcrt,
          intervale,
          anulez_programare,
+         dateProgramareValide,
          show_anulare_dialog,
          chiar_anulez_programarea,
          solicitare_reprogramare,
          show_reprogramare,
          reprogrameaza,
          solicitare,
-         text
+         kind,
+         text,
+         solicitareprogramareoffline,
+         show_programare_offline,
+         solicitareoffline,
+         programeazaOffline
+
       }  
     },
 })

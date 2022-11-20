@@ -223,10 +223,10 @@ export default defineComponent({
 
             function maprogramez(idcab){
             
-                  console.log('Ma programez ....',idcab,zile)
+                  console.log('Ma programez ....',idcab,elemente[2])
                   state.liste.idc=idcab
                   //aici interoghez programul specific cabinetului idcab si actualizez state cu asta....
-                  axios.get(process.env.host+`programcabinet/${idcab}`).then(
+                  axios.get(process.env.host+`programcabinet/${idcab}/${elemente[2]}`).then(
 
                    res => {
                    

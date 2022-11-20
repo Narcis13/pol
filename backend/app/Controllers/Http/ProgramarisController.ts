@@ -23,19 +23,20 @@ export default class ProgramarisController {
       if (programari.length==0){
         let idsolicitare=request.body().idsolicitare;
         const solicitare = await Solicitare.findOrFail(idsolicitare) 
-      //  console.log(solicitare.email)
+       // console.log(solicitare.tip)
         let email=solicitare.email
         let nume = solicitare.nume
         await solicitare.merge({confirmat:true}).save()
         const programare = await Programarise.create(request.body());
         const medic = await Medic.findOrFail(request.body().idmedic) 
-        await Mail.sendLater((message) => {
-            message
-              .from('programari@smupitesti.org')
-              .to(email)
-              .subject('Confirmare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
-              .htmlView('emails/confirmare', { medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
-          })
+        if(solicitare.tip=='Online')
+            await Mail.sendLater((message) => {
+                message
+                .from('programari@smupitesti.org')
+                .to(email)
+                .subject('Confirmare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
+                .htmlView('emails/confirmare', { medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+            })
 
         return programare;
        

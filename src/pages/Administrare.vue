@@ -23,9 +23,9 @@
                                     <q-separator dark />
 
                                     <q-card-actions>
-                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire)">Programari</q-btn>
+                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire,'i')">Programari</q-btn>
                                         <q-space />
-                                        <q-btn dense color="grey-4" text-color="purple" glossy unelevated icon="add" label="Offline" />
+                                        <q-btn @click="programariCabinet(cab.id,cab.denumire,'t')" dense color="grey-4" text-color="purple" glossy unelevated icon="add" label="Offline" />
                                     </q-card-actions>
 
                                 </q-card>
@@ -191,11 +191,12 @@ export default defineComponent({
                                         }
                                         ).catch(err =>{})
 
-        function programariCabinet(idcabinet,denumirecabinet){
+        function programariCabinet(idcabinet,denumirecabinet,kind){
                 console.log('Programarile cabinetului ',idcabinet)
+                state.liste.kind=kind
                  // aici trebuie sa interoghez programarile cabinetului
                  numecabinet.value=denumirecabinet
-                 axios.get(process.env.host+`programcabinet/${idcabinet}`).then(
+                 axios.get(process.env.host+`programcabinet/${idcabinet}/${kind}`).then(
 
                         res => {
 

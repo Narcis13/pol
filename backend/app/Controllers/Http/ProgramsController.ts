@@ -43,7 +43,11 @@ export default class ProgramsController {
        public async programcabinet({params}:HttpContextContract){
 
         // return Program.all();
- 
+        // console.log(params.kind)
+         let clauza={'cabinets.id':params.id,'programs.stare':'activ'}
+         if(params.kind=='e') clauza['programs.tip']='online'
+         if(params.kind=='t') clauza['programs.tip']='offline'
+         
         const program_cabinet= await Database
         .from('programs')
         .join('medics', 'programs.idmedic', '=', 'medics.id')
@@ -52,7 +56,7 @@ export default class ProgramsController {
         .join('specialitates', 'medics.idspecialitate', '=', 'specialitates.id')
         .select('programs.*')
         .select({grad:'medics.grad',numemedic:'medics.nume',cabinet:'cabinets.denumire',serviciu:'servicius.denumire',durata:'servicius.durata',idspecialitate:'medics.idspecialitate',specialitate:'specialitates.denumire'})
-        .where({'cabinets.id':params.id,'programs.stare':'activ'})
+        .where(clauza/*{'cabinets.id':params.id,'programs.stare':'activ'}*/)
         .orderBy('ziuadinsaptamina', 'asc')
         .orderBy('orastart', 'asc')
      // .orderBy('created_at', 'asc')

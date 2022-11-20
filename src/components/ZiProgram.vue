@@ -106,6 +106,7 @@ export default defineComponent({
                                                                 index:idx,
                                                                 indexzi:props.zi.indexzi,
                                                                 data:props.zi.formatata,
+                                                             //   tip:p.tip,
                                                                 idclinica:props.liste.clinica.idclinica
                                                             })
                                                               idx++
