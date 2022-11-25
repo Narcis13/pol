@@ -62,6 +62,7 @@ Route.delete('/specialitati/:id','SpecialitatisController.stergspecialitate').mi
 
 Route.post('/registeruser','AuthController.register').middleware('auth')
 Route.get('/allusers','AuthController.index').middleware('auth')
+Route.get('/alluserscabs','AuthController.alluserscabs').middleware('auth')
 Route.patch('/users/:id','AuthController.updateuser').middleware('auth')
 Route.delete('/users/:id','AuthController.deleteuser').middleware('auth')
 Route.post('/login','AuthController.login')

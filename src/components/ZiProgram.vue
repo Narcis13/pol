@@ -6,6 +6,8 @@
              <q-timeline-entry
                 :key="interval.index"
                 v-for="interval in intervale"
+                :icon="interval.tip=='online'?'cloud_upload':'perm_phone_msg'" 
+                :color="interval.tip=='online'?'teal':'accent'"
                 :subtitle="interval.orastart +'-'+ interval.orastop"
                 side="right"
                 >
@@ -13,8 +15,8 @@
                    {{interval.numemedic}}
                 </div>
                 <div class="q-mt-xs">{{interval.grad}}</div>
-                 <q-chip v-if="interval.stare!=='liber'" color="red" text-color="white"  :label="interval.stare" />
-                <q-btn v-if="interval.stare=='liber'" icon="event" class="q-mt-xs" dense outline rounded color="green" label="Rezervare !" @click="salvez_programare(interval.index)"/>
+                 <q-chip v-if="interval.stare!=='liber'" :color="interval.tip=='online'?'red':'accent'" text-color="white"  :label="interval.stare" />
+                <q-btn v-if="interval.stare=='liber'" icon="event" class="q-mt-xs" dense outline rounded :color="interval.tip=='online'?'green':'accent'" label="Rezervare" @click="salvez_programare(interval.pozitie)"/>
              </q-timeline-entry>
 
 
@@ -43,10 +45,11 @@ export default defineComponent({
         let d=new Date(props.zi.iso)
         let zicodata='d'+d.getDate().toString()+'m'+(d.getMonth()+1).toString()
         let sarbatoare=false;
+        let kind=props.liste.kind
         props.liste.sarbatori.map(s=>{
             if(s==zicodata) sarbatoare=true
         })
-       console.log('Proprietati zi program',props.liste,props.zi,sarbatoare)
+       console.log('Proprietati zi program',props.liste,kind)
         let intervale = ref([])
         const $q = useQuasar()
 
@@ -90,10 +93,12 @@ export default defineComponent({
                                                                     stare='INDISPONIBIL'
                                                                 }
                                                             })
-                                                            
+                                                            let pozitie=intervale.value.length
+                                                            if(kind==p.tip)
                                                             intervale.value.push({
                                                                 orastart:t0,
                                                                 orastop:t1,
+                                                                pozitie,
                                                                 idsolicitare:props.solicitare.id,
                                                                 idmedic:p.idmedic,
                                                                 numemedic:p.numemedic,
@@ -106,7 +111,7 @@ export default defineComponent({
                                                                 index:idx,
                                                                 indexzi:props.zi.indexzi,
                                                                 data:props.zi.formatata,
-                                                             //   tip:p.tip,
+                                                                tip:p.tip,
                                                                 idclinica:props.liste.clinica.idclinica
                                                             })
                                                               idx++
@@ -124,7 +129,7 @@ export default defineComponent({
 
 
       function salvez_programare(index){
-         
+         console.log('Index pozitie programare online',index)
           let interval=intervale.value[index];
 
           let info={

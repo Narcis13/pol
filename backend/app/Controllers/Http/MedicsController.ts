@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Medic from 'App/Models/Medic'
+import Program from 'App/Models/Program'
 import Drive from '@ioc:Adonis/Core/Drive'
 
 export default class MedicsController {
@@ -129,6 +130,11 @@ export default class MedicsController {
         await medic
                 .merge({stare:'inactiv'})
                 .save()
+
+         await Program
+                .query()
+                .where({'idmedic':params.id})   
+                .update({'stare':'inactiv'})            
             return `Medicul ${medic.nume} a fost inactivat cu succes!`
        }
 }

@@ -45,8 +45,8 @@ export default class ProgramsController {
         // return Program.all();
         // console.log(params.kind)
          let clauza={'cabinets.id':params.id,'programs.stare':'activ'}
-         if(params.kind=='e') clauza['programs.tip']='online'
-         if(params.kind=='t') clauza['programs.tip']='offline'
+     // if(params.kind=='e') clauza['programs.tip']='online'
+       // if(params.kind=='t') clauza['programs.tip']='offline'
          
         const program_cabinet= await Database
         .from('programs')

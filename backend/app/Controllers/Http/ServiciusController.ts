@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Serviciu from 'App/Models/Serviciu'
+import Program from 'App/Models/Program'
 
 export default class ServiciusController {
 
@@ -53,6 +54,10 @@ export default class ServiciusController {
             .merge({stare:'inactiv'})
             .save()
                    // .delete()
+             await Program
+                   .query()
+                   .where({'idserviciumedical':params.id})   
+                   .update({'stare':'inactiv'})              
             return `Serviciul ${serviciu.denumire} a fost inactivat cu succes!`
        }
 }

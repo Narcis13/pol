@@ -17,8 +17,8 @@
                         </div>
                         <div v-show="interval.activ" class="q-mt-xs">{{interval.telefon}}</div>
                         <div v-show="interval.activ" class="q-mt-xs">{{interval.medic}}</div>
-                        <q-btn v-show="interval.activ&&nrcrtzi>0" icon="event" class="q-mt-xs" dense outline rounded :color="interval.tip=='online'?'red':'accent'" label="Anuleaza" @click="anulez_programare(interval.index)"/>
-                        <q-btn v-show="interval.activ&&nrcrtzi==0"  class="q-mt-xs" dense outline rounded color="teal" label="Reprogramare" @click="solicitare_reprogramare(interval.index)"/>
+                        <q-btn v-show="interval.activ&&nrcrtzi>0" icon="event" class="q-mt-xs" dense outline rounded :color="interval.tip=='online'?'red':'accent'" label="Anuleaza" @click="anulez_programare(interval.pozitie)"/>
+                        <q-btn v-show="interval.activ&&nrcrtzi==0"  class="q-mt-xs" dense outline rounded :color="interval.tip=='online'?'teal':'accent'" label="Reprogramare" @click="solicitare_reprogramare(interval.pozitie)"/>
                  </div>   
                  
                  <div v-if="!interval.programat">
@@ -26,8 +26,8 @@
                               {{interval.numemedic}}
                         </div>
                         <div >{{interval.grad}}</div>
-                        <q-chip v-if="kind=='i'" :color="interval.stare=='liber'? interval.tip=='online'?'green':'accent':'red'" text-color="white"  :label="interval.stare" />
-                        <q-btn v-if="interval.stare=='liber'&&kind=='t'" icon="event" class="q-mt-xs" dense outline rounded color="accent" label="Rezervare " @click="solicitareprogramareoffline(interval)"/>
+                        <q-chip v-if="kind=='online'" :color="interval.stare=='liber'? interval.tip=='online'?'green':'accent':'red'" text-color="white"  :label="interval.stare" />
+                        <q-btn v-if="interval.stare=='liber'&&kind=='offline'" icon="event" class="q-mt-xs" dense outline rounded color="accent" label="Rezervare " @click="solicitareprogramareoffline(interval)"/>
 
                  </div>
 
@@ -146,7 +146,7 @@ export default defineComponent({
         let show_anulare_dialog = ref(false)
         let show_reprogramare = ref(false)
         let show_programare_offline = ref(false)
-        let solicitare = ref({mesaj:'Multumesc',nume:'',telefon:'',email:'',specialitate:null,specialitati:[]})
+        let solicitare = ref({mesaj:'Multumesc',nume:'',telefon:'',email:'',specialitate:null,tip:'',specialitati:[]})
         let solicitareoffline = ref({mesaj:'',nume:'',telefon:'',specialitate:null,orastart:'',orastop:'',medic:'',data:'',interval:null})
         let text=ref(`Ne pare rau sa va informam ca programarea dumneavoastra la Dr. Ionescu Ion din data 01/02/2022 incepind cu ora 10.15 a fost anulata din motive obiective, neprevazute.`)
         let token_anulare=null;
@@ -177,6 +177,7 @@ export default defineComponent({
                                                                     stare='OCUPAT'
                                                                     slot_programare={
                                                                                 index,
+                                                                                pozitie:intervale.value.length,
                                                                                 idprogramare:prog.id,
                                                                                 nume:prog.nume,
                                                                                 telefon:prog.telefon,
@@ -210,8 +211,15 @@ export default defineComponent({
                                                             })
                                                             
                                                             if(stare=='OCUPAT'){
-                                                                intervale.value.push(slot_programare)
+                                                                if(kind=='online'||p.tip==kind) {
+                                                                    let poz=intervale.value.length
+                                                                    slot_programare.pozitie=poz
+                                                                    intervale.value.push(slot_programare)
+                                                                } 
                                                             } else {
+                                                              //  console.log('comparaatie',kind,p.tip)
+                                                              let pozitie=intervale.value.length
+                                                                if(kind=='online'||p.tip==kind)
                                                                 intervale.value.push({
                                                                         orastart:t0,
                                                                         orastop:t1,
@@ -230,6 +238,7 @@ export default defineComponent({
                                                                         data:props.zi.formatata,
                                                                         idclinica:global.state.user.idclinica,
                                                                         programat:false,
+                                                                        pozitie,
                                                                         icon:p.tip=='online'?'cloud_upload':'perm_phone_msg'
 
                                                             })
@@ -304,7 +313,7 @@ export default defineComponent({
 
                                                                             }
                                                           //  console.log('Programare noua',res.data,slot_programare_offline)
-                                                            intervale.value[slot_programare_offline.index]=slot_programare_offline
+                                                            intervale.value[solicitareoffline.value.interval.pozitie]=slot_programare_offline
                                                 solicitareoffline.value = {mesaj:'',nume:'',telefon:'',specialitate:null,orastart:'',orastop:'',medic:'',data:'',interval:null}
                                                             $q.notify({
                                                                     message:'Programare efectuata cu succes!',
@@ -356,6 +365,7 @@ export default defineComponent({
         solicitare.value.nume=intervale.value[index].nume
         solicitare.value.telefon=intervale.value[index].telefon
         solicitare.value.email=intervale.value[index].email
+        solicitare.value.tip=intervale.value[index].tip
         solicitare.value.specialitati=[]
         solicitare.value.specialitate=null
         props.liste.specialitati.map(s=>{
@@ -381,7 +391,7 @@ export default defineComponent({
             idspecialitate:solicitare.value.specialitate.value,
             idclinica:global.state.user.idclinica,
             mesaj:solicitare.value.mesaj,
-            tip:'Intern'
+            tip:solicitare.value.tip
            }
         
           axios.post(process.env.host+'solicitarereprogramare',repro).then(res =>{
@@ -397,7 +407,7 @@ export default defineComponent({
       function anulez_programare(token){
           
           token_anulare=token
-         // console.log(intervale.value[token])
+          console.log('Anulare',token,intervale.value[token])
           let slot=intervale.value[token]
           let d=slot.data.split('-')
           const data = d[2]+'.'+d[1]+'.'+d[0]

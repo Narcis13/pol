@@ -2,6 +2,7 @@
  import { schema} from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database';
  import Cabinet from 'App/Models/Cabinet';
+ import Program from 'App/Models/Program'
  import Drive from '@ioc:Adonis/Core/Drive'
  
 export default class CabinetsController {
@@ -92,6 +93,11 @@ export default class CabinetsController {
         .merge({stare:'inactiv'})
         .save()
                // .delete()
+        await Program
+               .query()
+               .where({'idcabinet':params.id})   
+               .update({'stare':'inactiv'}) 
+
         return `${cabinet.denumire} a fost inactivat cu succes!`
        }
 

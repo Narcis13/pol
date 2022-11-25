@@ -23,9 +23,9 @@
                                     <q-separator dark />
 
                                     <q-card-actions>
-                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire,'i')">Programari</q-btn>
+                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire,'online')">Programari</q-btn>
                                         <q-space />
-                                        <q-btn @click="programariCabinet(cab.id,cab.denumire,'t')" dense color="grey-4" text-color="purple" glossy unelevated icon="add" label="Offline" />
+                                        <q-btn @click="programariCabinet(cab.id,cab.denumire,'offline')" dense color="grey-4" text-color="purple" glossy unelevated icon="add" label="Offline" />
                                     </q-card-actions>
 
                                 </q-card>
@@ -200,7 +200,7 @@ export default defineComponent({
 
                         res => {
 
-                           // console.log('Orar cabinet ',res.data)
+                            console.log('Orar cabinet ',res.data)
                             state.liste.program=[]
                             res.data.program_cabinet.map(p=>{
                                 state.liste.program.push(p)
@@ -210,7 +210,7 @@ export default defineComponent({
 
                                         res => {
 
-                                            console.log('Programari cabinet ',res.data)
+                                           // console.log('Programari cabinet ',res.data)
                                             state.liste.programari=[]
                                             res.data.programari.map(p=>{
                                                 state.liste.programari.push(p)

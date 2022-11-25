@@ -153,6 +153,8 @@ export default defineComponent({
                   if(res.data.solicitare_q[0]!=='undefined'&&res.data.solicitare_q[0].confirmat==null&&res.data.solicitare_q[0].hash==elemente[0]){
                    state.solicitare=res.data.solicitare_q[0]
                    solicitarevalida.value=true
+                   if(res.data.solicitare_q[0].tip=='Online') res.data.solicitare_q[0].tip='online'
+                   state.liste.kind=res.data.solicitare_q[0].tip
                    state.liste.indis=[]
                      urlsigla.value=process.env.host+res.data.solicitare_q[0].calesiglaclinica
                      numeclinica.value=res.data.solicitare_q[0].numeclinica

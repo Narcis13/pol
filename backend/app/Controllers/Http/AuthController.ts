@@ -44,6 +44,13 @@ export default class AuthController {
     return users//user.all();
    }
 
+   public async alluserscabs({request}:HttpContextContract){
+    let idclinica=request.headers().idclinica;
+    const users =  await user.query().
+                          where({'idclinica':idclinica})
+    return users//user.all();
+   }
+
    public async updateuser({params,request,response}:HttpContextContract){
     //console.log(request.body())
     const utilizator = await user.findOrFail(params.id)

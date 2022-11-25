@@ -328,7 +328,7 @@ export default defineComponent({
             return tab.value=='editare'? 'Actualizare' : tab.value=='lista'? '':'Adaugare' 
         })
 
-         axios.get(process.env.host+`allusers`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
+         axios.get(process.env.host+`alluserscabs`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
            
@@ -397,7 +397,7 @@ export default defineComponent({
 
                       $q.dialog({
                             title: 'Confirmati',
-                            message: 'Sunteti sigur ca doriti stergerea acestui cabinet?',
+                            message: 'Sunteti sigur ca doriti stergerea inregistrarii? Vor fi efecte in lant si asupra altor componente ale aplicatiei care depind de inregistrarea ce urmeaza a fi stearsa!',
                             cancel: true,
                             persistent: true
                         }).onOk(() => {

@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Specialitate from 'App/Models/Specialitate'
+import Program from 'App/Models/Program'
 import { schema} from '@ioc:Adonis/Core/Validator'
 
 export default class SpecialitatisController {
@@ -42,12 +43,19 @@ export default class SpecialitatisController {
 
        public async stergspecialitate({params}:HttpContextContract){
 
+        
         const spec = await Specialitate.findOrFail(params.id)
          
         await spec
             .merge({stare:'inactiv'})
             .save()
                     // .delete()
+         
+        await Program
+        .query()
+        .where({'idspecialitate':params.id})   
+        .update({'stare':'inactiv'})   
+              
             return `Specialitate ${spec.denumire} a fost inactivata cu succes!`
        }
 }
