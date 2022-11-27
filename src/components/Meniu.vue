@@ -34,7 +34,7 @@
                     Administrare<br>Programari
                   </q-btn>
                   <q-btn to="rappro" class="full-width q-ma-xs" color="teal" no-caps>
-                    Rapoarte<br>Programari
+                    Raport<br>Programari
                   </q-btn>
                   <q-btn to="soli456" class="full-width q-ma-xs" color="teal" no-caps>
                     Solicitari<br>Programare

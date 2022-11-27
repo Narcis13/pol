@@ -9,7 +9,7 @@
     
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column" style="max-width:90vw">
                 <div class="row flex flex-center ">
-                        <q-input class="col q-ml-md q-mt-md" dense outlined v-model="dataraport" mask="date" :rules="['date']">
+                        <q-input class="col q-ml-md q-mt-md" style="width: 200px;" dense outlined v-model="dataraport" mask="date" :rules="['date']">
                             <template v-slot:append>
                                 <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
@@ -25,7 +25,7 @@
                          <q-badge class="q-ml-md " color="purple">
                             <q-icon name="keyboard_double_arrow_right" color="white" />
                          </q-badge>
-                         <q-input class="col q-ml-md q-mt-md" dense outlined v-model="dataraportstop" mask="date" :rules="['date']">
+                         <q-input class="col q-ml-md q-mt-md"  style="width: 200px;" dense outlined v-model="dataraportstop" mask="date" :rules="['date']">
                             <template v-slot:append>
                                 <q-icon name="event" class="cursor-pointer">
                                 <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
@@ -40,12 +40,25 @@
                          </q-input>
     
     
-                          <q-btn :disable="dataraportstop<dataraport" class="col q-ml-md" @click="raport"    color="primary" icon="mail" label="RAPORT" /> 
+                          
                 </div>
+
+                <div class="row  q-pa-sm">
+                    <q-select class="col  q-ml-md" style="min-width: 200px;" outlined v-model="numaicabinetul" :options="options" label="Cabinete" />
+                    <q-badge class="q-ml-md " color="purple">
+                            <q-icon name="dataset" color="white" />
+                         </q-badge>
+                    <q-select class="col q-ml-md"  style="min-width: 200px;" outlined v-model="numaimedicul" :options="options" label="Medici" />
+                </div>
+
+
     
 
         </div>
-
+        <div class="row flex flex-center q-pa-sm">
+            <q-btn   style="max-width:200px" class="col q-ml-md q-mt-md"     color="primary" icon="cached" label="RESET" /> 
+                    <q-btn style="max-width:200px" :disable="dataraportstop<dataraport" class="col q-ml-md q-mt-md" @click="raport"    color="primary" icon="mail" label="RAPORT" /> 
+        </div>
     </q-page>    
     </template>
     <script>
@@ -61,6 +74,8 @@
         setup() {
             const global=inject('global');
             let userid= global.state.user.rol=='admin'? 0:global.state.user.idutilizator
+            let numaicabinetul=ref({label:'TOATE...',value:-1})
+            let numaimedicul = ref({label:'TOTI...',value:-1})
             let dataraport = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
             let dataraportstop = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
     
@@ -82,8 +97,12 @@
                 dataraport,
                 dataraportstop,
                 global,
-                
-                raport
+                numaicabinetul,
+                numaimedicul,
+                raport,
+                options: [
+        'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+      ]
             }
         }
     })
