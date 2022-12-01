@@ -151,14 +151,20 @@ export default class ProgramarisController {
     }
 
     public async raportprogramari({view,request}:HttpContextContract){
+        const clinica = await Clinica.findOrFail(request.qs().clin)
+        let clauza={'programarises.idclinica':request.qs().clin}
+        if(request.qs().med>0) clauza['programarises.idmedic']=request.qs().med
+        if(request.qs().cab>0) clauza['programarises.idcabinet']=request.qs().cab
+        if(request.qs().tip==1) clauza['solicitares.tip']='online'
+        if(request.qs().tip==2) clauza['solicitares.tip']='offline'
         const programari= await Database
         .from('programarises')
         .join('cabinets', 'programarises.idcabinet', '=', 'cabinets.id')
         .join('solicitares', 'programarises.idsolicitare', '=', 'solicitares.id')
         .join('medics', 'programarises.idmedic', '=', 'medics.id')
         .select('programarises.*')
-        .select({d:'programarises.data',medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire'})
-        .where({'programarises.stare':'activ'})//,'programarises.data':request.qs().d})
+        .select({d:'programarises.data',medic:'medics.nume',idoperator:'cabinets.idoperator',nume:'solicitares.nume',telefon:'solicitares.telefon',cabinet:'cabinets.denumire',tip:'solicitares.tip'})
+        .where(clauza)//,'programarises.data':request.qs().d})
         .andWhere('programarises.data','>=',request.qs().d)
         .andWhere('programarises.data','<=',request.qs().stop)
         .andWhere('cabinets.idoperator',request.qs().userid==0?'>':'=',request.qs().userid)
@@ -172,7 +178,9 @@ export default class ProgramarisController {
             p.d=DateTime.fromJSDate(new Date(p.d)).toFormat('dd.MM.yyyy')
         
         })
-        return view.render('raportprogramari',{data:request.qs().d,userid:request.qs().userid,datastop:request.qs().stop,programari})
+        let dstart=DateTime.fromJSDate(new Date(request.qs().d)).toFormat('dd.MM.yyyy')
+        let dstop=DateTime.fromJSDate(new Date(request.qs().stop)).toFormat('dd.MM.yyyy')
+        return view.render('raportprogramari',{numeclinica:clinica.denumire,data:dstart,userid:request.qs().userid,datastop:dstop,programari})
     }
 
     public async osolicitare({params}:HttpContextContract){

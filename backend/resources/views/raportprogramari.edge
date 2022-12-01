@@ -5,19 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Raport programari</title>
-    <script src="{{ asset('assets/app.js') }}"></script>
+ 
     <link rel="stylesheet" href="./bulma.css">
+    <style>
+      .anulat {
+
+          text-decoration: line-through;
+        }
+      
+    </style>
   </head>
   <body>
   <section class="section">
-
-    <div class="columns is-centered">
+    <div class="content ml-2 ">
+      <h4> {{numeclinica}}</h4>
+  </div>
+    <div class="columns  ">
         <div class="column ">
-       <div class="content ml-2">
+       <div class="content ml-6 ">
            <h5> Raport programari online in intervalul: {{data}} - {{datastop}}</h5>
        </div>
 
-            <table class="table is-narrow">
+            <table class="table is-narrow ">
              <thead>
                 <tr>
                   <th>Data</th>
@@ -26,19 +35,21 @@
                   <th>Nume</th>
                   <th>Telefon</th>
                   <th>Ora</th>
-
+                  <th>Tip</th>
                 </tr>
             </thead>
 
               <tbody>
                 @each(p in programari)
-                  <tr>
+                  <tr class={{p.tip=='offline'?'is-italic':''}}>
                     <td>{{ p.d }}</td>
                     <td>{{ p.cabinet }}</td>
                      <td>{{ p.medic }}</td>
-                    <td>{{ p.nume }}</td>
+                    <td class={{p.stare=='anulata'?'anulat':''}}>{{ p.nume }}</td>
                     <td>{{ p.telefon }}</td>
                     <td>{{ p.orastart }}</td>
+                    <td>{{ p.tip }}</td>
+                    
                     
                   </tr>
                 @end
