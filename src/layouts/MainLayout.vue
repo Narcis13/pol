@@ -11,11 +11,11 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title>
-            <div>
-            Programari online servicii medicale
+            <div class="text-subtitle2">
+            el EvenT en App
             </div>
         </q-toolbar-title>
-        <div>v. 0.9.7</div>
+        <div class="gt-sm">v. 0.9.8</div>
     
       </q-toolbar>
     </q-header>
@@ -30,19 +30,30 @@
     <div class="column items-center">
        <q-input v-show="!global.state.user.autentificat" class="q-mt-md" v-model="username" filled dense label="Utilizator" />
        <q-input v-show="!global.state.user.autentificat" class="q-mt-md" v-model="password" filled dense type="password" label="Parola" />
-       <q-btn v-show="!global.state.user.autentificat" class="q-ma-md col" outline rounded color="primary" label="Autentificare" @click="autentificare"/>
+       <q-btn v-show="!global.state.user.autentificat" class="q-ma-md col" outline rounded color="deep-purple-14" label="Autentificare" @click="autentificare"/>
     
-      <q-card class="col my-card" v-show="global.state.user.autentificat">
-        <q-card-section>
-          <div class="text-h6">{{global.state.user.nume}}</div>
-          <div class="text-subtitle2">{{global.state.user.rol}}</div>
-          <div class="text-subtitle2">{{global.state.user.nume_intreg}}</div>
-        </q-card-section>
+      <q-card class="col my-card q-mt-md" v-show="global.state.user.autentificat">
 
+        <q-card-section>
+       
+            <q-item>
+            <q-item-section avatar>
+              <q-avatar size="70px" font-size="52px" color="deep-purple-14" text-color="white" icon="account_box" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label  class="text-blue-grey-10 text-subtitle2">{{global.state.user.rol}}</q-item-label>
+              <q-item-label  class="text-blue-grey-10 text-subtitle2">{{global.state.user.nume_intreg}}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-card-section>
         <q-separator />
 
-        <q-card-actions vertical>
-          <q-btn :to="'/'+slug" flat @click="global.actions.deconectare">Deconectare!</q-btn>
+        <q-card-actions class="q-pa-sm" vertical >
+          <div class="flex flex-center">
+            <q-btn  align="around" class="q-pa-sm" color="deep-purple-14" text-color="pink-1" icon="logout" :to="'/'+slug"  @click="global.actions.deconectare">Deconectare!</q-btn>
+          </div>
+          
 
         </q-card-actions>
     </q-card>
@@ -80,9 +91,9 @@ export default defineComponent({
     const bus = inject('bus') 
     const $q = useQuasar()
     let slug=ref('')
-      console.log('MainLayout!')
+     // console.log('MainLayout!')
       bus.on('ruta-stabilita',s=>{
-        console.log('Receptionat ruta-stabilita in MainLayout',s)
+     //   console.log('Receptionat ruta-stabilita in MainLayout',s)
         slug.value=s;
       })
     return {
@@ -96,11 +107,11 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       autentificare(){
-        console.log('Tentativa de autentificare...',process.env.host)
+       // console.log('Tentativa de autentificare...',process.env.host)
 
                   axios.post(process.env.host+'login',{nume:username.value,password:password.value,slug:slug.value}).then(
                       res => {
-                        console.log('Raspuns la autentificare ',res)
+                      //  console.log('Raspuns la autentificare ',res)
                         username.value=''
                         password.value=''
                         if(res.data.loggeduser){
@@ -136,7 +147,7 @@ export default defineComponent({
                               icon: 'delete',
                               message: `User sau parola incorecte...`
                             })
-                console.log('Eroare autentificare',err);
+               // console.log('Eroare autentificare',err);
               });
       },
     

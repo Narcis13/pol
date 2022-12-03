@@ -5,11 +5,11 @@
 
 
         <q-toolbar-title>
-            <div>
-            Programari online servicii medicale
+          <div class="text-subtitle2">
+            el EvenT en App
             </div>
         </q-toolbar-title>
-        <div>v. 0.9.7</div>
+        <div class="gt-sm">v. 0.9.8</div>
     
     
       </q-toolbar>
@@ -25,9 +25,8 @@
 
 <script>
 
-import { defineComponent, ref ,inject} from 'vue'
-import { useQuasar } from 'quasar'
-import axios from 'axios'
+import { defineComponent} from 'vue'
+
 
 export default defineComponent({
   name: 'ProgramariLayout',
@@ -37,7 +36,7 @@ export default defineComponent({
   },
 
   setup () {
-      console.log('ProgramariLayout!')
+    //  console.log('ProgramariLayout!')
   }
 })
 </script>

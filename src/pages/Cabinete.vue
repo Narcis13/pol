@@ -8,7 +8,7 @@
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
                 <q-banner inline-actions rounded class="bg-orange text-white">
-                    Cabinete platforma programare online
+                    Cabinete platforma programare 
                     <template v-slot:action>
                         <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
@@ -264,6 +264,9 @@
                         </div>
                     </q-tab-panel>
                     </q-tab-panels>
+                    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+                        <q-btn @click="tab='adaugare';reset()" class="lt-sm" fab icon="add" color="orange" />
+                     </q-page-sticky>
                 </q-card>
         </div>
     </q-page>

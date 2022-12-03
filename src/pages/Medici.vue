@@ -8,7 +8,7 @@
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
                 <q-banner inline-actions rounded class="bg-orange text-white">
-                    Medici platforma programare online
+                    Medici platforma programare 
                     <template v-slot:action>
                         <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
@@ -64,8 +64,8 @@
                     </q-tab-panel>
 
                     <q-tab-panel name="editare">
-                        <div class=" q-gutter-sm" column style="width: 380px">
-                            <q-card class="my-card flex flex-center" style="max-width: 380px" bordered>
+                        <div class=" q-gutter-sm" column style="width: 370px">
+                            <q-card class="my-card flex flex-center" style="max-width: 370px" bordered>
                                 <q-item>
 
                                     <q-avatar size='120px'>
@@ -117,6 +117,10 @@
                     </q-tab-panels>
                 </q-card>
         </div>
+
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn @click="tab='adaugare';reset()" class="lt-sm" fab icon="add" color="orange" />
+        </q-page-sticky>
     </q-page>
 </template>
 <script>

@@ -4,7 +4,7 @@
        <q-list bordered>
           <q-expansion-item
             group="somegroup"
-            icon="explore"
+            icon="settings"
             label="CONFIGURARE"
             default-opened
             header-class="text-primary"
@@ -26,7 +26,7 @@
 
           <q-separator />
 
-          <q-expansion-item group="somegroup" icon="perm_identity" label="PROGRAMARI" header-class="text-teal">
+          <q-expansion-item group="somegroup" icon="edit_calendar" label="PROGRAMARI" header-class="text-teal">
             <q-card>
               <q-card-section>
 
@@ -46,7 +46,7 @@
 
           <q-separator />
 
-          <q-expansion-item v-show="global.state.user.rol=='admin'" group="somegroup" icon="shopping_cart" label="ADMINISTRARE" header-class="text-purple">
+          <q-expansion-item v-show="global.state.user.rol=='admin'" group="somegroup" icon="rule" label="ADMINISTRARE" header-class="text-purple">
             <q-card>
               <q-card-section>
                  <q-btn to="clin777" class="full-width q-ma-xs" color="purple" no-caps>
@@ -74,6 +74,11 @@
           
         </q-list>
       </q-card-section>
+      <div class="flex flex-center q-pa-sm">
+        <span class="q-mr-md">v. 0.9.8</span>
+        <a class="doc-link" href="https://eleventen.app" target="_blank" rel="noopener">elEvenTen app<span class="q-icon" aria-hidden="true" role="presentation"><svg viewBox="0 0 24 24"><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"></path></svg></span></a>
+      </div>
+      
     </q-card>
 </template>
 
@@ -96,4 +101,13 @@ export default defineComponent({
 .my-card
   width: 100%
   max-width: 250px
+.doc-link
+  color: #00b4ff
+  font-weight: 500
+  text-decoration: none
+  outline: 0
+  border-bottom: 1px dotted currentColor
+  transition: opacity .2s
+  white-space: nowrap
+
 </style>

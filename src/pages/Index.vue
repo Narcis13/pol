@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="column flex flex-center">
+    <div class="column flex flex-center q-pa-md">
+      <div v-if="!global.state.user.autentificat" class="text-h3 text-indigo-9">elEvenTen app</div>
       <h5 v-show="global.state.user.autentificat">{{numeclinica}}</h5>
       <img
         v-show="global.state.user.autentificat"

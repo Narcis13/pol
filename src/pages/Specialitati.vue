@@ -68,6 +68,9 @@
                     </q-tab-panels>
                 </q-card>
         </div>
+        <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn @click="tab='adaugare';reset()" class="lt-sm" fab icon="add" color="orange" />
+        </q-page-sticky>
     </q-page>
 </template>
 <script>
