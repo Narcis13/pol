@@ -17,6 +17,7 @@
                             row-key="id"
                             selection="single"
                             :pagination="initialPagination"
+                            :visible-columns="vc"
                             v-model:selected="selected"
                             >
 
@@ -98,7 +99,7 @@
 </template>
 
 <script>
-import { defineComponent,ref , reactive,inject,computed} from 'vue'
+import { defineComponent,ref , reactive,inject,computed,watch} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
 import { date } from 'quasar'
@@ -150,10 +151,20 @@ export default defineComponent({
         let deladata=ref(date.formatDate(tomorrow, 'YYYY/MM/DD'))
         let ladata=ref(date.formatDate(tomorrow, 'YYYY/MM/DD'))
 
-  
-
+     
+       let emica=ref($q.screen.lt.sm)
       
+       let vcvalue =  $q.screen.lt.sm
+        ? ['nume','datastart','datastop']
+        : ['nume','tipindisponibilitate','datastart','datastop']
+      
+        let vc=ref(vcvalue)
+
+        watch(emica, (newValue, oldValue) => {
+           // console.log('mica',newValue,oldValue)
+        });
        
+
        let dateValide = computed(()=>{
             const diff = date.getDateDiff(ladata.value, deladata.value, 'days')
             return diff>0
@@ -216,7 +227,7 @@ export default defineComponent({
         }
 
         function sterge(){
-          console.log('sterg ',selected.value[0].id)
+         // console.log('sterg ',selected.value[0].id)
           axios.delete(process.env.host+`indis/${selected.value[0].id}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                                 res => {
@@ -248,7 +259,7 @@ export default defineComponent({
                                 indisponibilitatile();
                                 reset();
                                 tab.value='lista';
-                                console.log(res.data)
+                               // console.log(res.data)
                                 if(res.data.errors){
                                     $q.notify({
                                                         message:'EROARE DATE INCORECTE! Cod: '+res.data.errors.errors[0].message,
@@ -289,7 +300,7 @@ export default defineComponent({
 
                 res => {
 
-                   console.log('Raspuns programare medic',res.data)
+                   //console.log('Raspuns programare medic',res.data)
                    state.programari=[]
                    res.data.programari.map(p=>{
                        state.programari.push(p)
@@ -318,6 +329,7 @@ export default defineComponent({
              ladata,
              dateValide,
              sterge,
+             vc,
              eMedicSelectat,
              interval_selectat
         }

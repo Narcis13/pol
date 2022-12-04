@@ -8,7 +8,7 @@
                 </div>
     <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
       <q-table
-
+       dense
       :rows="state.sarbatori"
       :columns="columns"
       :pagination="initialPagination"
@@ -196,7 +196,7 @@ export default defineComponent({
         $q.notify('Data validata!')
         axios.patch(process.env.host+`program/${id}`,{[cheie]:newvalue},{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 
-                                console.log('Am editat sarbatopare ',res.data)
+                               // console.log('Am editat sarbatopare ',res.data)
                              toatesarbatorile();
 
                              $q.notify({
@@ -237,7 +237,7 @@ export default defineComponent({
         detalii:detaliiZiLibera.value,
         idclinica:global.state.user.idclinica
       }
-       console.log('Adaug zi libera ',zilibera)
+      // console.log('Adaug zi libera ',zilibera)
 
        axios.post(process.env.host+'sarbatori',zilibera,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
                                 

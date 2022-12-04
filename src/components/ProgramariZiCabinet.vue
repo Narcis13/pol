@@ -1,5 +1,5 @@
 <template>
-    <div style="min-width:180px;" v-bind:class="{'q-pa-sm':true, 'column':true,'azi':(nrcrtzi ==0)}" >
+    <div style="min-width:180px;" v-bind:class="{'q-pa-sm':true, 'column':true,'shadow-8':(nrcrtzi ==0)}" >
        <div class="text-subtitle2">{{denumirezi}}</div> 
        <div class="bg-blue-grey-7 text-white text-h6 fit row wrap justify-center items-center content-start q-pa-sm q-mt-sm" v-if="intervale.length==0" style="width:180px;height:180px;">INCHIS</div>
          <q-timeline layout="dense" side="right" color="secondary">

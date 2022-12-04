@@ -186,8 +186,8 @@ export default defineComponent({
                                           idserviciumedical:prog.idserviciumedical,
                                           numeserviciu:prog.serviciu,
                                           durataserviciu:prog.durata,
-                                          orastart:prog.orastart,
-                                          orastop:prog.orastop,
+                                          orastart:prog.orastart.substring(0,5),
+                                          orastop:prog.orastop.substring(0,5),
                                           idcabinet:prog.idcabinet,
                                           ziuadinsaptamina:prog.ziuadinsaptamina
          })

@@ -45,7 +45,7 @@
 
                 <div class="row  q-pa-sm">
                     <q-select class="col  q-ml-md" style="min-width: 200px;" outlined v-model="numaicabinetul" :options="state.cabinete" label="Cabinete" />
-                    <q-badge class="q-ml-md " color="purple">
+                    <q-badge class="gt-xs q-ml-md " color="purple">
                             <q-icon name="dataset" color="white" />
                          </q-badge>
                     <q-select class="col q-ml-md"  style="min-width: 200px;" outlined v-model="numaimedicul" :options="state.medici" label="Medici" />

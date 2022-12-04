@@ -7,7 +7,7 @@
                     </q-banner>
                 </div>
         <div v-if="global.state.user.autentificat" class="q-mt-sm flex flex-center column">
-                <q-banner inline-actions rounded class="bg-orange text-white">
+                <q-banner v-show="tab=='lista'" inline-actions rounded class="bg-orange text-white">
                     Medici platforma programare 
                     <template v-slot:action>
                         <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
@@ -119,7 +119,7 @@
         </div>
 
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn @click="tab='adaugare';reset()" class="lt-sm" fab icon="add" color="orange" />
+            <q-btn v-show="tab=='lista'" @click="tab='adaugare';reset()" class="lt-sm" fab icon="add" color="orange" />
         </q-page-sticky>
     </q-page>
 </template>

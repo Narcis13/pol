@@ -137,17 +137,18 @@ export default {
   setup () {
     //,{headers:{"Authorization" : `Bearer ${token}`}}
     const global=inject('global');
-    //console.log('Date utilizator',global.state.user.idclinica,global.state.user.token)
+   
     let token = global.state.user.token;
      let intervalAles=ref(intervale[3])
      const $q = useQuasar()
      let idoperator = global.state.user.rol=='admin' ? 0 : global.state.user.idutilizator
      const router =useRouter()
      function toatesolicitarile(){
+      //console.log('Date utilizator',idoperator)
         axios.get(process.env.host+`solicitarile/${intervalAles.value.cod}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica,'idoperator':idoperator}}).then(
 
               res => {
-                    console.log('Toate solicitarile',res.data)
+                    //console.log('Toate solicitarile',res.data)
                     state.solicitari=[];
                 res.data.solicitari.map(s=>{
                       state.solicitari.push(s)
@@ -183,7 +184,7 @@ export default {
 
               //console.log(dataminima)
 
-              axios.get(process.env.host+`solicitarile/${c}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
+              axios.get(process.env.host+`solicitarile/${c}`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica,'idoperator':idoperator}}).then(
 
                 res => {
                       //console.log('Toate solicitarile',res.data)
@@ -221,13 +222,13 @@ export default {
     } 
     
     function reprogramare(){
-      console.log(selected.value)
+     // console.log(selected.value)
       router.push('./programari/'+selected.value[0].hash+'-'+selected.value[0].id+'-i')
       selected.value=[]                                  
     }
      
     function veziProgramarea(){
-       console.log(selected.value)
+      // console.log(selected.value)
        let idsolicitare=selected.value[0].id
 
        axios.get(process.env.host+`oprogramare/${idsolicitare}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(

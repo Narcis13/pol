@@ -36,17 +36,17 @@
                             <div>
                                         <q-bar dark class="bg-primary text-white">
                                             
-                                            <q-btn @click="tab='lista'" dense flat icon="arrow_back" v-close-popup>
+                                            <q-btn @click="inapoi" dense flat icon="arrow_back" v-close-popup>
                                                 <q-tooltip>Inapoi la toate cabinetele</q-tooltip>
                                             </q-btn>
                                             <q-space />
-                                            <div class="text-h4">{{numecabinet}}</div>
+                                            <div class="text-h5">{{numecabinet}}</div>
 
                                         </q-bar>
 
                                         <div class="row">
                                          
-                                            <div :key="zi.formatata" v-for="zi in zileperpagina" class="q-pa-md col-12 col-md">
+                                            <div :key="zi.formatata" v-for="zi in zileperpagina" class="q-pa-md col-12 col-sm-6 col-md-3 col-lg">
                                                    <programari-zi-cabinet @programare-anulata="programareAnulata" v-if="zi.pagina==paginacurenta" :zi="zi" :liste="state.liste" />
                                             </div>
                                         </div>  
@@ -191,6 +191,16 @@ export default defineComponent({
                                         }
                                         ).catch(err =>{})
 
+        function inapoi()   {
+             tab.value='lista'
+             paginacurenta.value=1;
+             zileperpagina.value=[]
+                                    zile.value.map(z=>{
+                                    if (z.pagina==paginacurenta.value) zileperpagina.value.push(z)
+                                        })
+
+        }   
+
         function programariCabinet(idcabinet,denumirecabinet,kind){
                 console.log('Programarile cabinetului ',idcabinet)
                 state.liste.kind=kind
@@ -241,6 +251,7 @@ export default defineComponent({
                     zileperpagina,
                     paginacurenta,
                   numecabinet,
+                  inapoi,
                     paginaUrmatoare(){
                         if(paginacurenta.value<11) paginacurenta.value ++   
                     

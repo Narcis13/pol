@@ -18,7 +18,7 @@ const state = reactive({
 
 const actions = {
      autentificare(user,token,clinica){
-         console.log('!Autentificare: ',user,token)
+         //console.log('!Autentificare: ',user,token)
 
          state.user.autentificat=true;
         

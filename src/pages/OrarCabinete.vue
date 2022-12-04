@@ -36,12 +36,12 @@
                                                 <q-tooltip>Inapoi la toate cabinetele</q-tooltip>
                                             </q-btn>
                                             <q-space />
-                                            <div class="text-h4">Configurare {{state.cabinetselectat.denumire}}</div>
+                                            <div class="text-h5">{{state.cabinetselectat.denumire}}</div>
 
                                         </q-bar>
 
                                         <div class="row">
-                                            <div :key="zi.zidinsaptamina" v-for="zi in zile" class="q-pa-md col-12 col-md">
+                                            <div :key="zi.zidinsaptamina" v-for="zi in zile" class="q-pa-md col-12 col-sm-6 col-md-3 col-lg">
                                                     <zi-cabinet @interval-sters="intervalsters" @interval-adaugat="intervaladaugat" :zi="zi" :liste="state.liste"/>
                                             </div>
                                         </div>        
@@ -56,10 +56,10 @@
 
 <script>
 import ZiCabinet from 'components/ZiCabinet.vue'
-import { defineComponent,ref , reactive,inject,computed} from 'vue'
+import { defineComponent,ref , reactive,inject} from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
-import { date } from 'quasar'
+
 
 const state = reactive(
   {
@@ -195,7 +195,7 @@ export default defineComponent({
                 .catch(err =>{})    
 
         function configurez(id){
-            console.log('Configurez cabinet...',id)
+          //  console.log('Configurez cabinet...',id)
             state.cabinete.map(cab=>{
                 if(cab.id==id){
                     state.cabinetselectat=cab
@@ -212,11 +212,11 @@ export default defineComponent({
             configurez,
             zile,
             intervalsters(p){
-                console.log('INterval sters (PARENT)',p)
+                //console.log('INterval sters (PARENT)',p)
                 state.liste.program = state.liste.program.filter((item) => item.id !== p.id);
             },
             intervaladaugat(id){
-                console.log('Interval adaugat ',id)
+               // console.log('Interval adaugat ',id)
                 axios.get(process.env.host+`program`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {

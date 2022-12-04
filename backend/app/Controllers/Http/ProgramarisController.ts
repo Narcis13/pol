@@ -248,9 +248,9 @@ export default class ProgramarisController {
                 dataminima.setHours(0,0,0,0)
               }
 
-             // console.log('Headere solicitari',request.headers().idclinica)
+             // console.log('Headere solicitari',request.headers().idoperator, typeof request.headers().idoperator)
               let idclinica=request.headers().idclinica;
-              let idoperator:number = parseInt(request.headers().idoperator);
+              let idoperator = parseInt(request.headers().idoperator?.toString());
            
         //console.log('Solicitari....',dataminima)
         const solicitari= await Database
