@@ -270,7 +270,7 @@ export default defineComponent({
            }
            axios.post(process.env.host+'solicitarereprogramare',offpro).then(res =>{
                                 
-                                console.log('Solicitare programare offline',res.data)
+                               // console.log('Solicitare programare offline',res.data)
                                     let info={
                                                 data: solicitareoffline.value.interval.data,
                                             
@@ -396,7 +396,7 @@ export default defineComponent({
         
           axios.post(process.env.host+'solicitarereprogramare',repro).then(res =>{
                                 
-                                   console.log('Solicitare reprogramare',res.data)
+                                //   console.log('Solicitare reprogramare',res.data)
                                router.push('./programari/'+res.data.hash+'-'+res.data.id+'-i')
                                             }).catch(err=>{
                                                 console.log(err)
@@ -407,7 +407,7 @@ export default defineComponent({
       function anulez_programare(token){
           
           token_anulare=token
-          console.log('Anulare',token,intervale.value[token])
+         // console.log('Anulare',token,intervale.value[token])
           let slot=intervale.value[token]
           let d=slot.data.split('-')
           const data = d[2]+'.'+d[1]+'.'+d[0]
@@ -421,11 +421,11 @@ export default defineComponent({
              email:intervale.value[token_anulare].email,
              mesaj:text.value
          } 
-         console.log('Chiar Anulez programare',date_anulare)
+        // console.log('Chiar Anulez programare',date_anulare)
          //aici fac totul
          axios.post(process.env.host+'anulareprogramare',date_anulare).then(res =>{
 
-                  console.log('Raspuns de la anulare programare',res.data)
+                //  console.log('Raspuns de la anulare programare',res.data)
                    show_anulare_dialog.value=false
                    
                    //aici trebuie sa fac sa dispara slotul....

@@ -49,7 +49,7 @@ export default defineComponent({
         props.liste.sarbatori.map(s=>{
             if(s==zicodata) sarbatoare=true
         })
-       console.log('Proprietati zi program',props.liste,kind)
+      // console.log('Proprietati zi program',props.liste,kind)
         let intervale = ref([])
         const $q = useQuasar()
 
@@ -61,7 +61,7 @@ export default defineComponent({
         axios.get(process.env.host+`programarecabinet/${props.liste.idc}`,{headers:{'idclinica':props.liste.clinica.idclinica}}).then(
 
                                         res => {
-                                        console.log('Program pe cabinet',props.liste.program);
+                                       // console.log('Program pe cabinet',props.liste.program);
                                         programari=res.data.programari
                                            let idx=0;
                                                 props.liste.program.map(p=>{
@@ -117,7 +117,7 @@ export default defineComponent({
                                                               idx++
                                                             t0=t1;
                                                             }
-                                                            console.log('Am program',intervale.value)
+                                                           // console.log('Am program',intervale.value)
                                                           
                                                         }
                                              })
@@ -129,7 +129,7 @@ export default defineComponent({
 
 
       function salvez_programare(index){
-         console.log('Index pozitie programare online',index)
+        // console.log('Index pozitie programare online',index)
           let interval=intervale.value[index];
 
           let info={
@@ -149,12 +149,12 @@ export default defineComponent({
                 stare: "activ",
                 idclinica:interval.idclinica
           }
- console.log('Rezerv index',info,index)
+ //console.log('Rezerv index',info,index)
          
           
               axios.post(process.env.host+'programare',info).then(res =>{
                                 
-                                console.log('Programare noua',res.data)
+                             //   console.log('Programare noua',res.data)
                 if(res.data.data){
                                 let token= btoa('pentru data '+res.data.data+' la ora '+res.data.orastart+' ')
                                 this.$router.push(`./${token}/succes/`+props.liste.mod)
