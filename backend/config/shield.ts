@@ -199,8 +199,8 @@ export const dnsPrefetch: ShieldConfig['dnsPrefetch'] = {
 | Learn more at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 */
 export const xFrame: ShieldConfig['xFrame'] = {
-  enabled: true,
-  action: 'DENY',
+  enabled: false,
+ // action: 'DENY',
 }
 
 /*

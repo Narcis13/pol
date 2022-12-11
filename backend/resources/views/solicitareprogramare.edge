@@ -4,19 +4,32 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solicitare programare Spitalul Militar Pitesti</title>
-    <script src="{{ asset('assets/app.js') }}"></script>
+    <title>Solicitare programare {{clinica.denumire}}</title>
+    {{--  <script src="{{ asset('assets/app.js') }}"></script>  --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
   <body>
   <section class="section">
+  <div class="container is-max-desktop">
+    <div class="box is-centered">
+
+   
+    <div class="columns  is-vcentered is-centered">
+      <div class="column is-hidden-mobile is-4 is-centered">
+        <figure class="image  is-128x128">
+          <img src="{{clinica.fisiersigla}}">
+        </figure>
+      </div>
+      <div class="column is-centered has-text-centered has-text-grey-dark has-text-weight-semibold">
+         <div class="is-size-5">{{clinica.denumire}}</div> 
+         <div>{{clinica.email}}</div> 
+      </div>
+    </div>
+    </div>
 
     <div class="columns is-centered">
         <div class="column ">
-            <div class="notification is-warning">
-               Platforma de programari online pacienti la {{clinica.denumire}} se afla in <strong>faza de testare.</strong> Ne cerem scuze pentru eventualele neplaceri si va asiguram ca in curind functionalitatea va fi deplina!
-               
-              </div>
+
             <div class="box  is-centered">
 
                 <form action="/solicitareprogramare" method="POST">
@@ -100,6 +113,14 @@
         </div>
     </div>
 
+    
+      <div class="content has-text-centered">
+       <a href="https://eleventen.app">elEvenTen app</a>.
+        
+      </div>
+ 
+
+  </div>
   </section>
 
   <div id="modal-js-example" class="modal">
@@ -108,7 +129,7 @@
     <div class="modal-content">
       <div class="box">
         <h5 class="text-left" style="font-family: 'Times New Roman';  font-weight: bold"> I. TERMENI PENTRU PROGRAMAREA ONLINE</h5>
-        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 1 - Acest portal este destinat programării la consultații, prin intermediul formularului de programare online, în cadrul Spitalului  Militar de Urgenţă  Dr. Ion Jianu Pitesti;</h5>         
+        <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 1 - Acest portal este destinat programării la consultații, prin intermediul formularului de programare online pentru {{clinica.denumire}};</h5>         
         <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 2 - Calendarul de selecție al datelor de programare este disponibil pentru 30 de zile de la data curentă pentru fiecare specialitate;</h5>         
         <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 3 - Programarea este netransmisibilă, individuală și corespunzătoare unui singur pacient;</h5>         
         <h5 class="text-left" style="font-family: 'Times New Roman';">&nbsp; 4 - Neprezentarea la data şi ora programată, neconformitatea datelor din formularul de programare şi lipsa documentelor necesare duc la anularea programării și la imposibilitatea de programare online;</h5>         

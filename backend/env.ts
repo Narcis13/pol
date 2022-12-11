@@ -26,4 +26,6 @@ export default Env.rules({
 	SMTP_PORT: Env.schema.number(),
 	SMTP_USERNAME: Env.schema.string(),
 	SMTP_PASSWORD: Env.schema.string(),
+	APP_MOD: Env.schema.string(),
+	APP_MESAJ: Env.schema.string(),
 })

@@ -419,6 +419,7 @@ export default defineComponent({
          let date_anulare={
              id:intervale.value[token_anulare].idprogramare,
              email:intervale.value[token_anulare].email,
+             clinica:global.state.user.clinica.denumire,
              mesaj:text.value
          } 
         // console.log('Chiar Anulez programare',date_anulare)

@@ -236,11 +236,13 @@ export default {
             res => {
                 //  console.log('O programare',res.data)
                 let stare = res.data[0].stare=='anulata'? 'ANULATA':''
+                let culoare = res.data[0].stare=='anulata'? 'negative':'accent'
                 let d = date.formatDate(new Date(res.data[0].data), 'DD/MM/YYYY')
                  let mesaj = `Data: ${d} Ora:${res.data[0].orastart} ${res.data[0].cabinet} Medic:${res.data[0].medic} ${stare}` 
                  selected.value=[]
                  $q.notify({
                       message: mesaj,
+                      color:culoare,
                       icon: 'announcement',
                       position:'top',
                       timeout:8000

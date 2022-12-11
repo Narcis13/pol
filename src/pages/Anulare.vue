@@ -39,7 +39,7 @@ export default defineComponent({
         let mesaj=ref('interogare')
 
         function anulare(){
-            console.log('anulare',token)
+          //  console.log('anulare',token)
                   axios.delete(process.env.host+`programare/${token}`,).then(
 
                                 res => {

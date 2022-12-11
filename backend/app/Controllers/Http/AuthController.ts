@@ -2,7 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import user from 'App/Models/user';
 import Clinica from 'App/Models/Clinica';
-
+import Env from '@ioc:Adonis/Core/Env';
 
 
 
@@ -96,7 +96,11 @@ export default class AuthController {
 
    public async login({auth,request}:HttpContextContract){
        const {nume,password,slug} = request.all()
+       let mod= Env.get('APP_MOD')
+       let mesaj = Env.get('APP_MESAJ')
+       mesaj= mesaj.split('_').join(' ')
 
+       if(mod=='OFFLINE') return mesaj;
        try {
           // await auth.attempt(nume,password)
           const clinica = await Clinica.findBy('slug',slug);

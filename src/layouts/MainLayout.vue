@@ -111,7 +111,7 @@ export default defineComponent({
 
                   axios.post(process.env.host+'login',{nume:username.value,password:password.value,slug:slug.value}).then(
                       res => {
-                      //  console.log('Raspuns la autentificare ',res)
+                        console.log('Raspuns la autentificare ',res)
                         username.value=''
                         password.value=''
                         if(res.data.loggeduser){
@@ -129,8 +129,8 @@ export default defineComponent({
                         else
                         {
                           $q.notify({
-                                  message:'Credentiale incorecte!',
-                                  timeout:2000,
+                                  message:res.data,
+                                  timeout:3000,
                                   position:'top',
                                   color:'negative'
                                 }) 

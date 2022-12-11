@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>elEvenTen app</title>
+  <title>Mentenanta platforma programare online elEvenTen</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="./bulma.css">
+  
 </head>
 <body>
 
   <main>
-    <div>
-      <h4 class="title"> Buna ziua,  </h4>
-      <p>Va multumim ca folositi serviciul nostru de programare la consultatii de la distanta (online)</p>
-      <p>{{mesaj}}</p>
-     
+    <div class="container is-max-desktop">
+      <div class="notification is-danger is-light">
+        {{mesaj}}
+      </div>
     </div>
+
+   
   </main>
 </body>
 </html>

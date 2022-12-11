@@ -8,6 +8,7 @@ import Database from '@ioc:Adonis/Lucid/Database';
 import Programarise from 'App/Models/Programarise';
 import { DateTime } from 'luxon'
 import Medic from 'App/Models/Medic';
+import Env from '@ioc:Adonis/Core/Env'
 
 export default class ProgramarisController {
 
@@ -29,13 +30,14 @@ export default class ProgramarisController {
         await solicitare.merge({confirmat:true}).save()
         const programare = await Programarise.create(request.body());
         const medic = await Medic.findOrFail(request.body().idmedic) 
-        if(solicitare.tip=='Online')
+        const clinica = await Clinica.findOrFail(request.body().idclinica)
+        if(clinica&&solicitare.tip=='online')
             await Mail.sendLater((message) => {
                 message
                 .from('programari@smupitesti.org')
                 .to(email)
-                .subject('Confirmare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
-                .htmlView('emails/confirmare', { medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+                .subject('Confirmare programare online la '+clinica.denumire)
+                .htmlView('emails/confirmaret', {website:clinica.website, medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
             })
 
         return programare;
@@ -50,9 +52,20 @@ export default class ProgramarisController {
        public async anulare({params}:HttpContextContract){
         let elemente=params.token.split('-')
         const programare = await Programarise.findOrFail(elemente[1]) 
+        const clinica = await Clinica.findOrFail(programare.idclinica)
+        const solicitare = await Solicitare.findOrFail(programare.idsolicitare)
         if (programare&& programare.token==elemente[0]){
             programare.stare='anulata'
             await programare.save()
+
+            await Mail.sendLater((message) => {
+                message
+                  .from('programari@smupitesti.org')
+                  .to(clinica.email)
+                  .subject('Anulare programare online la '+clinica.denumire)
+                  .htmlView('emails/anulare', { mesaj: 'Pacientul '+solicitare.nume +'(' +solicitare.email+') a anulat rezervarea pentru data '+DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+              })
+
                  return "Programare anulata cu succes!";
         }
         return 'Eroare';
@@ -71,8 +84,8 @@ export default class ProgramarisController {
             message
               .from('programari@smupitesti.org')
               .to(request.body().email)
-              .subject('Anulare programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
-              .htmlView('emails/anulare', { mesaj: request.body().mesaj })
+              .subject('Anulare programare online la '+request.body().clinica)
+              .htmlView('emails/anularet', { mesaj: request.body().mesaj })
           })
 
             return {mesaj:'Programare anulata cu succes!'}
@@ -121,13 +134,41 @@ export default class ProgramarisController {
       } 
 
     public async formular({params,view}:HttpContextContract){
+        // console.log(params.slug);
+        let mod= Env.get('APP_MOD')
+        let mesaj = Env.get('APP_MESAJ')
+        mesaj= mesaj.split('_').join(' ')
+
         const clinica = await Clinica.findBy('slug',params.slug);
         if(clinica){
-           // console.log(params.slug,clinica.id,clinica.denumire);
+        if(mod=="ONLINE"){
             const specialitati = await Specialitate.query().where('specialitates.idclinica',clinica.id);
            
             return view.render('solicitareprogramare',{specialitati,clinica})
+             } else {
+                return view.render('mentenanta',{mesaj})
+             }
         }
+
+    }
+
+    public async formulardedicat({view}:HttpContextContract){
+        // console.log(params.slug);
+       let mod= Env.get('APP_MOD')
+       let mesaj = Env.get('APP_MESAJ')
+       mesaj= mesaj.split('_').join(' ')
+        const clinica = await Clinica.findBy('slug','aaa');
+        if(clinica){
+           // console.log(params.slug,clinica.id,clinica.denumire);
+           if(mod=="ONLINE"){
+            const specialitati = await Specialitate.query().where('specialitates.idclinica',clinica.id);
+           
+            return view.render('solicitareprogramare',{specialitati,clinica})
+             } else {
+                return view.render('mentenanta',{mesaj})
+             }
+        }
+        else return  '<p> elEvenTen app Solicitare invalida!</p>'
 
     }
 
@@ -315,13 +356,14 @@ export default class ProgramarisController {
        const solicitare = await Solicitare.create(solicitare_validata);
        const hash:string=solicitare.hash;
        const id:number = solicitare.id;
-
+       const clinica = await Clinica.findOrFail(request.input('idclinica'));
+      if(clinica) 
       await Mail.sendLater((message) => {
         message
           .from('programari@smupitesti.org')
           .to(request.input('email'))
-          .subject('Programare online Spitalul Militar de Urgenta Dr. Ion Jianu Pitesti')
-          .htmlView('emails/programator', { nume: request.input('nume'),hash,id })
+          .subject('Programare online '+clinica.denumire)
+          .htmlView('emails/programatort', { nume: request.input('nume'),hash,id })
       })
        // response.redirect().toRoute('ProgramarisController.successolicitare')
        return view.render('welcome')
