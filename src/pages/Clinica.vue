@@ -219,7 +219,7 @@ export default defineComponent({
        let ff=ref([{name: 'idclinica', value: global.state.user.idclinica}])
 
        onMounted(()=>{
-        console.log('Detalii clinica mounted...',global.state.user.clinica.slug)
+       // console.log('Detalii clinica mounted...',global.state.user.clinica.slug)
             axios.get(process.env.host+`clinici/${global.state.user.idclinica}`).then(
 
                         res => {

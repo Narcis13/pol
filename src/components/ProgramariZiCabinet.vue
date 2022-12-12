@@ -265,7 +265,7 @@ export default defineComponent({
             idspecialitate:solicitareoffline.value.interval.idspecialitate,
             idclinica:global.state.user.idclinica,
             mesaj:solicitareoffline.value.mesaj,
-            tip:'Offline',
+            tip:'offline',
             confirmat:true
            }
            axios.post(process.env.host+'solicitarereprogramare',offpro).then(res =>{
@@ -307,7 +307,7 @@ export default defineComponent({
                                                                                 specialitateid:solicitareoffline.value.interval.idspecialitate,
                                                                                 activ:true,
                                                                                 programat:true,
-                                                                                tip:'Offline',
+                                                                                tip:'offline',
                                                                                 icon:'done_all'
 
 
@@ -351,7 +351,7 @@ export default defineComponent({
        }
       
        function solicitareprogramareoffline(interval){
-        console.log('programare offline',interval)
+        //console.log('programare offline',interval)
         solicitareoffline.value.orastart=interval.orastart
         solicitareoffline.value.orastop=interval.orastop
         solicitareoffline.value.medic=interval.numemedic

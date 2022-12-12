@@ -23,7 +23,7 @@
                                     <q-separator dark />
 
                                     <q-card-actions>
-                                        <q-btn flat :key="cab.id" @click="programariCabinet(cab.id,cab.denumire,'online')">Programari</q-btn>
+                                        <q-btn dense color="grey-2" text-color="grey-9" icon="event" :key="cab.id" @click="programariCabinet(cab.id,cab.denumire,'online')">Programari...</q-btn>
                                         <q-space />
                                         <q-btn @click="programariCabinet(cab.id,cab.denumire,'offline')" dense color="grey-4" text-color="purple" glossy unelevated icon="add" label="Offline" />
                                     </q-card-actions>
@@ -181,7 +181,7 @@ export default defineComponent({
                 axios.get(process.env.host+`program/0}`,{headers:{'idclinica':global.state.user.idclinica}}).then(
 
                                         res => {
-                                        console.log('Zile...',res.data);
+                                        //console.log('Zile...',res.data);
                                         zile.value=res.data.zile
                                         zileperpagina.value=[]
                                         zile.value.map(z=>{
@@ -202,7 +202,7 @@ export default defineComponent({
         }   
 
         function programariCabinet(idcabinet,denumirecabinet,kind){
-                console.log('Programarile cabinetului ',idcabinet)
+               // console.log('Programarile cabinetului ',idcabinet)
                 state.liste.kind=kind
                  // aici trebuie sa interoghez programarile cabinetului
                  numecabinet.value=denumirecabinet
@@ -210,7 +210,7 @@ export default defineComponent({
 
                         res => {
 
-                            console.log('Orar cabinet ',res.data)
+                           // console.log('Orar cabinet ',res.data)
                             state.liste.program=[]
                             res.data.program_cabinet.map(p=>{
                                 state.liste.program.push(p)

@@ -147,7 +147,7 @@ export default defineComponent({
                               icon: 'delete',
                               message: `User sau parola incorecte...`
                             })
-               // console.log('Eroare autentificare',err);
+              console.log('Eroare autentificare',err);
               });
       },
     

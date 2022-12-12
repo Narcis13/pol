@@ -109,7 +109,7 @@ export default class AuthController {
        //   console.log(numeunic,password,slug,idclinica)
 
            const token = await auth.use('api').attempt(numeunic, password,{
-            expiresIn: '60 mins'
+            expiresIn: '960 mins'
           })
            //return token
 
@@ -119,7 +119,7 @@ export default class AuthController {
            else
              return 'Utilizatorul nu a putut fi autentificat!'
        } catch (error) {
-          // console.log(error)
+         //  console.log(error)
            return 'Utilizatorul nu a putut fi autentificat!'
        }
    }

@@ -211,7 +211,7 @@ export default defineComponent({
       })
 
        function show_adauga_interval(zisaptamina){
-         console.log(zisaptamina)
+         //console.log(zisaptamina)
          adaug_interval.value=true;
 
        }
@@ -266,6 +266,7 @@ export default defineComponent({
                                           durataserviciu:serviciu.value.durata,
                                           orastart:orastart.value,
                                           orastop:orastop.value,
+                                          tip:tip.value,
                                           idcabinet:props.liste.cabinet.id,
                                           ziuadinsaptamina:props.zi.zidinsaptamina
                                         })

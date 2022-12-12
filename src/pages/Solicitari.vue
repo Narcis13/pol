@@ -49,7 +49,7 @@
          
              </q-tooltip>
           </q-btn>
-          <q-btn :disable="selected.length==0||(selected.length>0&&(selected[0].confirmat==1||selected[0].tip=='Online'))" round color="primary" icon="directions" @click="reprogramare">
+          <q-btn :disable="selected.length==0||(selected.length>0&&(selected[0].confirmat==1||selected[0].tip=='online'))" round color="primary" icon="directions" @click="reprogramare">
             <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                 <strong>Reprogramare</strong> 
          
