@@ -104,20 +104,28 @@ export default class AuthController {
        try {
           // await auth.attempt(nume,password)
           const clinica = await Clinica.findBy('slug',slug);
-          let idclinica = clinica?.id;
+          if(clinica){
+          let idclinica = clinica.id;
           let numeunic=nume+idclinica;
        //   console.log(numeunic,password,slug,idclinica)
+          try {
+            const token = await auth.use('api').attempt(numeunic, password,{
+              expiresIn: '960 mins'
+            })
+            
+            const loggeduser = await user.findBy('numeunic',numeunic)// aici trebuie sa ma intreb de stare ......
+            if(loggeduser&&loggeduser.stare=="activ")
+            return {loggeduser,token,clinica}
+            else
+              return 'Utilizatorul nu a putut fi autentificat!'
+          }
+          catch (error) {
+              return error;
+          }
 
-           const token = await auth.use('api').attempt(numeunic, password,{
-            expiresIn: '960 mins'
-          })
            //return token
 
-           const loggeduser = await user.findBy('numeunic',numeunic)// aici trebuie sa ma intreb de stare ......
-           if(loggeduser?.stare=="activ")
-            return {loggeduser,token,clinica}
-           else
-             return 'Utilizatorul nu a putut fi autentificat!'
+        }
        } catch (error) {
          //  console.log(error)
            return 'Utilizatorul nu a putut fi autentificat!'

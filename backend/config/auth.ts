@@ -86,7 +86,7 @@ const authConfig: AuthConfig = {
         driver: 'lucid',
         identifierKey: 'id',
         uids: ['numeunic'],
-        model: () => import('App/Models/User'),
+        model: () => import('App/Models/user'),
       },
       tokenProvider: {
         type: 'api',
