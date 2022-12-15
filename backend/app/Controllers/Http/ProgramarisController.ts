@@ -9,6 +9,7 @@ import Programarise from 'App/Models/Programarise';
 import { DateTime } from 'luxon'
 import Medic from 'App/Models/Medic';
 import Env from '@ioc:Adonis/Core/Env'
+var QRCode = require('qrcode')
 
 export default class ProgramarisController {
 
@@ -357,13 +358,24 @@ export default class ProgramarisController {
        const hash:string=solicitare.hash;
        const id:number = solicitare.id;
        const clinica = await Clinica.findOrFail(request.input('idclinica'));
+     //  let qr = await QRCode.toDataURL('https://eleventen.app');
+     QRCode.toFile('./qrsolicitare.png', `http://ionjianu.smupitesti.org/pol/#/programari/${hash}-${id}-e`, {
+        color: {
+          dark: '#00F',  // Blue dots
+          light: '#0000' // Transparent background
+        }
+      })
+      // console.log(qr)
+      const cid = Date.now().toString();
       if(clinica) 
+      
       await Mail.sendLater((message) => {
         message
           .from('programari@smupitesti.org')
           .to(request.input('email'))
           .subject('Programare online '+clinica.denumire)
-          .htmlView('emails/programatort', { nume: request.input('nume'),hash,id })
+          .htmlView('emails/programatort', { nume: request.input('nume'),hash,id,cid })
+          .embed('./qrsolicitare.png',cid)
       })
        // response.redirect().toRoute('ProgramarisController.successolicitare')
        return view.render('welcome')
