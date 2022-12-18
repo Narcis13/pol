@@ -32,13 +32,22 @@ export default class ProgramarisController {
         const programare = await Programarise.create(request.body());
         const medic = await Medic.findOrFail(request.body().idmedic) 
         const clinica = await Clinica.findOrFail(request.body().idclinica)
+        const cid = Date.now().toString();
+        QRCode.toFile('./qrprogramare.png', `http://ionjianu.smupitesti.org:3339/v/${programare.id}`, {
+            color: {
+              dark: '#00F',  // Blue dots
+              light: '#0000' // Transparent background
+            }
+          })
+
         if(clinica&&solicitare.tip=='online')
             await Mail.sendLater((message) => {
                 message
                 .from('programari@smupitesti.org')
                 .to(email)
                 .subject('Confirmare programare online la '+clinica.denumire)
-                .htmlView('emails/confirmaret', {website:clinica.website, medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+                .htmlView('emails/confirmaret', {cid,website:clinica.website, medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+                .embed('./qrprogramare.png',cid)
             })
 
         return programare;
@@ -323,6 +332,26 @@ export default class ProgramarisController {
        const solicitare = await Solicitare.create(request.body())
         return solicitare;
     }  
+
+    public async verificprogramare({view,params}:HttpContextContract){
+         //console.log(params.id)
+        
+         try {
+          const programare= await Programarise.findOrFail(params.id)
+            if(programare&&programare.stare=='activ'){
+              const d=DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy')
+              return view.render('pvalida',{d,ora:programare.orastart})
+            }
+            else
+            {
+              return view.render('pinvalida')
+            }
+        }
+         catch(err){
+          return view.render('pinvalida')
+         }
+
+    }
 
     public async solicitare({request,response,session,view}:HttpContextContract){
 
