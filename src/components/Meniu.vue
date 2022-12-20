@@ -71,7 +71,26 @@
               </q-card-section>
             </q-card>
           </q-expansion-item>
-          
+
+          <q-separator />
+
+          <q-expansion-item v-show="global.state.user.master==true" group="somegroup" icon="settings" label="SUPERADMIN" header-class="text-grey-9">
+            <q-card>
+              <q-card-section>
+
+                  <q-btn  class="full-width q-ma-xs" color="grey-9" no-caps>
+                   Clinici
+                  </q-btn>
+                  <q-btn class="full-width q-ma-xs" color="grey-9" no-caps>
+                    Clienti
+                  </q-btn>
+                  <q-btn  class="full-width q-ma-xs" color="grey-9" no-caps>
+                    Statistici
+                  </q-btn>
+
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
         </q-list>
       </q-card-section>
       <div class="flex flex-center q-pa-sm">
@@ -89,7 +108,7 @@ export default defineComponent({
     name:'Meniu',
     setup(){
       const global=inject('global');
-
+      console.log(global.state.user.master)
       return {
         global
       }
