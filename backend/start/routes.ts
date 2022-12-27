@@ -20,7 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-//Route.on('/').render('welcome')
+Route.on('/').render('main')
 
 Route.post('/programare', 'ProgramarisController.register')
 Route.post('/anulareprogramare', 'ProgramarisController.anulareprogramare')
