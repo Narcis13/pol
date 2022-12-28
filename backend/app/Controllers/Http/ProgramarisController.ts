@@ -33,7 +33,7 @@ export default class ProgramarisController {
         const medic = await Medic.findOrFail(request.body().idmedic) 
         const clinica = await Clinica.findOrFail(request.body().idclinica)
         const cid = Date.now().toString();
-        QRCode.toFile('./qrprogramare.png', `http://ionjianu.smupitesti.org:3339/v/${programare.id}`, {
+        QRCode.toFile('./qrprogramare.png', `https://eleventen.live/v/${programare.id}`, {
             color: {
               dark: '#00F',  // Blue dots
               light: '#0000' // Transparent background
@@ -43,10 +43,10 @@ export default class ProgramarisController {
         if(clinica&&solicitare.tip=='online')
             await Mail.sendLater((message) => {
                 message
-                .from('programari@smupitesti.org')
+                .from('programari@eleventen.ro')
                 .to(email)
                 .subject('Confirmare programare online la '+clinica.denumire)
-                .htmlView('emails/confirmaret', {cid,website:clinica.website, medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
+                .htmlView('emails/confirmaret', {urlpol:clinica.urlpol,cid,website:clinica.website, medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
                 .embed('./qrprogramare.png',cid)
             })
 
@@ -70,7 +70,7 @@ export default class ProgramarisController {
 
             await Mail.sendLater((message) => {
                 message
-                  .from('programari@smupitesti.org')
+                  .from('programari@eleventen.ro')
                   .to(clinica.email)
                   .subject('Anulare programare online la '+clinica.denumire)
                   .htmlView('emails/anulare', { mesaj: 'Pacientul '+solicitare.nume +'(' +solicitare.email+') a anulat rezervarea pentru data '+DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
@@ -92,7 +92,7 @@ export default class ProgramarisController {
 
            await Mail.sendLater((message) => {
             message
-              .from('programari@smupitesti.org')
+              .from('programari@eleventen.ro')
               .to(request.body().email)
               .subject('Anulare programare online la '+request.body().clinica)
               .htmlView('emails/anularet', { mesaj: request.body().mesaj })
@@ -388,7 +388,7 @@ export default class ProgramarisController {
        const id:number = solicitare.id;
        const clinica = await Clinica.findOrFail(request.input('idclinica'));
      //  let qr = await QRCode.toDataURL('https://eleventen.app');
-     QRCode.toFile('./qrsolicitare.png', `http://ionjianu.smupitesti.org/pol/#/programari/${hash}-${id}-e`, {
+     QRCode.toFile('./qrsolicitare.png', `${clinica.urlpol}pol/#/programari/${hash}-${id}-e`, {
         color: {
           dark: '#00F',  // Blue dots
           light: '#0000' // Transparent background
@@ -400,10 +400,10 @@ export default class ProgramarisController {
       
       await Mail.sendLater((message) => {
         message
-          .from('programari@smupitesti.org')
+          .from('programari@eleventen.ro')
           .to(request.input('email'))
           .subject('Programare online '+clinica.denumire)
-          .htmlView('emails/programatort', { nume: request.input('nume'),hash,id,cid })
+          .htmlView('emails/programatort', {urlpol:clinica.urlpol, nume: request.input('nume'),hash,id,cid })
           .embed('./qrsolicitare.png',cid)
       })
        // response.redirect().toRoute('ProgramarisController.successolicitare')

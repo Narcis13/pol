@@ -15,7 +15,7 @@
             el EvenT en App
             </div>
         </q-toolbar-title>
-        <div class="gt-sm">v. 0.9.9</div>
+        <div class="gt-sm">v. 1.0.0</div>
     
       </q-toolbar>
     </q-header>
