@@ -44,6 +44,7 @@ Route.patch('/cabinete/:id','CabinetsController.updatecabinet')
 Route.delete('/cabinete/:id','CabinetsController.deletecabinet').middleware('auth')
 
 Route.get('/solicitareprogramare/:slug', 'ProgramarisController.formular')
+Route.get('/register', 'ClinicasController.formularInregistrare')
 Route.get('/v/:id', 'ProgramarisController.verificprogramare')
 Route.get('/solicitareprogramare', 'ProgramarisController.formulardedicat')
 Route.get('/formularsatisfactie/:slug', 'ClinicasController.formularsatisfactie')

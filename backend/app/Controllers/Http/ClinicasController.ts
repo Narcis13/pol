@@ -59,6 +59,10 @@ export default class ClinicasController {
 
   }
 
+  public async formularInregistrare({view}:HttpContextContract){
+    return view.render('inregistrare')
+  }
+
   public async uploadsigla({request,response}: HttpContextContract) {
    // console.log('Incercare upload',request.body())
     let {idclinica} = request.body();
