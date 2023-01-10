@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
+    "watch":"npx tailwindcss -i ./resources/css/app.css -o ./public/tstyle.css --watch",
+    "builds":"npx tailwindcss -i ./resources/css/app.css -o ./public/tstyle.css",
     "start": "node server.js"
   },
   "devDependencies": {
