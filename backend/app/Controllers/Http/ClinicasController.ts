@@ -30,6 +30,9 @@ export default class ClinicasController {
         emailpr: schema.string.optional({trim:true},[rules.email()]),
         facebook: schema.string.optional({trim:true}),
         instagram: schema.string.optional({trim:true}),
+        companie: schema.string.optional({trim:true}),
+        CUI: schema.string.optional({trim:true}), //validare suplimentara
+        adresacompanie: schema.string.optional({trim:true}),
         numeconducere1:schema.string.optional({trim:true}),
         numeconducere2: schema.string.optional({trim:true}),
         numeconducere3: schema.string.optional({trim:true}),
@@ -59,8 +62,17 @@ export default class ClinicasController {
 
   }
 
-  public async formularInregistrare({view}:HttpContextContract){
-    return view.render('inregistrare')
+  public async formularInregistrare({view,request}:HttpContextContract){
+    //console.log(request.qs())
+    const q = request.qs();
+    if(q.plan){
+      return view.render('inregistrare',{idplan:q.plan})
+    }
+    else
+    {
+      return view.render('bunvenit',{succes:false,mesaj:'Nu ati ales un plan de abonament pentru serviciul nostru'})
+    }
+    
   }
 
   public async uploadsigla({request,response}: HttpContextContract) {

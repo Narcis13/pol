@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bun venit pe platforma elEvenTen </title>
+  <link rel="stylesheet" href="tstyle.css"> 
+  
+</head>
+<body>
+
+  <main>
+
+    @if(succes)
+    <div class="min-h-screen flex items-center justify-center">
+      <p class=" text-green-500 font-semibold"> LOGIN </p>
+    </div>
+      
+
+    @else
+    <div class="min-h-screen flex items-center justify-center">
+         <p class="p-4 text-red-700 font-medium text-2xl">{{mesaj}} </p>
+        </div>
+         @end
+   
+  </main>
+</body>
+</html>

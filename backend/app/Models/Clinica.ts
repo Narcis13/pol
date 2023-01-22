@@ -49,7 +49,26 @@ export default class Clinica extends BaseModel {
   public urlpol: string
   @column()
   public slug: string
-
+  @column()
+  public idplan: number
+  @column()
+  public companie: string
+  @column()
+  public CUI: string
+  @column()
+  public adresacompanie: string
+  @column()
+  public stare: string
+  @column()
+  public observatii: string
+  @column.dateTime()
+  public starttrial: DateTime
+  @column.dateTime()
+  public stoptrial: DateTime
+  @column.dateTime()
+  public startabonament: DateTime
+  @column.dateTime()
+  public stopabonament: DateTime
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

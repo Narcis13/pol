@@ -59,6 +59,18 @@
 
     <div class="row justify-center q-gutter-sm q-mt-md">
             <div class="col-12 col-md-4">
+                <q-input style="max-width: 250px;" v-model="pjdenumire" label="Denumire pers. juridica" />
+            </div>
+            <div class="col-12 col-md-4">
+                <q-input style="max-width: 250px;" v-model="pjcui" label="Cod fiscal" />
+            </div>
+            <div class="col-12 col-md-3">
+                <q-input style="max-width: 250px;" v-model="pjadresa" label="Adresa pers. juridica" />
+            </div>
+    </div>
+
+    <div class="row justify-center q-gutter-sm q-mt-md">
+            <div class="col-12 col-md-4">
                 <q-input style="max-width: 250px;" v-model="facebook" label="Adresa Facebook" />
             </div>
             <div class="col-12 col-md-4">
@@ -200,6 +212,10 @@ export default defineComponent({
         let instagram=ref('');
         let website=ref('');
 
+        let pjdenumire=ref('');
+        let pjcui=ref('');
+        let pjadresa=ref('');
+
         let numeconducere1=ref('');
         let telconducere1=ref('');
         let emailconducere1=ref('');
@@ -234,6 +250,10 @@ export default defineComponent({
                             numeconducere1.value=res.data.numeconducere1;
                             telconducere1.value=res.data.telconducere1;
                             emailconducere1.value=res.data.emailconducere1;
+
+                            pjdenumire.value=res.data.companie;
+                            pjcui.value=res.data.CUI;
+                            pjadresa.value=res.data.adresacompanie;
 
                             numeconducere2.value=res.data.numeconducere2;
                             telconducere2.value=res.data.telconducere2;
@@ -275,6 +295,9 @@ export default defineComponent({
             adresa: sediuclinica.value,
             denumire: denumireclinica.value,
             email:  emailclinica.value,
+            companie:pjdenumire.value,
+            CUI:pjcui.value,
+            adresacompanie:pjadresa.value,
             emailconducere1: emailconducere1.value,
             emailconducere2: emailconducere2.value,
             emailconducere3: emailconducere3.value,
@@ -292,7 +315,7 @@ export default defineComponent({
             website: website.value,
            }
          
-          console.log('SALVEZ MODIFICARI CLINICA!')
+        // console.log('SALVEZ MODIFICARI CLINICA!',clinica_modificata)
           axios.patch(process.env.host+`clinici/${global.state.user.idclinica}`,clinica_modificata,{headers:{"Authorization" : `Bearer ${token}`}}).then(res =>{
            
                              if(res.data.errors)
@@ -329,7 +352,7 @@ export default defineComponent({
             state,
             caleSigla,
             uploadURL,
-            tab:ref('c1'),
+            tab:ref('pr'),
             siglaUrcata,
             ff,
             onRejected,
@@ -337,6 +360,9 @@ export default defineComponent({
             denumireclinica,
             sediuclinica,
             emailclinica,
+            pjdenumire,
+            pjcui,
+            pjadresa,
             facebook,
             instagram,
             website,
