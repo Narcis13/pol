@@ -1,30 +1,38 @@
-import { schema } from '@ioc:Adonis/Core/Validator'
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+const http = require("https");
+//import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
-  public async create({ view }: HttpContextContract) {
-    return view.render('posts/create')
+
+  public async remindere(/*{ view }: HttpContextContract*/) {
+
+    const options = {
+      "method": "POST",
+      "hostname": "app.smso.ro",
+      "port": null,
+      "path": "/api/v1/send?to=%2040745089013&sender=4&body=Mesaj%20de%20test%20Eleventen%20app",
+      "headers": {
+        "Accept": "*/*",
+        "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+        "X-Authorization": "ZKO9cbHtSzQIIWUZaenIg8GQ6ZVL6dmxMOVpKELJ"
+      }
+    };
+
+    const req = http.request(options, function (res) {
+      const chunks = [];
+
+      res.on("data", function (chunk) {
+      chunks.push(chunk);
+      });
+
+      res.on("end", function () {
+        const body = Buffer.concat(chunks);
+        console.log(body.toString());
+      });
+});
+
+req.end();
+   
   }
 
-  public async store({ request, response, session }: HttpContextContract) {
-    const postSchema = schema.create({
-      title: schema.string(),
-      body: schema.string(),
-    })
-
-    const messages = {
-      'title.required': 'Enter the post title',
-      'body.required': 'Write some content for the post',
-    }
-
-    const payload = await request.validate({
-      schema: postSchema,
-      messages: messages,
-    })
-
-    console.log(payload)
-
-    session.flash('success', 'Post created successfully')
-    response.redirect().back()
-  }
+  
 }

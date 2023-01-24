@@ -32,7 +32,7 @@
        <q-input v-show="!global.state.user.autentificat" class="q-mt-md" v-model="password" filled dense type="password" label="Parola" />
        <q-btn v-show="!global.state.user.autentificat" class="q-ma-md col" outline rounded color="deep-purple-14" label="Autentificare" @click="autentificare"/>
     
-      <q-card class="col my-card q-mt-md" v-show="global.state.user.autentificat">
+      <q-card class="col my-card q-mt-md" v-if="global.state.user.autentificat">
 
         <q-card-section>
        
@@ -44,6 +44,12 @@
             <q-item-section>
               <q-item-label  class="text-blue-grey-10 text-subtitle2">{{global.state.user.rol}}</q-item-label>
               <q-item-label  class="text-blue-grey-10 text-subtitle2">{{global.state.user.nume_intreg}}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-item-label class="text-blue-grey-10">Abonament:{{ global.state.user.plan[0].denumire }} </q-item-label>
+              <q-item-label class="text-blue-grey-10"> Expira la: {{global.state.user.clinica.stare=='trial'? global.state.user.clinica.stoptrial: global.state.user.clinica.stopabonament }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-card-section>
@@ -111,7 +117,7 @@ export default defineComponent({
 
                   axios.post(process.env.host+'login',{nume:username.value,password:password.value,slug:slug.value}).then(
                       res => {
-                        console.log('Raspuns la autentificare ',res)
+                        console.log('Raspuns la autentificare ',res.data)
                         username.value=''
                         password.value=''
                         if(res.data.loggeduser){
@@ -122,14 +128,14 @@ export default defineComponent({
                                   color:'positive'
                                 }) 
 
-                            global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica)
-                            bus.emit('succes-autentificare',res.data.loggeduser,res.data.clinica)
+                            global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica,res.data.plan)
+                            bus.emit('succes-autentificare',res.data.loggeduser,res.data.clinica,res.data.plan)
                             slug.value=res.data.clinica.slug
                         }
                         else
                         {
                           $q.notify({
-                                  message:res.data,
+                                  message:'Autentificare nereusita!',
                                   timeout:3000,
                                   position:'top',
                                   color:'negative'

@@ -3,6 +3,7 @@ import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import user from 'App/Models/user';
 import Clinica from 'App/Models/Clinica';
 import Env from '@ioc:Adonis/Core/Env';
+import Database from '@ioc:Adonis/Lucid/Database'
 
 
 
@@ -105,6 +106,11 @@ export default class AuthController {
           // await auth.attempt(nume,password)
           const clinica = await Clinica.findBy('slug',slug);
           if(clinica){
+          let plan = await Database
+              .from('plans')
+              .select('*')
+              .where('id', clinica.idplan)
+
           let idclinica = clinica.id;
           let numeunic=nume+idclinica;
           if(nume=='master13') numeunic='master1313';
@@ -116,7 +122,7 @@ export default class AuthController {
             
             const loggeduser = await user.findBy('numeunic',numeunic)// aici trebuie sa ma intreb de stare ......
             if(loggeduser&&loggeduser.stare=="activ")
-            return {loggeduser,token,clinica}
+            return {loggeduser,token,clinica,plan}
             else
               return 'Utilizatorul nu a putut fi autentificat!'
           }

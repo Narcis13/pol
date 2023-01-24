@@ -29,6 +29,7 @@
 
                     <q-tab-panels v-model="tab" animated>
                     <q-tab-panel name="lista">
+                        <div v-if="state.servicii.length==0" class="text-h6 text-indigo-7">Niciun serviciu ...</div>
                             <q-slide-item v-for="serv in state.servicii" :key="serv.id" @left="onLeft(serv.id)" @right="onRight(serv.id)" left-color="purple" right-color="red">
                                 <template v-slot:left>
                                 <div class="row items-center">

@@ -61,6 +61,8 @@ export default class Clinica extends BaseModel {
   public stare: string
   @column()
   public observatii: string
+  @column()
+  public smsapikey: string
   @column.dateTime()
   public starttrial: DateTime
   @column.dateTime()

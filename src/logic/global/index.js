@@ -1,5 +1,5 @@
 import {reactive} from 'vue'
-
+import { date } from 'quasar'
 const state = reactive({
     user:{
         autentificat:false,
@@ -11,14 +11,15 @@ const state = reactive({
         idutilizator:0,
         idclinica:0,
         token:null,
-        clinica:{}
+        clinica:{},
+        plan:null
 
     }
 })
 
 const actions = {
-     autentificare(user,token,clinica){
-         console.log('!Autentificare: ',user,token)
+     autentificare(user,token,clinica,plan){
+       //  console.log('!Autentificare: ',user,token)
         if(user.nume=='master13') state.user.master=true
          state.user.autentificat=true;
         
@@ -29,6 +30,9 @@ const actions = {
          state.user.idclinica=clinica.id;
          state.user.token=token;
          state.user.clinica=clinica;
+         state.user.clinica.stoptrial=date.formatDate(state.user.clinica.stoptrial, 'DD/MM/YYYY')
+         state.user.clinica.stopabonament=date.formatDate(state.user.clinica.stopabonament, 'DD/MM/YYYY')
+         state.user.plan=plan
    
      },
      deconectare(){

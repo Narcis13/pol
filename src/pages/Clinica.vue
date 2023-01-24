@@ -80,8 +80,24 @@
                 <q-input style="max-width: 250px;" v-model="website" label="Site web" />
             </div>
     </div>
+    <div v-if="ePremium" class="row  q-gutter-sm q-mt-md q-pa-md">
+        <q-expansion-item
+             expand-separator
+             icon="signal_wifi_off"
+             label="Integrare SMSO"
+             class="col-12 col-md-3"
+      >
+        <q-card>
+          <q-card-section>
+            <q-input style="max-width: 250px;" v-model="smsapikey" label="API KEY SMSO" />
+            <div v-show="creditVizibil" class="text-h6 text-purple-8">Credit: {{ smscredit }}</div>
 
-    <div class="q-gutter-y-md q-mt-xl" >
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
+    </div>
+
+    <div class="q-gutter-y-md q-mt-sm" >
         <q-card>
             <div class="row">
 
@@ -211,7 +227,8 @@ export default defineComponent({
         let facebook=ref('');
         let instagram=ref('');
         let website=ref('');
-
+        let creditVizibil=ref(false)
+        let smscredit=ref('')
         let pjdenumire=ref('');
         let pjcui=ref('');
         let pjadresa=ref('');
@@ -227,15 +244,15 @@ export default defineComponent({
         let numeconducere3=ref('');
         let telconducere3=ref('');
         let emailconducere3=ref('');
-
+        let smsapikey=ref('')
         let numepr=ref('');
         let telpr=ref('');
         let emailpr=ref('');
 
        let ff=ref([{name: 'idclinica', value: global.state.user.idclinica}])
-
+       
        onMounted(()=>{
-       // console.log('Detalii clinica mounted...',global.state.user.clinica.slug)
+        console.log('Detalii clinica mounted...',global.state.user.plan[0],global.state.user.clinica)
             axios.get(process.env.host+`clinici/${global.state.user.idclinica}`).then(
 
                         res => {
@@ -246,7 +263,7 @@ export default defineComponent({
                             facebook.value=res.data.facebook;
                             instagram.value=res.data.instagram;
                             website.value=res.data.website;
-
+                            smsapikey.value=res.data.smsapikey
                             numeconducere1.value=res.data.numeconducere1;
                             telconducere1.value=res.data.telconducere1;
                             emailconducere1.value=res.data.emailconducere1;
@@ -266,6 +283,22 @@ export default defineComponent({
                             numepr.value=res.data.numepr;
                             telpr.value=res.data.telpr;
                             emailpr.value=res.data.emailpr;
+
+                            if(res.data.smsapikey&&global.state.user.plan[0].id==3){
+                                axios.get(process.env.host+`creditsms`,{headers:{'smskey':res.data.smsapikey}}).then(
+
+                                    res => {
+                                       console.log('Interogare credit',res)
+                                       if(res.data&&res.data.status==200){
+                                          creditVizibil.value=true
+                                          smscredit.value=res.data.credit_value
+                                       }
+                                    }
+                                    ).catch(err =>{})
+
+
+                                                    
+                            }
 
                         })
 
@@ -304,6 +337,7 @@ export default defineComponent({
             emailpr: emailpr.value,
             facebook: facebook.value,
             instagram: instagram.value,
+            smsapikey:smsapikey.value,
             numeconducere1: numeconducere1.value,
             numeconducere2: numeconducere2.value,
             numeconducere3: numeconducere3.value,
@@ -347,6 +381,10 @@ export default defineComponent({
                                          })
         }
 
+        let ePremium = computed(()=>{
+                      return global.state.user.plan[0].id==3
+        })
+
         return {
             global,
             state,
@@ -364,6 +402,7 @@ export default defineComponent({
             pjcui,
             pjadresa,
             facebook,
+            smsapikey,
             instagram,
             website,
             numeconducere1,
@@ -377,7 +416,10 @@ export default defineComponent({
             emailconducere3,
             numepr,
             telpr,
-            emailpr
+            emailpr,
+            creditVizibil,
+            smscredit,
+            ePremium
         }
     }
 })

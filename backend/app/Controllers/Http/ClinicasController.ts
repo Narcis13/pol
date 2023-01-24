@@ -3,6 +3,7 @@ import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
 import Satisfactia from 'App/Models/Satisfactia';
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
+const axios = require('axios');
 
 export default class ClinicasController {
   public async index({}: HttpContextContract) {}
@@ -15,6 +16,29 @@ export default class ClinicasController {
 
   }
    
+  public async creditsms({request}:HttpContextContract){
+    
+     const smskey=request.headers().smskey
+    
+   
+    var options = {
+      method: 'GET',
+      url: 'https://app.smso.ro/api/v1/credit-check',
+      headers: {
+        Accept: '*/*',
+        'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+        'X-Authorization': smskey
+      }
+    };
+      try {
+          const r= await axios.request(options)
+          return r.data;
+
+        } catch (error) {
+          //console.log(error.response.body);
+        }
+  }
+
   public async updateclinica({request,params,response}:HttpContextContract){
 
     const clinica = await Clinica.findOrFail(params.id)
@@ -31,6 +55,7 @@ export default class ClinicasController {
         facebook: schema.string.optional({trim:true}),
         instagram: schema.string.optional({trim:true}),
         companie: schema.string.optional({trim:true}),
+        smsapikey: schema.string.optional({trim:true}),
         CUI: schema.string.optional({trim:true}), //validare suplimentara
         adresacompanie: schema.string.optional({trim:true}),
         numeconducere1:schema.string.optional({trim:true}),
