@@ -10,7 +10,7 @@
                 <q-banner v-show="tab=='lista'" inline-actions rounded class="bg-orange text-white">
                     Utilizatori platforma programare 
                     <template v-slot:action>
-                        <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
+                        <q-btn v-show="!maxAbonamentAtins" @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
                 </q-banner>
                 <q-card class="q-mt-sm">
@@ -142,6 +142,20 @@ export default defineComponent({
 //computed zone
         let actiune = computed(()=>{
             return tab.value=='editare'? 'Actualizare' : tab.value=='lista'? '':'Adaugare' 
+        })
+
+        let maxAbonamentAtins = computed(()=>{
+            const p=global.state.user.plan[0]
+            const idp=p.id
+           // console.log('plan',p)
+            const restrictii = p.restrictii.split(',')
+            let nr_max_utilizatori=0
+            restrictii.map(r=>{
+                if(r.substring(0,1)=="u") {
+                    nr_max_utilizatori=parseInt(r.split(':')[1])
+                }
+            })  
+            return idp<3&&state.utilizatori.length+1>=nr_max_utilizatori
         })
 
         function totiuserii(){
@@ -394,6 +408,7 @@ export default defineComponent({
              reset,
              resetezparola,
              parolaInvalida,
+             maxAbonamentAtins,
              parolaDiferita,
              formularValid:computed(()=>{
                   return parolaInvalida&&parolaDiferita&&nume_user.value.length>4&&numeintreg.value.length>4

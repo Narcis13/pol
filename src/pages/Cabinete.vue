@@ -10,7 +10,7 @@
                 <q-banner v-show="tab=='lista'" inline-actions rounded class="bg-orange text-white">
                     Cabinete platforma programare 
                     <template v-slot:action>
-                        <q-btn @click="tab='adaugare';reset()" flat label="Adauga" />
+                        <q-btn v-show="!maxAbonamentAtins" @click="tab='adaugare';reset()" flat label="Adauga" />
                     </template>
                 </q-banner>
                 <q-card class="q-mt-sm">
@@ -332,6 +332,20 @@ export default defineComponent({
             return tab.value=='editare'? 'Actualizare' : tab.value=='lista'? '':'Adaugare' 
         })
 
+        let maxAbonamentAtins = computed(()=>{
+            const p=global.state.user.plan[0]
+            const idp=p.id
+           // console.log('plan',p)
+            const restrictii = p.restrictii.split(',')
+            let nr_max_cabinete=0
+            restrictii.map(r=>{
+                if(r.substring(0,1)=="c") {
+                    nr_max_cabinete=parseInt(r.split(':')[1])
+                }
+            })  
+            return idp<3&&state.cabinete.length>=nr_max_cabinete
+        })
+
          axios.get(process.env.host+`alluserscabs`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(
 
                 res => {
@@ -561,6 +575,7 @@ export default defineComponent({
             operator,
             operatori,
              salveaza,
+             maxAbonamentAtins,
              denumireUnica,
              tabu,
              calePozaImplicita,
