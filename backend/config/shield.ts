@@ -95,6 +95,7 @@ export const csrf: ShieldConfig['csrf'] = {
   exceptRoutes: [
     '/specialitati',
     '/validareemail',
+    '/trimitsmsanulare',
     '/solicitarereprogramare',
     '/indis',
     '/indis/:id',

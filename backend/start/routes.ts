@@ -20,11 +20,13 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+
 Route.on('/').render('main')
 
 Route.post('/validareemail', 'ClientsController.validare_email')
 Route.post('/inregistrareclinica', 'ClientsController.inregistrareclinica')
 Route.get('/creditsms', 'ClinicasController.creditsms')
+Route.post('/trimitsmsanulare','ClinicasController.trimitsmsanulare')
 
 Route.post('/programare', 'ProgramarisController.register')
 Route.post('/anulareprogramare', 'ProgramarisController.anulareprogramare')

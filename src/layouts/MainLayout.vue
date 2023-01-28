@@ -131,6 +131,7 @@ export default defineComponent({
                             global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica,res.data.plan)
                             bus.emit('succes-autentificare',res.data.loggeduser,res.data.clinica,res.data.plan)
                             slug.value=res.data.clinica.slug
+                            global.actions.verificareCreditSMS();
                         }
                         else
                         {

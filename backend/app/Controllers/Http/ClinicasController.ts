@@ -16,6 +16,31 @@ export default class ClinicasController {
 
   }
    
+  public async trimitsmsanulare({request}:HttpContextContract){
+     console.log(request.body())
+     let datesms=request.body();
+     const smskey=datesms.apikey;
+     var options = {
+      method: 'POST',
+      url: `https://app.smso.ro/api/v1/send?to=%204${datesms.telefon}&sender=4&body=${datesms.mesaj}`,
+      headers: {
+        Accept: '*/*',
+        'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+        'X-Authorization': smskey
+      }
+    };
+      try {
+          await axios.request(options)
+          return {
+            mesaj:'SMS Anulare expediat!'
+          }
+
+        } catch (error) {
+          //console.log(error.response.body);
+        }
+
+  }
+
   public async creditsms({request}:HttpContextContract){
     
      const smskey=request.headers().smskey
@@ -147,15 +172,5 @@ export default class ClinicasController {
     }
 
 }
-  public async create({}: HttpContextContract) {}
 
-  public async store({}: HttpContextContract) {}
-
-  public async show({}: HttpContextContract) {}
-
-  public async edit({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

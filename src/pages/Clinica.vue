@@ -288,10 +288,11 @@ export default defineComponent({
                                 axios.get(process.env.host+`creditsms`,{headers:{'smskey':res.data.smsapikey}}).then(
 
                                     res => {
-                                       console.log('Interogare credit',res)
+                                    //   console.log('Interogare credit',res)
                                        if(res.data&&res.data.status==200){
                                           creditVizibil.value=true
                                           smscredit.value=res.data.credit_value
+                                        //  global.state.user.amBugetSMS=true
                                        }
                                     }
                                     ).catch(err =>{})

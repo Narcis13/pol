@@ -110,7 +110,7 @@ export default defineComponent({
                     nr_max_specialitati=parseInt(r.split(':')[1])
                 }
             })  
-            return idp<3&&state.cabinete.length>=nr_max_specialitati
+            return idp<3&&state.specialitati.length>=nr_max_specialitati
         })
         function toatespecialitatile(){
                 axios.get(process.env.host+`toatespecialitatile`,{headers:{"Authorization" : `Bearer ${token}`,'idclinica':global.state.user.idclinica}}).then(

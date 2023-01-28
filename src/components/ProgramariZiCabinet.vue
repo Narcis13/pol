@@ -36,6 +36,7 @@
 
          </q-timeline>
         </div>
+
             <q-dialog  v-model="show_anulare_dialog" persistent >
                 <q-card style="width: 350px; max-width: 80vw;">
                 <q-card-section>
@@ -45,6 +46,7 @@
                         hint="Mesaj care va fi incorporat in mail"
                         type="textarea"
                         />
+                        <q-checkbox v-if="global.state.user.amBugetSMS" v-model="trimitSMS" label="Trimite SMS" />
                 </q-card-section>
                 <q-card-actions align="right" class="bg-white text-teal">
                           <q-btn  flat label="Renunt" v-close-popup />
@@ -140,7 +142,7 @@ export default defineComponent({
         props.liste.sarbatori.map(s=>{
             if(s==zicodata) sarbatoare=true
         })
-       console.log('Proprietati zi programari cabinet',props.liste,sarbatoare)
+       //console.log('Proprietati zi programari cabinet',props.liste,sarbatoare)
         let intervale = ref([])
         const $q = useQuasar()
         let show_anulare_dialog = ref(false)
@@ -149,6 +151,8 @@ export default defineComponent({
         let solicitare = ref({mesaj:'Multumesc',nume:'',telefon:'',email:'',specialitate:null,tip:'',specialitati:[]})
         let solicitareoffline = ref({mesaj:'',nume:'',telefon:'',specialitate:null,orastart:'',orastop:'',medic:'',data:'',interval:null})
         let text=ref(`Ne pare rau sa va informam ca programarea dumneavoastra la Dr. Ionescu Ion din data 01/02/2022 incepind cu ora 10.15 a fost anulata din motive obiective, neprevazute.`)
+        let smsanulare=ref('')
+        let trimitSMS=ref(false)
         let token_anulare=null;
 
        if(!sarbatoare){
@@ -407,11 +411,14 @@ export default defineComponent({
       function anulez_programare(token){
           
           token_anulare=token
-         // console.log('Anulare',token,intervale.value[token])
+         
           let slot=intervale.value[token]
           let d=slot.data.split('-')
           const data = d[2]+'.'+d[1]+'.'+d[0]
           text.value=`Ne pare rau sa va informam ca programarea dumneavoastra la ${slot.medic} din data ${data} incepind cu ora ${slot.orastart} a fost anulata din motive obiective, neprevazute.`
+          smsanulare.value=`Programarea la ${slot.medic} din data ${data} la ora ${slot.orastart} a fost anulata din motive obiective!` 
+         smsanulare.value=smsanulare.value.split(' ').join('%20')
+ console.log('Anulare',slot,smsanulare.value)
           show_anulare_dialog.value=true
 
       }
@@ -422,18 +429,32 @@ export default defineComponent({
              clinica:global.state.user.clinica.denumire,
              mesaj:text.value
          } 
-        // console.log('Chiar Anulez programare',date_anulare)
+         let date_sms={
+            telefon:intervale.value[token_anulare].telefon,
+            mesaj:smsanulare.value,
+            apikey:global.state.user.clinica.smsapikey
+
+         }
+        // console.log('Chiar Anulez programare',date_sms,trimitSMS.value)
+
          //aici fac totul
          axios.post(process.env.host+'anulareprogramare',date_anulare).then(res =>{
 
-                //  console.log('Raspuns de la anulare programare',res.data)
                    show_anulare_dialog.value=false
                    
-                   //aici trebuie sa fac sa dispara slotul....
-                  // intervale.value.splice(token_anulare,1)
-                  intervale.value[token_anulare].activ=false
+                   intervale.value[token_anulare].activ=false
                   emit('programare-anulata',{idprogramare:intervale.value[token_anulare].idprogramare})
                    token_anulare=null
+
+                           if(trimitSMS.value){
+                                axios.post(process.env.host+'trimitsmsanulare',date_sms).then(res =>{
+
+                                    })
+                                    .catch(err=>{
+                                        console.log(err)
+                                    })
+                          }
+
                  $q.notify({
                                         message:res.data.mesaj,
                                         timeout:2000,
@@ -450,6 +471,8 @@ export default defineComponent({
                                                         color:'negative'
                                                         })                  
                                             })    
+
+
 
       }
 
@@ -469,11 +492,14 @@ export default defineComponent({
          show_reprogramare,
          reprogrameaza,
          solicitare,
+         smsanulare,
          kind,
          text,
+         global,
          solicitareprogramareoffline,
          show_programare_offline,
          solicitareoffline,
+         trimitSMS,
          programeazaOffline
 
       }  

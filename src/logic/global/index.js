@@ -1,4 +1,5 @@
 import {reactive} from 'vue'
+import axios from 'axios'
 import { date } from 'quasar'
 const state = reactive({
     user:{
@@ -8,6 +9,7 @@ const state = reactive({
 
         rol:null,
         master:false,
+        amBugetSMS:false,
         idutilizator:0,
         idclinica:0,
         token:null,
@@ -37,6 +39,23 @@ const actions = {
      },
      deconectare(){
         state.user.autentificat=false
+     },
+     verificareCreditSMS(){
+        if(state.user.clinica.smsapikey&&state.user.plan[0].id==3){
+            axios.get(process.env.host+`creditsms`,{headers:{'smskey':state.user.clinica.smsapikey}}).then(
+
+                res => {
+                //   console.log('Interogare credit',res)
+                   if(res.data&&res.data.status==200){
+                     
+                    state.user.amBugetSMS=true
+                   }
+                }
+                ).catch(err =>{})
+
+
+                                
+        }
      }
 }
 

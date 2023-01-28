@@ -3,6 +3,7 @@
       <q-card-section>
        <q-list bordered>
           <q-expansion-item
+          v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'"
             group="somegroup"
             icon="settings"
             label="CONFIGURARE"
@@ -26,7 +27,7 @@
 
           <q-separator />
 
-          <q-expansion-item group="somegroup" icon="edit_calendar" label="PROGRAMARI" header-class="text-teal">
+          <q-expansion-item v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'" group="somegroup" icon="edit_calendar" label="PROGRAMARI" header-class="text-teal">
             <q-card>
               <q-card-section>
 
@@ -52,19 +53,19 @@
                  <q-btn to="clin777" class="full-width q-ma-xs" color="purple" no-caps>
                     Clinica
                   </q-btn>
-                 <q-btn to="u852" class="full-width q-ma-xs" color="purple" no-caps>
+                 <q-btn v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'" to="u852" class="full-width q-ma-xs" color="purple" no-caps>
                     Utilizatori
                   </q-btn>
-                  <q-btn to="sp987" class="full-width q-ma-xs" color="purple" no-caps>
+                  <q-btn v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'" to="sp987" class="full-width q-ma-xs" color="purple" no-caps>
                     Specialitati
                   </q-btn>
-                  <q-btn to="ser369" class="full-width q-ma-xs" color="purple" no-caps>
+                  <q-btn v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'" to="ser369" class="full-width q-ma-xs" color="purple" no-caps>
                     Servicii
                   </q-btn>
-                  <q-btn to="med1313" class="full-width q-ma-xs" color="purple" no-caps>
+                  <q-btn v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'" to="med1313" class="full-width q-ma-xs" color="purple" no-caps>
                     Medici
                   </q-btn>
-                  <q-btn to="cab999" class="full-width q-ma-xs" color="purple" no-caps>
+                  <q-btn v-show="global.state.user.clinica.stare=='trial'||global.state.user.clinica.stare=='activ'" to="cab999" class="full-width q-ma-xs" color="purple" no-caps>
                     Cabinete
                   </q-btn>
 
