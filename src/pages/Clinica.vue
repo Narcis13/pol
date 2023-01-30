@@ -62,7 +62,7 @@
                 <q-input style="max-width: 250px;" v-model="pjdenumire" label="Denumire pers. juridica" />
             </div>
             <div class="col-12 col-md-4">
-                <q-input style="max-width: 250px;" v-model="pjcui" label="Cod fiscal" />
+                <q-input style="max-width: 250px;" v-model="pjcui" label="Cod fiscal" :rules="validareCUI"/>
             </div>
             <div class="col-12 col-md-3">
                 <q-input style="max-width: 250px;" v-model="pjadresa" label="Adresa pers. juridica" />
@@ -388,6 +388,23 @@ export default defineComponent({
 
         return {
             global,
+            validareCUI:[value=>{
+                var v=value;
+                if ( v.length>10 ) return 'Lungimea nu poate fi mai mare de 10';
+                        var cifra_control=v.substr(v.length-1, 1);
+                        var cif=v.substr(0, v.length-1);
+                        while (cif.length!=9){
+                            cif='0'+cif;
+                        }
+                        var suma=parseInt(cif.charAt(0)) * 7 + parseInt(cif.charAt(1)) * 5 + parseInt(cif.charAt(2)) * 3 + parseInt(cif.charAt(3)) * 2 + parseInt(cif.charAt(4)) * 1 + parseInt(cif.charAt(5)) * 7 + parseInt(cif.charAt(6)) * 5 + parseInt(cif.charAt(7)) * 3 + parseInt(cif.charAt(8)) * 2;
+                    
+                        suma=suma*10;
+                        var rest=suma%11;
+                        if ( rest==10 ) rest=0;
+
+                        if (rest==cifra_control) return true;
+                        else return 'CUI INVALID!';
+            }],
             state,
             caleSigla,
             uploadURL,
