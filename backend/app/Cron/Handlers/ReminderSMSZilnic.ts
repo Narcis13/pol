@@ -17,7 +17,16 @@ export default class DailyDbBackupHandler {
       try {
         const NOW = DateTime.now().toFormat('yyyy-LL-dd HH:mm:ss')
         this.logger.info('Procesul de trimitere in masa SMS a inceput la: %s', NOW)
+/**
+ * 
+SELECT p.data dataprogramare, p.idsolicitare idsolicitare,s.telefon telefon,s.email email, c.smsapikey smsapikey FROM pols.programarises p
+INNER JOIN pols.solicitares s on s.id=p.idsolicitare
+INNER JOIN pols.clinicas c on c.id=p.idclinica
+WHERE DATE(p.data) = ADDDATE(CURDATE(),1) 
 
+
+
+ */
         /*const DB_CREDENTIALS = {
           db: Env.get('MYSQL_DB_NAME'),
           user: Env.get('MYSQL_USER'),
