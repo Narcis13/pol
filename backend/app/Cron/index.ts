@@ -7,7 +7,7 @@ import ReminderSMSZilnic from './Handlers/ReminderSMSZilnic'
 /**
  * Runs every 12 hours
  */
-scheduler.scheduleJob('23 19 * * *', async function () {
+scheduler.scheduleJob('04 20 * * *', async function () {
   //const isDbBackupsEnabled = Env.get('ENABLE_DB_BACKUPS')
 
 

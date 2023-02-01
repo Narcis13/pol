@@ -1,5 +1,6 @@
 //import path from 'path'
 import { DateTime } from 'luxon'
+import Database from '@ioc:Adonis/Lucid/Database'
 //import { exec } from 'child_process'
 //import Env from '@ioc:Adonis/Core/Env'
 //import { existsSync, mkdirSync } from 'fs'
@@ -17,12 +18,21 @@ export default class DailyDbBackupHandler {
       try {
         const NOW = DateTime.now().toFormat('yyyy-LL-dd HH:mm:ss')
         this.logger.info('Procesul de trimitere in masa SMS a inceput la: %s', NOW)
+        const qRemainder = `
+                    SELECT p.data dataprogramare, p.idsolicitare idsolicitare,s.telefon telefon,s.email email, c.smsapikey smsapikey, c.idplan idplan, substring(p.orastart,1,5) orastart, c.denumire numeclinica, m.nume numemedic, serv.denumire denumireserviciu FROM pols.programarises p
+                    INNER JOIN pols.solicitares s on s.id=p.idsolicitare
+                    INNER JOIN pols.clinicas c on c.id=p.idclinica
+                    INNER JOIN medics m on m.id=p.idmedic
+                    INNER JOIN servicius serv on serv.id=p.idserviciumedical
+                    WHERE DATE(p.data) = ADDDATE(CURDATE(),1) and p.stare='activ'
+        
+        `
+        const deTransmis = await Database
+                          .rawQuery(qRemainder)
+       // console.log(deTransmis)                  
 /**
  * 
-SELECT p.data dataprogramare, p.idsolicitare idsolicitare,s.telefon telefon,s.email email, c.smsapikey smsapikey FROM pols.programarises p
-INNER JOIN pols.solicitares s on s.id=p.idsolicitare
-INNER JOIN pols.clinicas c on c.id=p.idclinica
-WHERE DATE(p.data) = ADDDATE(CURDATE(),1) 
+
 
 
 
