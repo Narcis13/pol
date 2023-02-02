@@ -29,7 +29,15 @@ export default class DailyDbBackupHandler {
         `
         const deTransmis = await Database
                           .rawQuery(qRemainder)
-       // console.log(deTransmis)                  
+           
+           deTransmis[0].map(linie=>{
+          //  console.log(linie)
+            if(linie.idplan>1){
+              //trimit mail
+              console.log(linie.email)
+            }
+           })               
+      //  console.log('Lungime ...',deTransmis.length)                  
 /**
  * 
 
