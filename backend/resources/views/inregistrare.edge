@@ -27,6 +27,10 @@
        <input type="password" name="parola" class="border p-2 mt-4" placeholder="Parola">
        <p class="text-xs text-slate-600">Minim 8 caractere, litere mari, litere mici, cifre si semne punctuatie</p>
        <input class="hidden"  type="text" name="idplan" value="{{idplan}}">
+       <input type="checkbox" name="acord" class="mt-4">
+         Sunt de acord cu  <a class="text-blue-600" target="_blank" href="termeni.html">termenii si conditiile serviciului de programare online</a> si cu <a class="text-blue-600" target="_blank" href="conditii.html">politica de confidentialitate</a
+        
+          
        <div class="flex flex-row items-center justify-center">
             <button id="btnReg" type="submit" class="border border-gray-100 p-2 mt-4 text-veryLightGray bg-darkBlue rounded-lg hover:bg-slate-600">Inregistreaza-te</button>
        </div>
@@ -52,6 +56,9 @@
       <p class="mt-4 p-4 bg-red-800 text-white"> {{flashMessages.get('errors.parola')}} </p>
     @endif
 
+    @if(flashMessages.has('lipsaacord'))
+    <p class="mt-4 p-4 bg-red-800 text-white">{{flashMessages.get('lipsaacord')}}</p>
+    @endif
 
 
   </div>

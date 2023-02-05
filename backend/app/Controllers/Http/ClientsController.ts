@@ -29,8 +29,8 @@ public async validare_email({request}: HttpContextContract){
 }
 
 public async inregistrareclinica({request,session,view}:HttpContextContract){
-  let clinica_noua=request.body()
-     
+  //let clinica_noua=request.body()
+   //  console.log(request.input('acord'),request.body())
      const validare_solicitare = schema.create(
       {
           nume:schema.string({trim:true},[rules.maxLength(70),rules.minLength(7)]),
@@ -38,9 +38,10 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
           cod:schema.string({trim:true},[rules.maxLength(6),rules.minLength(6)]),
           email:schema.string({trim:true},[rules.email()]),
           parola:schema.string({trim:true},[rules.minLength(8),rules.regex(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)]),
-          idplan:schema.number()
+          idplan:schema.number(),
+          acord:schema.string.optional({trim:true})
       })
-
+      if(request.input('acord')=="on"){
       const solicitare_validata = await request.validate({
         schema:validare_solicitare,
         messages:{
@@ -60,7 +61,7 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
             "parola.regex":"Parola nu respecta cerintele minime de complexitate"
         }
     });
-    //console.log(clinica_noua,solicitare_validata)
+   // console.log(solicitare_validata)
    /* var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let mailvalid=clinica_noua.email.match(mailformat)
     if(!mailvalid)
@@ -127,6 +128,10 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
     {
         return view.render('bunvenit',{succes:false,mesaj:'Adresa de email nu a putut fi verificata! Va rugam reluati procedura de inregistrare!'})
     }
+}
+else {
+    return view.render('bunvenit',{succes:false,mesaj:'Trebuie sa fiti de acord cu Termeni si Conditii si cu Politica de Confidentialitate pentru a continua!'})
+}
 
 }
 }
