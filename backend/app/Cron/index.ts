@@ -3,13 +3,16 @@ import scheduler from 'node-schedule'
 //import Env from '@ioc:Adonis/Core/Env'
 import Logger from '@ioc:Adonis/Core/Logger'
 import ReminderSMSZilnic from './Handlers/ReminderSMSZilnic'
+import AnalizorSituatieClienti from './Handlers/AnalizaSituatieClienti'
 
 /**
  * Runs every 12 hours
  */
-scheduler.scheduleJob('08 20 * * *', async function () {
+scheduler.scheduleJob('22 20 * * *', async function () {
   //const isDbBackupsEnabled = Env.get('ENABLE_DB_BACKUPS')
-
+   await new AnalizorSituatieClienti()
+     .run()
+     .catch((error) => Logger.error('Analizor Situatie Clienti,: %o', error))
 
     await new ReminderSMSZilnic()
       .run()
