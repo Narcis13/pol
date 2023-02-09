@@ -30,24 +30,35 @@ public async validare_email({request}: HttpContextContract){
 
 public async inregistrareclinica({request,session,view}:HttpContextContract){
   //let clinica_noua=request.body()
-   //  console.log(request.input('acord'),request.body())
+  
      const validare_solicitare = schema.create(
       {
           nume:schema.string({trim:true},[rules.maxLength(70),rules.minLength(7)]),
           clinica:schema.string({trim:true},[rules.maxLength(70),rules.minLength(7)]),
+          codfiscal:schema.string({trim:true},[rules.maxLength(10),rules.minLength(6),rules.cuivalid()]),
+          denumirepj:schema.string({trim:true},[rules.maxLength(100),rules.minLength(5)]),
+          adresapj:schema.string({trim:true},[rules.maxLength(100),rules.minLength(6)]),
           cod:schema.string({trim:true},[rules.maxLength(6),rules.minLength(6)]),
           email:schema.string({trim:true},[rules.email()]),
           parola:schema.string({trim:true},[rules.minLength(8),rules.regex(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)]),
-          idplan:schema.number(),
-          acord:schema.string.optional({trim:true})
+          idplan:schema.number()
+        //  acord:schema.string.optional({trim:true})
       })
       if(request.input('acord')=="on"){
+        //console.log(request.body())
       const solicitare_validata = await request.validate({
         schema:validare_solicitare,
         messages:{
             'nume.required':"Introduceti un nume valid",
             "nume.minLength":"Numele nu poate fi mai mic de 7 caractere!",
             "nume.maxLength":"Numele nu poate depasi 70 de caractere!",
+            'codfiscal.required':"Introduceti un cod fiscal valid",
+            "codfiscal.minLength":"Codul fiscal nu poate fi mai mic de 6 caractere!",
+            "codfiscal.maxLength":"Codul fiscal nu poate depasi 10 de caractere!",
+            'denumirepj.required':"Introduceti un nume de firma valid",
+            "denumirepj.minLength":"Numele firmei nu poate fi mai mic de 5 caractere!",
+            'adresapj.required':"Introduceti o adresa valida",
+            "adresapj.minLength":"Adresa firmei nu poate fi mai mica de 6 caractere!",
             'clinica.required':"Introduceti un nume de clinica valid",
             "clinica.minLength":"Numele clinicii nu poate fi mai mic de 7 caractere!",
             "clinica.maxLength":"Numele clinicii nu poate depasi 70 de caractere!",
@@ -88,6 +99,10 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
         const clinicanoua={
             'denumire':solicitare_validata.clinica,
             email:solicitare_validata.email,
+            companie:solicitare_validata.denumirepj,
+            CUI:solicitare_validata.codfiscal,
+            adresacompanie:solicitare_validata.adresapj,
+            emailpr:solicitare_validata.email,
             slug,
             idplan:solicitare_validata.idplan,
             stare:'trial',

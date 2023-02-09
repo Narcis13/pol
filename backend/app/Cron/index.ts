@@ -8,7 +8,7 @@ import AnalizorSituatieClienti from './Handlers/AnalizaSituatieClienti'
 /**
  * Runs every 12 hours
  */
-scheduler.scheduleJob('22 20 * * *', async function () {
+scheduler.scheduleJob('39 19 * * *', async function () {
   //const isDbBackupsEnabled = Env.get('ENABLE_DB_BACKUPS')
    await new AnalizorSituatieClienti()
      .run()

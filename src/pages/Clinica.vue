@@ -59,13 +59,13 @@
 
     <div class="row justify-center q-gutter-sm q-mt-md">
             <div class="col-12 col-md-4">
-                <q-input style="max-width: 250px;" v-model="pjdenumire" label="Denumire pers. juridica" />
+                <q-input readonly style="max-width: 250px;" v-model="pjdenumire" label="Denumire pers. juridica" />
             </div>
             <div class="col-12 col-md-4">
-                <q-input style="max-width: 250px;" v-model="pjcui" label="Cod fiscal" :rules="validareCUI"/>
+                <q-input readonly style="max-width: 250px;" v-model="pjcui" label="Cod fiscal" />
             </div>
             <div class="col-12 col-md-3">
-                <q-input style="max-width: 250px;" v-model="pjadresa" label="Adresa pers. juridica" />
+                <q-input readonly style="max-width: 250px;" v-model="pjadresa" label="Adresa pers. juridica" />
             </div>
     </div>
 
@@ -119,15 +119,15 @@
         </q-tabs>
 
        
-        <q-banner class="col-12 gt-xs bg-grey-3">
+<!--         <q-banner class="col-12 gt-xs bg-grey-3">
             <template v-slot:avatar>
                 <q-icon name="swipe_left" color="primary" />
             </template>
             Swipe pentru mai mult ...
             
-         </q-banner>
+         </q-banner> -->
         <q-tab-panels v-model="tab" swipeable animated infinite class="col-xs-8">
-          <q-tab-panel name="c1">
+<!--           <q-tab-panel name="c1">
             <div class="text-h6">Conducere 1</div>
             <div class="row q-gutter-sm q-mt-sm">
                 <div class="col-12 col-md-4 ">
@@ -170,7 +170,7 @@
                     <q-input v-model="telconducere3" label="Telefon" />
                 </div>
             </div>
-          </q-tab-panel>
+          </q-tab-panel> -->
 
           <q-tab-panel name="pr">
             <div class="text-h6">Relatii publice</div>
@@ -390,7 +390,8 @@ export default defineComponent({
             global,
             validareCUI:[value=>{
                 var v=value;
-                if ( v.length>10 ) return 'Lungimea nu poate fi mai mare de 10';
+                if(v){
+                  if ( v.length>10 ) return 'Lungimea nu poate fi mai mare de 10';
                         var cifra_control=v.substr(v.length-1, 1);
                         var cif=v.substr(0, v.length-1);
                         while (cif.length!=9){
@@ -404,6 +405,7 @@ export default defineComponent({
 
                         if (rest==cifra_control) return true;
                         else return 'CUI INVALID!';
+                    }
             }],
             state,
             caleSigla,

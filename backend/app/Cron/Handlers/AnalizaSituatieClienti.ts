@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import Mail from '@ioc:Adonis/Addons/Mail'
 
 export default class SituatieClienti {
-
+// ! To DO - sa fac ceva in ultima luna de abonament .....sa transform in trial!
 
     public run(){
         return new Promise(
@@ -19,7 +19,7 @@ export default class SituatieClienti {
                         if(dif==10){
                             Mail.send((message) => {
                                 message
-                                  .from('programari@eleventen.ro')
+                                  .from('noreply@eleventen.ro')
                                   .to(c.email)
                                   .subject('Factura proforma abonament platforma elEvenTen - programari online si offline')
                                   .htmlView('emails/remindertrial')

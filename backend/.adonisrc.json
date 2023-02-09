@@ -22,6 +22,12 @@
       "environment": [
         "web"
       ]
+    },
+    {
+      "file": "./start/validator",
+      "environment": [
+        "web"
+      ]
     }
   ],
   "providers": [
