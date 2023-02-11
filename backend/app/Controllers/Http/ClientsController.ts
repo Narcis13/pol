@@ -7,6 +7,7 @@ import {rules , schema} from '@ioc:Adonis/Core/Validator'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import { DateTime } from 'luxon';
 import Env from '@ioc:Adonis/Core/Env'
+import Factura from 'App/Models/Factura'
 
 export default class ClientsController {
 
@@ -26,6 +27,11 @@ public async validare_email({request}: HttpContextContract){
       })
 
     return 'Validare email!'
+}
+public async oproforma({params,view}:HttpContextContract){
+    const proforma =await Factura.findOrFail(params.idfact)
+    //console.log(proforma)
+    return view.render('facturaproforma',{nrfact:proforma.nrfact})
 }
 
 public async inregistrareclinica({request,session,view}:HttpContextContract){

@@ -717,6 +717,10 @@ video {
   padding: 1rem;
 }
 
+.p-12 {
+  padding: 3rem;
+}
+
 .p-6 {
   padding: 1.5rem;
 }
@@ -780,14 +784,14 @@ video {
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 
-.text-veryDarkBlue {
-  --tw-text-opacity: 1;
-  color: hsl(233 12% 13% / var(--tw-text-opacity));
-}
-
 .text-red-800 {
   --tw-text-opacity: 1;
   color: rgb(153 27 27 / var(--tw-text-opacity));
+}
+
+.text-veryDarkBlue {
+  --tw-text-opacity: 1;
+  color: hsl(233 12% 13% / var(--tw-text-opacity));
 }
 
 .text-veryLightGray {
