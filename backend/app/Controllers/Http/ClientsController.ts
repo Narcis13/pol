@@ -31,7 +31,7 @@ public async validare_email({request}: HttpContextContract){
 public async oproforma({params,view}:HttpContextContract){
     const proforma =await Factura.findOrFail(params.idfact)
     //console.log(proforma)
-    return view.render('facturaproforma',{nrfact:proforma.nrfact})
+    return view.render('facturaproforma',{nrfact:proforma.nrfact,data:DateTime.fromJSDate(new Date(proforma.data)).toFormat('dd.MM.yyyy'),numeclient:proforma.numeclient,cuiclient:proforma.cuiclient,adresaclient:proforma.adresaclient,detalii:proforma.detalii,suma:proforma.suma})
 }
 
 public async inregistrareclinica({request,session,view}:HttpContextContract){

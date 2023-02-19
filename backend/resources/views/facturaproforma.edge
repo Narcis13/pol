@@ -10,61 +10,80 @@
 <body class="bg-gray-100 m-6">
 
   @containers.print({ as: 'main' })
+
+  <div class="mb-12 font-mono">
+    <div class="float-right mb-2">
+      <div class="pt-2 w-28">
+        <img src="../sigla2.png" alt="" />
+      </div>
+    </div>
+ 
+    <h3 class="font-bold">SC Lucky Smart Systems SRL</h3>
+    <address>
+      CUI:RO24688650<br/>
+      Cont Banca Transilvania<br/>
+      RO81BTRLRONCRT0200299901<br/>
+      Str. G-ral Toma Ghenea nr. 16E, Pitesti, Arges, ROMANIA
+    </address>
+  </div>
+
+  <div class=" w-full flex justify-end mb-6">
+    <div class="flex flex-col">
+      <h3 class="font-bold">CLIENT:</h3>
+      <h3 class="font-bold">{{numeclient}}</h3>
+      <address>
+        CUI:{{cuiclient}}<br/>
+        {{adresaclient}}
+      </address>
+    </div>
+
+  </div>
+
     <div class="mb-12">
-      <h1 class="text-3xl font-serif tracking-wider">
-        INVOICE
+      <h1 class="text-xl font-serif text-center">
+        Factura proforma nr. {{nrfact}} din {{data}}
       </h1>
       @if (recipient)
         <h5 class="font-mono text-gray-600">
           Generated for:  recipient.name 
         </h5>
-      @endif
+     
       <h5 class="font-mono text-gray-600">
         Sent by:  user.email 
       </h5>
+      @endif
     </div>
 
-    <div class="mb-12 font-mono">
-      <h3 class="font-bold">Abstergo Ind.</h3>
-      <address>
-        1234 Abs Parkway<br/>
-        Cupertino, California 95014
-      </address>
-    </div>
 
+<div class="w-full font-mono text-right">-lei</div>
     <table class="w-full mb-12 font-mono">
       <tr>
-        <td class="font-bold">Quantity</td>
-        <td class="font-bold">Description</td>
-        <td class="font-bold text-right">Unit Price</td>
-        <td class="font-bold text-right">Amount</td>
+        <td class="font-bold">Descriere</td>
+        <td class="font-bold p-2">Cantitate</td>
+        <td class="font-bold text-right p-2">Pret</td>
+        <td class="font-bold text-right">Valoare</td>
       </tr>
       <tr>
-        <td>1.0</td>
-        <td>24h Animus Usage</td>
-        <td class="text-right">$12,000.00</td>
-        <td class="text-right">$12,000.00</td>
+        <td>{{detalii}}</td>
+        <td class="text-center">1</td>
+        <td class="text-right">{{suma}} </td>
+        <td class="text-right">{{suma}} </td>
       </tr>
-      <tr>
-        <td>1.0</td>
-        <td>Abstergo T-Shirt</td>
-        <td class="text-right">$15.00</td>
-        <td class="text-right">$15.00</td>
-      </tr>
+
     </table>
 
     <dl class="flex flex-col items-end font-mono">
       <div class="inline-grid grid-cols-2 justify-end">
         <dt class="font-bold">Subtotal</dt>
-        <dd class="w-28 text-right">$12,015.00</dd>
+        <dd class="w-28 text-right">{{suma}}</dd>
       </div>
       <div class="inline-grid grid-cols-2 justify-end">
-        <dt class="font-bold">Sales Tax</dt>
-        <dd class="w-28 text-right">$750.94</dd>
+        <dt class="font-bold">TVA</dt>
+        <dd class="w-28 text-right">0</dd>
       </div>
       <div class="inline-grid grid-cols-2 justify-end">
         <dt class="font-bold">Total</dt>
-        <dd class="w-28 text-right font-bold">$12,765.94</dd>
+        <dd class="w-28 text-right font-bold">{{suma}}</dd>
       </div>
     </dl>
   @end

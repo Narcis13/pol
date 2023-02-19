@@ -19,7 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import ClientsController from 'App/Controllers/Http/ClientsController'
+
 
 
 Route.on('/').render('main')
