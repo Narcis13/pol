@@ -16,7 +16,8 @@ const routes = [
       { path: '/orarcab777', component: () => import('pages/OrarCabinete.vue') },
       { path: '/adminpro', component: () => import('pages/Administrare.vue') },
       { path: '/rappro', component: () => import('pages/Rapoarte.vue') },
-      { path: '/libere638', component: () => import('pages/Libere.vue') }
+      { path: '/libere638', component: () => import('pages/Libere.vue') },
+      { path: '/clinici111', component: () => import('pages/Clinici.vue') }
     ]
   },
   {

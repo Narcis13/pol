@@ -1,12 +1,23 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
+import Database from '@ioc:Adonis/Lucid/Database';
 import Satisfactia from 'App/Models/Satisfactia';
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 const axios = require('axios');
 
 export default class ClinicasController {
-  public async index({}: HttpContextContract) {}
+  public async index({}: HttpContextContract) {
+   // console.log('toate clinicile')
+   const clinici= await Database
+   .from('clinicas')
+   //.join('medics', 'indisponibilitates.idmedic', '=', 'medics.id')
+   .select('clinicas.*')
+   //.select('medics.nume')
+   //.orderBy('indisponibilitates.created_at', 'desc')
+//   return Medic.all();
+   return {clinici}
+  }
 
   public async oclinica({params}: HttpContextContract) {
       //console.log(params.id)

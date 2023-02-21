@@ -79,7 +79,7 @@
             <q-card>
               <q-card-section>
 
-                  <q-btn  class="full-width q-ma-xs" color="grey-9" no-caps>
+                  <q-btn  class="full-width q-ma-xs" to="clinici111" color="grey-9" no-caps>
                    Clinici
                   </q-btn>
                   <q-btn class="full-width q-ma-xs" color="grey-9" no-caps>
