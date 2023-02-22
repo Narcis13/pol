@@ -34,6 +34,17 @@ public async oproforma({params,view}:HttpContextContract){
     return view.render('facturaproforma',{nrfact:proforma.nrfact,data:DateTime.fromJSDate(new Date(proforma.data)).toFormat('dd.MM.yyyy'),numeclient:proforma.numeclient,cuiclient:proforma.cuiclient,adresaclient:proforma.adresaclient,detalii:proforma.detalii,suma:proforma.suma})
 }
 
+public async activeazaabonament({params}:HttpContextContract){
+     //console.log(params.slug)
+
+     const clinica = await Clinica.findBy('slug',params.slug);
+     if(clinica){
+        console.log(clinica.denumire)
+     }
+     
+     return {mesaj:'Abonament clinica activat!'}
+}
+
 public async inregistrareclinica({request,session,view}:HttpContextContract){
   //let clinica_noua=request.body()
   
