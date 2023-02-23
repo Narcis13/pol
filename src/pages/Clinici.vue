@@ -41,7 +41,7 @@ import { date } from 'quasar'
     { name: 'stare',  align: 'left',label: 'Stare', field: 'stare' },
     { name: 'starttrial',  align: 'center',label: 'Start trial', field: 'starttrial' },
     { name: 'stoptrial',  align: 'center',label: 'Stop trial', field: 'stoptrial' },
-    { name: 'startabonament',  align: 'center',label: 'Start abonament', field: 'starttrial' },
+    { name: 'startabonament',  align: 'center',label: 'Start abonament', field: 'startabonament' },
     { name: 'stopabonament',  align: 'center',label: 'Stop abonament', field: 'stopabonament' }
 
    
@@ -111,6 +111,8 @@ import { date } from 'quasar'
                                                 position:'top',
                                                 color:'positive'
                                                 }) 
+                       selected.value=[]        
+                       toateclinicile()                 
 
               })
               .catch(err =>{})

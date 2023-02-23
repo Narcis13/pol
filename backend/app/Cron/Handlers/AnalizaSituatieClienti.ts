@@ -34,7 +34,7 @@ export default class SituatieClienti {
                         if(dif==10){
 
                             const proforma = {
-                             data:'2023-02-11',
+                             data:NOW.toSQLDate(),
                              tip:'proforma',
                              nrfact:c.slug,
                              numeclient:c.companie,

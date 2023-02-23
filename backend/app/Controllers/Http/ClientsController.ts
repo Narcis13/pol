@@ -36,10 +36,27 @@ public async oproforma({params,view}:HttpContextContract){
 
 public async activeazaabonament({params}:HttpContextContract){
      //console.log(params.slug)
-
+     const NOW = DateTime.now()
      const clinica = await Clinica.findBy('slug',params.slug);
+     
      if(clinica){
-        console.log(clinica.denumire)
+        //console.log(clinica.denumire,clinica.stoptrial,clinica.stoptrial.plus({days:366}))
+        const plan= await Database.from('plans').select('plans.*').where({'plans.id':clinica.idplan})
+        const ff={
+            data:NOW.toSQLDate(),
+            tip:'fiscala',
+            nrfact:clinica.slug,
+            numeclient:clinica.companie,
+            cuiclient:clinica.CUI,
+            adresaclient:clinica.adresacompanie,
+            detalii:'Contravaloare abonament plan '+plan[0].denumire+' 12 luni la platforma programari online + offline elEvenTen Romania ',
+            suma:parseInt(plan[0].tarif)*12,
+            idclinica:clinica.id
+        }
+        console.log(clinica,ff)
+        await clinica
+            .merge({stare:'activ',startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})})
+            .save()
      }
      
      return {mesaj:'Abonament clinica activat!'}
