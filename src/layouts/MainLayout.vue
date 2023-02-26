@@ -49,7 +49,8 @@
           <q-item>
             <q-item-section>
               <q-item-label class="text-blue-grey-10">Abonament:{{ global.state.user.plan[0].denumire }} </q-item-label>
-              <q-item-label class="text-blue-grey-10"> Expira la: {{global.state.user.clinica.stare=='trial'? global.state.user.clinica.stoptrial: global.state.user.clinica.stopabonament }}</q-item-label>
+              <q-item-label v-show="global.state.user.clinica.stare!=='inactiv'" class="text-blue-grey-10"> Expira la: {{global.state.user.clinica.stare=='trial'? global.state.user.clinica.stoptrial: global.state.user.clinica.stopabonament }}</q-item-label>
+              <q-item-label v-show="global.state.user.clinica.stare=='inactiv'" class="text-red-7"> EXPIRAT!</q-item-label>
             </q-item-section>
           </q-item>
         </q-card-section>
@@ -59,7 +60,9 @@
           <div class="flex flex-center">
             <q-btn  align="around" class="q-pa-sm" color="deep-purple-14" text-color="pink-1" icon="logout" :to="'/'+slug"  @click="global.actions.deconectare">Deconectare!</q-btn>
           </div>
-          
+          <div v-if="global.state.user.clinica.stare=='trial'" class="flex flex-center q-mt-md">
+            <q-btn  align="around" class="q-pa-sm" color="blue-grey-10" text-color="pink-1" icon="shopping_cart_checkout" >Plata card online...</q-btn>
+          </div>
 
         </q-card-actions>
     </q-card>
@@ -117,15 +120,15 @@ export default defineComponent({
 
                   axios.post(process.env.host+'login',{nume:username.value,password:password.value,slug:slug.value}).then(
                       res => {
-                        console.log('Raspuns la autentificare ',res.data)
+                      //  console.log('Raspuns la autentificare ',res.data)
                         username.value=''
                         password.value=''
                         if(res.data.loggeduser){
                          $q.notify({
-                                  message:'Utilizator autentificat cu succes!',
+                                  message:res.data.clinica.stare=="inactiv"?'Perioada de incercare a expirat!':'Utilizator autentificat cu succes!',
                                   timeout:2000,
                                   position:'top',
-                                  color:'positive'
+                                  color:res.data.clinica.stare=="inactiv"?'negative':'positive'
                                 }) 
 
                             global.actions.autentificare(res.data.loggeduser,res.data.token.token,res.data.clinica,res.data.plan)

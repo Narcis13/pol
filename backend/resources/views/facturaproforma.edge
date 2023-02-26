@@ -25,6 +25,7 @@
       RO81BTRLRONCRT0200299901<br/>
       Str. G-ral Toma Ghenea nr. 16E, Pitesti, Arges, ROMANIA
     </address>
+    <p class="text-sm">eleventen.ro</p>
   </div>
 
   <div class=" w-full flex justify-end mb-6">
@@ -39,9 +40,9 @@
 
   </div>
 
-    <div class="mb-12">
+    <div class="mb-12 bg-gray-300">
       <h1 class="text-xl font-serif text-center">
-        Factura proforma nr. {{nrfact}} din {{data}}
+        Factura {{tip}} nr. {{nrfact}} din {{data}}
       </h1>
       @if (recipient)
         <h5 class="font-mono text-gray-600">
@@ -57,14 +58,14 @@
 
 <div class="w-full font-mono text-right">-lei</div>
     <table class="w-full mb-12 font-mono">
-      <tr>
-        <td class="font-bold">Descriere</td>
+      <tr class="bg-gray-200 p-2">
+        <td class="font-bold p-2">Descriere</td>
         <td class="font-bold p-2">Cantitate</td>
         <td class="font-bold text-right p-2">Pret</td>
         <td class="font-bold text-right">Valoare</td>
       </tr>
-      <tr>
-        <td>{{detalii}}</td>
+      <tr class="p-2">
+        <td class="p-2">{{detalii}}</td>
         <td class="text-center">1</td>
         <td class="text-right">{{suma}} </td>
         <td class="text-right">{{suma}} </td>
@@ -86,6 +87,11 @@
         <dd class="w-28 text-right font-bold">{{suma}}</dd>
       </div>
     </dl>
+    <div class="mt-12 text-xs">
+         <p>Intocmit de Brindusescu RoseMary</p>
+         <p>CNP: 2750316035011</p>
+         <p>Factura circula fara semnatura si stampila conform Legii 227/2015 privind Codul Fiscal</p>
+    </div>
   @end
 
 </body>

@@ -104,7 +104,7 @@ import { date } from 'quasar'
        axios.get(process.env.host+`azaevitca/${selected.value[0].slug}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
               res => {
-                   
+                window.open(process.env.host+'facturiproforme/'+res.data.idfacturanoua,'_blank');
                     $q.notify({
                                                 message:res.data.mesaj,
                                                 timeout:2000,

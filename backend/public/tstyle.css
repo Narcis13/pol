@@ -608,6 +608,10 @@ video {
   margin-bottom: 0.5rem;
 }
 
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
 }
@@ -624,12 +628,8 @@ video {
   margin-left: 1.5rem;
 }
 
-.mr-2 {
-  margin-right: 0.5rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
+.mt-12 {
+  margin-top: 3rem;
 }
 
 .block {
@@ -660,20 +660,16 @@ video {
   min-height: 100vh;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-28 {
   width: 7rem;
 }
 
-.w-\[8\.5in\] {
-  width: 8.5in;
+.w-full {
+  width: 100%;
 }
 
-.w-32 {
-  width: 8rem;
+.w-\[8\.5in\] {
+  width: 8.5in;
 }
 
 .max-w-fit {
@@ -711,10 +707,6 @@ video {
 
 .justify-center {
   justify-content: center;
-}
-
-.justify-items-end {
-  justify-items: end;
 }
 
 .space-x-3 > :not([hidden]) ~ :not([hidden]) {
@@ -779,6 +771,16 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
 .p-3 {
   padding: 0.75rem;
 }
@@ -787,12 +789,12 @@ video {
   padding: 1rem;
 }
 
-.p-6 {
-  padding: 1.5rem;
-}
-
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
 }
 
 .p-\[1\.25in\] {
@@ -829,12 +831,12 @@ video {
   text-align: right;
 }
 
-.font-serif {
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 .text-2xl {
@@ -842,9 +844,9 @@ video {
   line-height: 2rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-xs {
@@ -852,9 +854,9 @@ video {
   line-height: 1rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-semibold {
@@ -867,10 +869,6 @@ video {
 
 .font-bold {
   font-weight: 700;
-}
-
-.tracking-wider {
-  letter-spacing: 0.05em;
 }
 
 .text-green-700 {

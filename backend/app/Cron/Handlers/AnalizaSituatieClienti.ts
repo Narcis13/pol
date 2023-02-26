@@ -1,8 +1,9 @@
 import Factura from '../../Models/Factura'
+import Clinica from '../../Models/Clinica'
 import { DateTime } from 'luxon'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
-import View from '@ioc:Adonis/Core/View'
+//import View from '@ioc:Adonis/Core/View'
 const puppeteer = require('puppeteer');
 
 export default class SituatieClienti {
@@ -21,16 +22,34 @@ export default class SituatieClienti {
                    const NOW = DateTime.now()
                //   console.log(clinicile.length)
                    clinicile.map(async c=>{
-                    
+                    const clinica = await Clinica.findOrFail(c.id)
+                    if(c.stare=='activ'&&c.stopabonament){
+                        const stopabonament:DateTime = DateTime.fromJSDate(new Date(c.stopabonament))
+                        let pinaLaExpirare = stopabonament.diff(NOW, 'days').toObject().days
+                        if(pinaLaExpirare) pinaLaExpirare=Math.floor(pinaLaExpirare)
+                       // console.log(pinaLaExpirare)
+                        if(pinaLaExpirare==30){
+                            await clinica
+                            .merge({stare:'trial',starttrial:NOW,stoptrial:clinica.stopabonament})
+                            .save()
+                        }
+                    }
                     if(c.stare=='trial'&&c.stoptrial){
                        // console.log('Clinica ',c.denumire,c.stare,c.stoptrial)
+                       
                         const stoptrial:DateTime = DateTime.fromJSDate(new Date(c.stoptrial))   
+                     
                        // console.log('Clinica ',c.denumire,stoptrial.diff(NOW, 'days').toObject().days)   
                      
                         let dif=stoptrial.diff(NOW, 'days').toObject().days
                       
                        if(dif) dif=Math.floor(dif)
-                       // console.log('Execut analiza clienti',dif,dif==10,c.denumire,c.tarif)
+                       // console.log('Execut analiza clienti',dif)
+                       if(dif&&dif<-1){
+                        await clinica
+                        .merge({stare:'inactiv'/*,startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})*/})
+                        .save()
+                       }
                         if(dif==10){
 
                             const proforma = {
@@ -47,7 +66,7 @@ export default class SituatieClienti {
                           // console.log(proforma)
                            const facturanoua= await Factura.create(proforma)
 
-                            const html = await View.render('facturaproforma', proforma)
+                         //   const html = await View.render('facturaproforma', proforma)
                             const browser = await puppeteer.launch()
                             const page = await browser.newPage()
                             await page.goto(`http://localhost:3339/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
