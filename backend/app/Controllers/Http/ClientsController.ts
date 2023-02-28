@@ -9,6 +9,8 @@ import { DateTime } from 'luxon';
 import Env from '@ioc:Adonis/Core/Env'
 import Factura from 'App/Models/Factura'
 const puppeteer = require('puppeteer');
+const stripe = require("stripe")(Env.get('STRIPE_SECRET_KEY'))
+
 export default class ClientsController {
 
 public async validare_email({request}: HttpContextContract){
@@ -92,51 +94,50 @@ public async activeazaabonament({params}:HttpContextContract){
      return {mesaj:'Abonament clinica activat!',idfacturanoua}
 }
 
-public async platacard({request}:HttpContextContract){
+public async platacard({request,response}:HttpContextContract){
  
-const abonamente = await Database.from('plans').select('plans.*')
-abonamente.map(a=>{
-  console.log (a.id+' Pachet abonament '+a.denumire+' 12 luni platforma programari consult medical eleventen.ro '+a.tariflunar*12)
-})
+  const abonamente = await Database.from('plans').select('plans.*')
 
-    /*    
-    const stripe = require("stripe")(Env.get('STRIPE_SECRET_KEY'))
+ 
 
-const storeItems = new Map([
-  [1, { priceInCents: 10000, name: "Learn React Today" }],
-  [2, { priceInCents: 20000, name: "Learn CSS Today" }],
-])
+  const storeItems = new Map(
+  abonamente.map(a=>{
 
-app.post("/create-checkout-session", async (req, res) => {
+        return [a.id,{priceInCents: a.tariflunar*12*100, name: 'Pachet abonament '+a.denumire+' 12 luni platforma programari consult medical eleventen.ro' }]
+  })  
+
+
+  )
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      line_items: req.body.items.map(item => {
+      line_items: request.body().items.map(item => {
         const storeItem = storeItems.get(item.id)
         return {
           price_data: {
-            currency: "usd",
+            currency: "ron",
             product_data: {
-              name: storeItem.name,
+              name: storeItem?.name,
             },
-            unit_amount: storeItem.priceInCents,
+            unit_amount: storeItem?.priceInCents,
           },
           quantity: item.quantity,
         }
       }),
-      success_url: `${process.env.CLIENT_URL}/success.html`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
+      success_url: `https://eleventen.ro`,
+      cancel_url: `https://eleventen.ro`,
     })
-    res.json({ url: session.url })
+    return { url: session.url }
   } catch (e) {
-    res.status(500).json({ error: e.message })
+    response.status(500).json({ error: e.message })
   }
-})
+
     
-    */ 
+   
     
-    return {url:'https://eleventen.ro'}
+   
 }
 
 public async inregistrareclinica({request,session,view}:HttpContextContract){
