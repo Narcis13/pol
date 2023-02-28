@@ -31,6 +31,8 @@ Route.post('/trimitsmsanulare','ClinicasController.trimitsmsanulare')
 Route.get('/facturiproforme/:idfact','ClientsController.oproforma')
 Route.get('/toateclinicile','ClinicasController.index').middleware('auth')
 Route.get('/azaevitca/:slug','ClientsController.activeazaabonament').middleware('auth')
+Route.post('/create-checkout-session','ClientsController.platacard').middleware('auth')
+
 
 Route.post('/programare', 'ProgramarisController.register')
 Route.post('/anulareprogramare', 'ProgramarisController.anulareprogramare')

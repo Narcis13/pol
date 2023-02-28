@@ -61,7 +61,7 @@
             <q-btn  align="around" class="q-pa-sm" color="deep-purple-14" text-color="pink-1" icon="logout" :to="'/'+slug"  @click="global.actions.deconectare">Deconectare!</q-btn>
           </div>
           <div v-if="global.state.user.clinica.stare=='trial'" class="flex flex-center q-mt-md">
-            <q-btn  align="around" class="q-pa-sm" color="blue-grey-10" text-color="pink-1" icon="shopping_cart_checkout" >Plata card online...</q-btn>
+            <q-btn  align="around" class="q-pa-sm" color="blue-grey-10" text-color="pink-1" icon="shopping_cart_checkout" @click="plata_card">Plata card online...</q-btn>
           </div>
 
         </q-card-actions>
@@ -105,8 +105,40 @@ export default defineComponent({
      //   console.log('Receptionat ruta-stabilita in MainLayout',s)
         slug.value=s;
       })
-    return {
+     function plata_card(){
+      console.log('plata card',global.state.user)
+
      
+      fetch(process.env.host+"create-checkout-session", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization" : `Bearer ${global.state.user.token}`
+    },
+    body: JSON.stringify({
+      items: [
+        { id: global.state.user.plan[0].id, quantity: 1 }
+      ],
+    }),
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+      return res.json().then(json => Promise.reject(json))
+    })
+    .then(({ url }) => {
+      window.open(url,'_blank');
+   // console.log('Am primit acest url',url)
+    })
+    .catch(e => {
+      console.error(e.error)
+    })
+      
+      
+     
+
+     } 
+    return {
+      plata_card, 
       leftDrawerOpen,
       username,
       password,
