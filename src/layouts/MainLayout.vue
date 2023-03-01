@@ -113,7 +113,8 @@ export default defineComponent({
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization" : `Bearer ${global.state.user.token}`
+      "Authorization" : `Bearer ${global.state.user.token}`,
+      'idclinica':global.state.user.idclinica
     },
     body: JSON.stringify({
       items: [

@@ -28,7 +28,7 @@ export default class ClinicasController {
   }
    
   public async trimitsmsanulare({request}:HttpContextContract){
-     console.log(request.body())
+    // console.log(request.body())
      let datesms=request.body();
      const smskey=datesms.apikey;
      var options = {

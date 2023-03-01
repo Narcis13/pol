@@ -94,10 +94,16 @@ public async activeazaabonament({params}:HttpContextContract){
      return {mesaj:'Abonament clinica activat!',idfacturanoua}
 }
 
+public async succesplata({request,view}:HttpContextContract){
+  const q = request.qs();
+  console.log(q.cid,q.ta)
+  return view.render('succesplata')
+}
+
 public async platacard({request,response}:HttpContextContract){
  
   const abonamente = await Database.from('plans').select('plans.*')
-
+  let idclinica  = request.headers().idclinica;
  
 
   const storeItems = new Map(
@@ -126,7 +132,7 @@ public async platacard({request,response}:HttpContextContract){
           quantity: item.quantity,
         }
       }),
-      success_url: `https://eleventen.ro`,
+      success_url: `http://localhost:3339/succesplata?cid=${idclinica}&ta=`+request.body().items[0].id,
       cancel_url: `https://eleventen.ro`,
     })
     return { url: session.url }
