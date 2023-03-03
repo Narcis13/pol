@@ -36,6 +36,8 @@ public async oproforma({params,view}:HttpContextContract){
     return view.render('facturaproforma',{nrfact:proforma.nrfact,data:DateTime.fromJSDate(new Date(proforma.data)).toFormat('dd.MM.yyyy'),numeclient:proforma.numeclient,cuiclient:proforma.cuiclient,adresaclient:proforma.adresaclient,detalii:proforma.detalii,suma:proforma.suma,tip:proforma.tip})
 }
 
+
+
 public async activeazaabonament({params}:HttpContextContract){
      //console.log(params.slug)
      const NOW = DateTime.now()
@@ -96,7 +98,59 @@ public async activeazaabonament({params}:HttpContextContract){
 
 public async succesplata({request,view}:HttpContextContract){
   const q = request.qs();
-  console.log(q.cid,q.ta)
+  //console.log(q.cid,q.ta)
+  const NOW = DateTime.now()
+  const clinica = await Clinica.findOrFail(q.cid);
+  const saminta = 111000;
+  const facturi = await Database.from('facturas').select('facturas.*').where({'facturas.tip':'fiscala'})
+  let idfacturanoua:number=0
+ // console.log(facturi.length)
+  if(clinica){
+     //console.log(clinica.denumire,clinica.stoptrial,clinica.stoptrial.plus({days:366}))
+   //  const plan= await Database.from('plans').select('plans.*').where({'plans.id':clinica.idplan})
+     const c = await Database
+     .from('clinicas')  
+     .join('plans','clinicas.idplan','=','plans.id')
+     .select('clinicas.*')
+     .select({numeplan:'plans.denumire',tarif:'plans.tariflunar'})
+     .where({'clinicas.id':clinica.id})
+
+     const ff={
+         data:NOW.toSQLDate(),
+         tip:'fiscala',
+         nrfact:'LS '+(saminta+1+facturi.length),
+         numeclient:clinica.companie,
+         cuiclient:c[0].CUI,
+         adresaclient:clinica.adresacompanie,
+         detalii:'Contravaloare abonament plan '+c[0].numeplan+' 12 luni la platforma programari online + offline elEvenTen Romania ',
+         suma:c[0].tarif*12,
+         idclinica:clinica.id
+     }
+  
+     await clinica
+         .merge({stare:'activ',startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})})
+         .save()
+     const facturanoua= await Factura.create(ff)    
+     const browser = await puppeteer.launch()
+     const page = await browser.newPage()
+     idfacturanoua=facturanoua.id
+     await page.goto(`http://localhost:3339/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
+    // await page.setContent(html)
+     await page.emulateMediaType('screen')
+     const pdf = await page.pdf({ format: 'a4' })
+     await browser.close()
+    // console.log(facturanoua.id)
+
+    
+    await Mail.send((message) => {
+     message
+       .from('noreply@eleventen.ro')
+       .to(clinica.email)
+       .subject('Factura fiscala abonament platforma elEvenTen - programari online si offline')
+       .attachData(pdf, { filename: `facturafiscala_${ff.nrfact}.pdf` })
+       .htmlView('emails/activare')
+   })
+  }
   return view.render('succesplata')
 }
 
