@@ -103,7 +103,7 @@ public async succesplata({request,view}:HttpContextContract){
   const clinica = await Clinica.findOrFail(q.cid);
   const saminta = 111000;
   const facturi = await Database.from('facturas').select('facturas.*').where({'facturas.tip':'fiscala'})
-  let idfacturanoua:number=0
+  var idfacturanoua:number=0
  // console.log(facturi.length)
   if(clinica){
      //console.log(clinica.denumire,clinica.stoptrial,clinica.stoptrial.plus({days:366}))
