@@ -106,34 +106,35 @@ export default defineComponent({
         slug.value=s;
       })
      function plata_card(){
-      console.log('plata card',global.state.user)
+     // console.log('plata card',global.state.user)
 
      
       fetch(process.env.host+"create-checkout-session", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization" : `Bearer ${global.state.user.token}`,
-      'idclinica':global.state.user.idclinica
-    },
-    body: JSON.stringify({
-      items: [
-        { id: global.state.user.plan[0].id, quantity: 1 }
-      ],
-    }),
-  })
-    .then(res => {
-      if (res.ok) return res.json()
-      return res.json().then(json => Promise.reject(json))
-    })
-    .then(({ url }) => {
-      window.open(url,'_blank');
-   // console.log('Am primit acest url',url)
-    })
-    .catch(e => {
-      console.error(e.error)
-    })
-      
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization" : `Bearer ${global.state.user.token}`,
+              'idclinica':global.state.user.idclinica
+            },
+            body: JSON.stringify({
+              items: [
+                { id: global.state.user.plan[0].id, quantity: 1 }
+              ],
+            }),
+          })
+            .then(res => {
+              if (res.ok) return res.json()
+              return res.json().then(json => Promise.reject(json))
+            })
+            .then(({ url }) => {
+              global.actions.deconectare()
+              window.open(url,'_blank');
+          // console.log('Am primit acest url',url)
+            })
+            .catch(e => {
+              console.error(e.error)
+            })
+              
       
      
 

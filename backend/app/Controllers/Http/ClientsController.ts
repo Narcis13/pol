@@ -75,7 +75,7 @@ public async activeazaabonament({params}:HttpContextContract){
         const browser = await puppeteer.launch()
         const page = await browser.newPage()
         idfacturanoua=facturanoua.id
-        await page.goto(`http://localhost:3339/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
+        await page.goto(`${Env.get('URL_SERVER')}/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
        // await page.setContent(html)
         await page.emulateMediaType('screen')
         const pdf = await page.pdf({ format: 'a4' })
@@ -134,7 +134,7 @@ public async succesplata({request,view}:HttpContextContract){
      const browser = await puppeteer.launch()
      const page = await browser.newPage()
      idfacturanoua=facturanoua.id
-     await page.goto(`http://localhost:3339/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
+     await page.goto(`${Env.get('URL_SERVER')}/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
     // await page.setContent(html)
      await page.emulateMediaType('screen')
      const pdf = await page.pdf({ format: 'a4' })
@@ -186,7 +186,7 @@ public async platacard({request,response}:HttpContextContract){
           quantity: item.quantity,
         }
       }),
-      success_url: `http://localhost:3339/succesplata?cid=${idclinica}&ta=`+request.body().items[0].id,
+      success_url: `${Env.get('URL_SERVER')}/succesplata?cid=${idclinica}&ta=`+request.body().items[0].id,
       cancel_url: `https://eleventen.ro`,
     })
     return { url: session.url }
@@ -299,7 +299,7 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
         await user.create(admin_nou) 
 
          //trimit email la client cu toate linkurile
-            const link_formular_solicitare="https://eleventen.live/solicitareprogramare/"+slug
+            const link_formular_solicitare=`${Env.get('URL_SERVER')}/solicitareprogramare/`+slug
             const link_app_administrare = `${clinicanoua.urlpol}/admin1975/#/${slug}`
             await Mail.send((message) => {
                 message

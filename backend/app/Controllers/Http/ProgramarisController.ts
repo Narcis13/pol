@@ -33,7 +33,8 @@ export default class ProgramarisController {
         const medic = await Medic.findOrFail(request.body().idmedic) 
         const clinica = await Clinica.findOrFail(request.body().idclinica)
         const cid = Date.now().toString();
-        QRCode.toFile('./qrprogramare.png', `https://eleventen.live/v/${programare.id}`, {
+        
+        QRCode.toFile('./qrprogramare.png', `${Env.get('URL_SERVER')}/v/${programare.id}`, {
             color: {
               dark: '#00F',  // Blue dots
               light: '#0000' // Transparent background
