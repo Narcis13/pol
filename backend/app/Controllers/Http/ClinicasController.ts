@@ -3,6 +3,7 @@ import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
 import Database from '@ioc:Adonis/Lucid/Database';
 import Satisfactia from 'App/Models/Satisfactia';
+import Env from '@ioc:Adonis/Core/Env'
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 const axios = require('axios');
 
@@ -127,7 +128,7 @@ export default class ClinicasController {
     //console.log(request.qs())
     const q = request.qs();
     if(q.plan){
-      return view.render('inregistrare',{idplan:q.plan})
+      return view.render('inregistrare',{idplan:q.plan,url_server:Env.get('URL_SERVER')})
     }
     else
     {
