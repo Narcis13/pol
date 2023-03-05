@@ -251,7 +251,7 @@ export default defineComponent({
                                                               idx++
                                                             t0=t1;
                                                             }
-                                                            console.log('Am program',intervale.value)
+                                                           // console.log('Am program',intervale.value)
                                                           
                                                         }
                                              })

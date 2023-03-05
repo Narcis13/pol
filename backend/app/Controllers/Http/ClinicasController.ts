@@ -3,7 +3,7 @@ import Drive from '@ioc:Adonis/Core/Drive'
 import Clinica from 'App/Models/Clinica';
 import Database from '@ioc:Adonis/Lucid/Database';
 import Satisfactia from 'App/Models/Satisfactia';
-import Env from '@ioc:Adonis/Core/Env'
+
 import {rules , schema} from '@ioc:Adonis/Core/Validator'
 const axios = require('axios');
 
@@ -125,10 +125,12 @@ export default class ClinicasController {
   }
 
   public async formularInregistrare({view,request}:HttpContextContract){
-    //console.log(request.qs())
+   
     const q = request.qs();
+  //  console.log(q.plan)
     if(q.plan){
-      return view.render('inregistrare',{idplan:q.plan,url_server:Env.get('URL_SERVER')})
+      return view.render('inregistrare',{idplan:q.plan})
+
     }
     else
     {
