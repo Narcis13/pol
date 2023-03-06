@@ -252,8 +252,8 @@ export default defineComponent({
        let ff=ref([{name: 'idclinica', value: global.state.user.idclinica}])
        
        onMounted(()=>{
-        console.log('Detalii clinica mounted...',global.state.user.plan[0],global.state.user.clinica)
-            axios.get(process.env.host+`clinici/${global.state.user.idclinica}`).then(
+      //  console.log('Detalii clinica mounted...',global.state.user.plan[0],global.state.user.clinica)
+            axios.get(process.env.host+`clinici/${global.state.user.idclinica}`,{headers:{"Authorization" : `Bearer ${token}`}}).then(
 
                         res => {
                         
@@ -308,7 +308,7 @@ export default defineComponent({
          })
 
         function siglaUrcata(info){
-          console.log('Sigla urcata',JSON.parse(info.xhr.response).numefisier)
+        //  console.log('Sigla urcata',JSON.parse(info.xhr.response).numefisier)
           let numefisier=JSON.parse(info.xhr.response).numefisier
           caleSigla.value=process.env.host+'/sigle/'+numefisier;
         }

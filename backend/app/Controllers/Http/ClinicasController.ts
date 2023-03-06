@@ -82,7 +82,7 @@ export default class ClinicasController {
 
     const validare_clinica = schema.create(
       {
-        adresa: schema.string({trim:true}),
+        adresa: schema.string.optional({trim:true}),
         denumire: schema.string({trim:true}),
         email:  schema.string.optional({trim:true},[rules.email()]),
         emailconducere1: schema.string.optional({trim:true},[rules.email()]),

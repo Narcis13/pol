@@ -106,5 +106,5 @@ Route.delete('/indis/:id','IndisponibilitatesController.deletemedic').middleware
 Route.post('/uploadsigla','ClinicasController.uploadsigla')
 Route.post('/uploadpozamedic','MedicsController.uploadpoza')
 Route.post('/uploadpozacabinet','CabinetsController.uploadpoza')
-Route.get('/clinici/:id', 'ClinicasController.oclinica')
+Route.get('/clinici/:id', 'ClinicasController.oclinica').middleware('auth')
 Route.patch('/clinici/:id','ClinicasController.updateclinica').middleware('auth')

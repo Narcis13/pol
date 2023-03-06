@@ -3,17 +3,23 @@ import Clinica from '../../Models/Clinica'
 import { DateTime } from 'luxon'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import Database from '@ioc:Adonis/Lucid/Database';
+import Logger from '@ioc:Adonis/Core/Logger'
 //import View from '@ioc:Adonis/Core/View'
 const puppeteer = require('puppeteer');
 
 export default class SituatieClienti {
 // ! To DO - sa fac ceva in ultima luna de abonament .....sa transform in trial!
+private logger: typeof Logger
 
+constructor() {
+  this.logger = Logger
+}
     public run(){
         return new Promise(
             async (reject)=>{
                 try {
                  // const clinici = await Clinica.all();
+                 this.logger.info('Procesul de analiza a situatiei clientilor a inceput!')
                    const clinicile = await Database
                                            .from('clinicas')  
                                            .join('plans','clinicas.idplan','=','plans.id')

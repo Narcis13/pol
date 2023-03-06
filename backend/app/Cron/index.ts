@@ -10,13 +10,27 @@ import AnalizorSituatieClienti from './Handlers/AnalizaSituatieClienti'
  */
 scheduler.scheduleJob('10 11 * * *', async function () {
   //const isDbBackupsEnabled = Env.get('ENABLE_DB_BACKUPS')
-   await new AnalizorSituatieClienti()
+ // console.log('START')
+  /* await new AnalizorSituatieClienti()
      .run()
-     .catch((error) => Logger.error('Analizor Situatie Clienti,: %o', error))
+     .catch((error) => Logger.error('Analizor Situatie Clienti,: %o', error))*/
 
     await new ReminderSMSZilnic()
       .run()
       .catch((error) => Logger.error('SMS Bulk Handler,: %o', error))
+  
+})
+
+scheduler.scheduleJob('10 23 * * *', async function () {
+  //const isDbBackupsEnabled = Env.get('ENABLE_DB_BACKUPS')
+ // console.log('START')
+   await new AnalizorSituatieClienti()
+     .run()
+     .catch((error) => Logger.error('Analizor Situatie Clienti,: %o', error))
+
+   /* await new ReminderSMSZilnic()
+      .run()
+      .catch((error) => Logger.error('SMS Bulk Handler,: %o', error))*/
   
 })
 
