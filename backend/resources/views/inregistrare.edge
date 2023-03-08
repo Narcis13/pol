@@ -6,11 +6,15 @@
   <link rel="stylesheet" href="tstyle.css"> 
 {{--    <script src="https://cdn.tailwindcss.com"></script>  --}}
 </head>
-<body class="min-h-screen py-40 bg-veryPaleRed">
-  <div class="container mx-auto border-l-8 border-darkGrayishBlue rounded-lg p-6 drop-shadow-xl">
-    <h2 class="text-center text-2xl mb-4 text-veryDarkBlue font-semibold">
-      Bine ati venit pe platforma elEvenTen!
-     </h2>
+<body class="min-h-screen py-10 bg-veryPaleRed">
+  <div class="container mx-auto max-w-4xl border-l-8 border-darkGrayishBlue rounded-lg p-6 drop-shadow-xl">
+    <div class="flex items-center justify-between p-6">
+      <img class="w-32" src="imgs/sigla_eleventen.png" alt="">
+      <h2 class="text-center text-2xl mb-4 text-veryDarkBlue font-semibold">
+        Bine ati venit pe platforma elEvenTen!
+       </h2>
+    </div>
+
      <form name="form1" method="POST" action="/inregistrareclinica">
       {{ csrfField() }}
       <div class="flex flex-col">
@@ -25,7 +29,7 @@
 
        <div class="flex flex-row items-center  space-x-3 ">
         <input type="text" name="cod" class="border p-2 mt-4" placeholder="Cod primit prin email">
-        <button id="btnGenCod" type="button" class="border border-gray-100 p-2 mt-4 text-veryLightGray bg-darkBlue rounded-lg baseline hover:bg-slate-600">Trimite cod!</button>
+        <button id="btnGenCod" type="button" class="border border-gray-100 p-2 mt-4 text-veryLightGray bg-darkBlue rounded-lg baseline hover:bg-slate-600">Trimite cod la adresa de mai sus ..</button>
        </div>
        <input type="password" name="parola" class="border p-2 mt-4" placeholder="Parola">
        <p class="text-xs text-slate-600">Minim 8 caractere, litere mari, litere mici, cifre si semne punctuatie</p>
