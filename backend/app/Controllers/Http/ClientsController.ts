@@ -17,8 +17,9 @@ public async validare_email({request}: HttpContextContract){
     let {email} =request.body();
     const random = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
     let d = {cod:random.toString(),email}
-    await Validareemail.create(d);
-    //console.log('Validare email!',validare)
+    console.log('Validare email!',d)
+   const v= await Validareemail.create(d);
+   console.log('Validare email!',v)
 
     await Mail.send((message) => {
         message
