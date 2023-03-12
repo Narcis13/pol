@@ -73,7 +73,10 @@ public async activeazaabonament({params}:HttpContextContract){
             .merge({stare:'activ',startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})})
             .save()
         const facturanoua= await Factura.create(ff)    
-        const browser = await puppeteer.launch()
+        const browser = await puppeteer.launch({
+          headless: true,
+          args: ['--no-sandbox']
+       })
         const page = await browser.newPage()
         idfacturanoua=facturanoua.id
         await page.goto(`${Env.get('URL_SERVER')}/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
@@ -132,7 +135,10 @@ public async succesplata({request,view}:HttpContextContract){
          .merge({stare:'activ',startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})})
          .save()
      const facturanoua= await Factura.create(ff)    
-     const browser = await puppeteer.launch()
+     const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox']
+   })
      const page = await browser.newPage()
      idfacturanoua=facturanoua.id
      await page.goto(`${Env.get('URL_SERVER')}/facturiproforme/${facturanoua.id}`, { waitUntil: 'networkidle0' })
