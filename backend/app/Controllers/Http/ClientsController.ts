@@ -51,7 +51,7 @@ public async activeazaabonament({params}:HttpContextContract){
         //console.log(clinica.denumire,clinica.stoptrial,clinica.stoptrial.plus({days:366}))
       //  const plan= await Database.from('plans').select('plans.*').where({'plans.id':clinica.idplan})
         const c = await Database
-        .from('clinicas')  
+        .from('clinicas')
         .join('plans','clinicas.idplan','=','plans.id')
         .select('clinicas.*')
         .select({numeplan:'plans.denumire',tarif:'plans.tariflunar'})
@@ -68,11 +68,11 @@ public async activeazaabonament({params}:HttpContextContract){
             suma:c[0].tarif*12,
             idclinica:clinica.id
         }
-     
+
         await clinica
             .merge({stare:'activ',startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})})
             .save()
-        const facturanoua= await Factura.create(ff)    
+        const facturanoua= await Factura.create(ff)
         const browser = await puppeteer.launch({
           headless: true,
           args: ['--no-sandbox']
@@ -86,7 +86,7 @@ public async activeazaabonament({params}:HttpContextContract){
         await browser.close()
        // console.log(facturanoua.id)
 
-       
+
        await Mail.send((message) => {
         message
           .from('noreply@eleventen.ro')
@@ -96,7 +96,7 @@ public async activeazaabonament({params}:HttpContextContract){
           .htmlView('emails/activare')
       })
      }
-     
+
      return {mesaj:'Abonament clinica activat!',idfacturanoua}
 }
 
@@ -113,7 +113,7 @@ public async succesplata({request,view}:HttpContextContract){
      //console.log(clinica.denumire,clinica.stoptrial,clinica.stoptrial.plus({days:366}))
    //  const plan= await Database.from('plans').select('plans.*').where({'plans.id':clinica.idplan})
      const c = await Database
-     .from('clinicas')  
+     .from('clinicas')
      .join('plans','clinicas.idplan','=','plans.id')
      .select('clinicas.*')
      .select({numeplan:'plans.denumire',tarif:'plans.tariflunar'})
@@ -130,11 +130,11 @@ public async succesplata({request,view}:HttpContextContract){
          suma:c[0].tarif*12,
          idclinica:clinica.id
      }
-  
+
      await clinica
          .merge({stare:'activ',startabonament:clinica.stoptrial,stopabonament:clinica.stoptrial.plus({days:366})})
          .save()
-     const facturanoua= await Factura.create(ff)    
+     const facturanoua= await Factura.create(ff)
      const browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox']
@@ -148,7 +148,7 @@ public async succesplata({request,view}:HttpContextContract){
      await browser.close()
     // console.log(facturanoua.id)
 
-    
+
     await Mail.send((message) => {
      message
        .from('noreply@eleventen.ro')
@@ -162,16 +162,16 @@ public async succesplata({request,view}:HttpContextContract){
 }
 
 public async platacard({request,response}:HttpContextContract){
- 
+
   const abonamente = await Database.from('plans').select('plans.*')
   let idclinica  = request.headers().idclinica;
- 
+
 
   const storeItems = new Map(
   abonamente.map(a=>{
 
         return [a.id,{priceInCents: a.tariflunar*12*100, name: 'Pachet abonament '+a.denumire+' 12 luni platforma programari consult medical eleventen.ro' }]
-  })  
+  })
 
 
   )
@@ -201,15 +201,15 @@ public async platacard({request,response}:HttpContextContract){
     response.status(500).json({ error: e.message })
   }
 
-    
-   
-    
-   
+
+
+
+
 }
 
 public async inregistrareclinica({request,session,view}:HttpContextContract){
   //let clinica_noua=request.body()
-  
+
      const validare_solicitare = schema.create(
       {
           nume:schema.string({trim:true},[rules.maxLength(70),rules.minLength(7)]),
@@ -273,7 +273,7 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
 
              //   console.log(linie)
     if(linie&&solicitare_validata.cod==linie.cod){
-        //adaug clinica 
+        //adaug clinica
         const slug=Math.floor(Math.random() * Date.now()).toString(16)
         const clinicanoua={
             'denumire':solicitare_validata.clinica,
@@ -287,11 +287,11 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
             stare:'trial',
             starttrial:DateTime.now(),
             stoptrial:DateTime.now().plus({days:31}),
-            urlpol:Env.get('DOMENIU_BAZA')
+            urlpol:Env.get('DOMENIU_BAZA')+'/'
         }
         const nouaclinica= await Clinica.create(clinicanoua);
-        
-        
+
+
         // adaug user cu rol de admin
         const admin_nou={
             email:solicitare_validata.email,
@@ -303,7 +303,7 @@ public async inregistrareclinica({request,session,view}:HttpContextContract){
             idclinica:nouaclinica.id,
             createdby:0
         }
-        await user.create(admin_nou) 
+        await user.create(admin_nou)
 
          //trimit email la client cu toate linkurile
             const link_formular_solicitare=`${Env.get('URL_SERVER')}/solicitareprogramare/`+slug
