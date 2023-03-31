@@ -32,3 +32,5 @@
 
 
 xcodebuild -runFirstLaunch
+
+test github
