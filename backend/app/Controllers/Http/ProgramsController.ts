@@ -22,20 +22,20 @@ export default class ProgramsController {
                 ziuadinsaptamina:schema.number([rules.range(0,240)])
             }
         )
-    
+
         const program_validat = await request.validate({schema:validare_program});
-    
+
         const program = await Program.create(program_validat);
-    
+
         return program;
-    
-    
+
+
        }
-       
+
        public async sarbatoarenoua({request}:HttpContextContract){
         // console.log(request.body())
         const sarbatoare  = await Sarbatoare.create(request.body())
-        
+
         return sarbatoare;
 
        }
@@ -43,11 +43,11 @@ export default class ProgramsController {
        public async programcabinet({params}:HttpContextContract){
 
         // return Program.all();
-        // console.log(params.kind)
+        console.log(params)
          let clauza={'cabinets.id':params.id,'programs.stare':'activ'}
      // if(params.kind=='e') clauza['programs.tip']='online'
        // if(params.kind=='t') clauza['programs.tip']='offline'
-         
+
         const program_cabinet= await Database
         .from('programs')
         .join('medics', 'programs.idmedic', '=', 'medics.id')
@@ -68,15 +68,15 @@ export default class ProgramsController {
         let idclinica=request.headers().idclinica;
         const sarbatori= await Database
         .from('sarbatoares')
-   
+
         .select('sarbatoares.*')
         .where({'sarbatoares.idclinica':idclinica})
         .orderBy('sarbatoares.luna', 'asc')
         .orderBy('sarbatoares.zi', 'asc')
-       
+
  //   return Medic.all();
         return {sarbatori}
-       } 
+       }
 
        public async index({request}:HttpContextContract){
 
@@ -125,10 +125,10 @@ export default class ProgramsController {
             indexzi:primazi.weekday,
             nrcrt:0,
             pagina
-        }) 
+        })
         //let maxzile =params.id>0 ? 35: 70
         for(var i=1;i<70;i++){   //for(var i=1;i<70;i++){   .... daca vreau 2 luni de programari in fata
-           if(i%7==0) pagina++ 
+           if(i%7==0) pagina++
            let zi= primazi.plus({days:i})
            zile.push({
             'textlocalizat':zi.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY).toUpperCase(),
@@ -137,35 +137,35 @@ export default class ProgramsController {
             indexzi:zi.weekday,
             nrcrt:i,
             pagina
-        }) 
+        })
         }
- 
+
         return {cabinete,zile,medici}
        }
-    
+
        public async updatesarbatoare({params,request}:HttpContextContract){
-    
+
         const s = await Sarbatoare.findOrFail(params.id)
-         
+
         return await s
             .merge(request.body())
             .save()
-    
+
        }
-    
+
        public async stergesarbatoare({params}:HttpContextContract){
 
         const sarbatoare = await Sarbatoare.findOrFail(params.id)
-         
+
         await sarbatoare
                      .delete()
             return `Sarbatoarea legala a fost stearsa cu succes!`
        }
 
        public async deleteprogram({params}:HttpContextContract){
-    
+
         const program = await Program.findOrFail(params.id)
-         
+
         await program
                 .merge({stare:'inactiv'})
                 .save()
