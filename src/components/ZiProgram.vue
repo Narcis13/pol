@@ -1,12 +1,12 @@
 <template>
     <div style="min-width:180px;" class="q-pa-sm column">
-       <div class="text-subtitle2">{{denumirezi}}</div> 
+       <div class="text-subtitle2">{{denumirezi}}</div>
        <div class="bg-blue-grey-7 text-white text-h6 fit row wrap justify-center items-center content-start q-pa-md q-mt-md" v-if="intervale.length==0" style="width:180px;height:180px;">INCHIS</div>
          <q-timeline layout="dense" side="right" color="secondary">
              <q-timeline-entry
                 :key="interval.index"
                 v-for="interval in intervale"
-                :icon="interval.tip=='online'?'cloud_upload':'perm_phone_msg'" 
+                :icon="interval.tip=='online'?'cloud_upload':'perm_phone_msg'"
                 :color="interval.tip=='online'?'teal':'accent'"
                 :subtitle="interval.orastart +'-'+ interval.orastop"
                 side="right"
@@ -30,13 +30,13 @@ import { useQuasar } from 'quasar'
 
 function addMinutes(time, minsToAdd) {
   function D(J){ return (J<10? '0':'') + J};
-  
+
   var piece = time.split(':');
-  
+
   var mins = piece[0]*60 + +piece[1] + +minsToAdd;
 
-  return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);  
-}  
+  return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);
+}
 
 export default defineComponent({
     name:'ZiProgram',
@@ -56,7 +56,7 @@ export default defineComponent({
         //programari per cabinet
         if(!sarbatoare){
 
-     
+
         let programari=[]
         axios.get(process.env.host+`programarecabinet/${props.liste.idc}`,{headers:{'idclinica':props.liste.clinica.idclinica}}).then(
 
@@ -79,10 +79,10 @@ export default defineComponent({
                                                             let stare='liber'
                                                             //aici ma intreb daca intervalul este ocupat sau indisponibil
                                                             programari.map(prog=>{
-                                                                if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&prog.indexslot==idx){
+                                                                if(prog.idprogram==p.id&&prog.data==props.zi.formatata&&/*prog.indexslot==idx*/prog.orastart.substring(0,5)==t0){
                                                                     stare='OCUPAT'
                                                                 }
-                                                                
+
                                                             })
 
                                                             props.liste.indis.map(ind=>{
@@ -118,7 +118,7 @@ export default defineComponent({
                                                             t0=t1;
                                                             }
                                                            // console.log('Am program',intervale.value)
-                                                          
+
                                                         }
                                              })
 
@@ -134,13 +134,13 @@ export default defineComponent({
 
           let info={
                 data: interval.data,
-               
+
                 idcabinet: interval.idcabinet,
                 idmedic: interval.idmedic,
                 idprogram: interval.idprogram,
                 idserviciumedical: interval.idserviciumedical,
                 idsolicitare: interval.idsolicitare,
-               
+
                 indexslot: interval.index,
                 indexzi: interval.indexzi,
 
@@ -150,10 +150,10 @@ export default defineComponent({
                 idclinica:interval.idclinica
           }
  //console.log('Rezerv index',info,index)
-         
-          
+
+
               axios.post(process.env.host+'programare',info).then(res =>{
-                                
+
                              //   console.log('Programare noua',res.data)
                 if(res.data.data){
                                 let token= btoa('pentru data '+res.data.data+' la ora '+res.data.orastart+' ')
@@ -163,7 +163,7 @@ export default defineComponent({
                                         timeout:2000,
                                         position:'top',
                                         color:'positive'
-                                        }) 
+                                        })
                 }
                 else
                 {
@@ -184,9 +184,9 @@ export default defineComponent({
                                                         timeout:2000,
                                                         position:'top',
                                                         color:'negative'
-                                                        })                  
-                                            })    
-         
+                                                        })
+                                            })
+
 
       }
 
@@ -194,7 +194,7 @@ export default defineComponent({
           denumirezi:props.zi.textlocalizat,
           intervale,
           salvez_programare
-      }  
+      }
     },
 })
 </script>
