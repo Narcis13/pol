@@ -105,22 +105,26 @@ export default class AuthController {
        try {
           // await auth.attempt(nume,password)
           const clinica = await Clinica.findBy('slug',slug);
+         // console.log(clinica)
           if(clinica){
+           // console.log(clinica)
           let plan = await Database
               .from('plans')
               .select('*')
               .where('id', clinica.idplan)
-
+          // console.log(plan)
           let idclinica = clinica.id;
           let numeunic=nume+idclinica;
           if(nume=='master13') numeunic='master1313';
          // console.log(numeunic,password,slug,idclinica)
           try {
+           // console.log(numeunic)
             const token = await auth.use('api').attempt(numeunic, password,{
               expiresIn: '960 mins'
             })
-            
+          //  console.log(token)
             const loggeduser = await user.findBy('numeunic',numeunic)// aici trebuie sa ma intreb de stare ......
+            console.log(loggeduser)
             if(loggeduser&&loggeduser.stare=="activ")
             return {loggeduser,token,clinica,plan}
             else
