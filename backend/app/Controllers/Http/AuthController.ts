@@ -124,7 +124,7 @@ export default class AuthController {
             })
           //  console.log(token)
             const loggeduser = await user.findBy('numeunic',numeunic)// aici trebuie sa ma intreb de stare ......
-            console.log(loggeduser)
+            //console.log(loggeduser)
             if(loggeduser&&loggeduser.stare=="activ")
             return {loggeduser,token,clinica,plan}
             else
