@@ -44,7 +44,7 @@ export default class ProgramarisController {
         if(clinica&&solicitare.tip=='online')
             await Mail.sendLater((message) => {
                 message
-                .from('programari@eleventen.ro')
+                .from('programari@smupitesti.org')
                 .to(email)
                 .subject('Confirmare programare online la '+clinica.denumire)
                 .htmlView('emails/confirmaret', {urlpol:clinica.urlpol,cid,website:clinica.website, medic:medic.nume,grad:medic.grad,nume,token:programare.token+'-'+programare.id,orastart:programare.orastart,data:DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
@@ -71,7 +71,7 @@ export default class ProgramarisController {
 
             await Mail.sendLater((message) => {
                 message
-                  .from('programari@eleventen.ro')
+                  .from('programari@smupitesti.org')
                   .to(clinica.email)
                   .subject('Anulare programare online la '+clinica.denumire)
                   .htmlView('emails/anulare', { mesaj: 'Pacientul '+solicitare.nume +'(' +solicitare.email+') a anulat rezervarea pentru data '+DateTime.fromJSDate(new Date(programare.data)).toFormat('dd.MM.yyyy') })
@@ -93,7 +93,7 @@ export default class ProgramarisController {
 
            await Mail.sendLater((message) => {
             message
-              .from('programari@eleventen.ro')
+              .from('programari@smupitesti.org')
               .to(request.body().email)
               .subject('Anulare programare online la '+request.body().clinica)
               .htmlView('emails/anularet', { mesaj: request.body().mesaj })
@@ -401,7 +401,7 @@ export default class ProgramarisController {
       
       await Mail.sendLater((message) => {
         message
-          .from('programari@eleventen.ro')
+          .from('programari@smupitesti.org')
           .to(request.input('email'))
           .subject('Programare online '+clinica.denumire)
           .htmlView('emails/programatort', {urlpol:clinica.urlpol, nume: request.input('nume'),hash,id,cid })
